@@ -1,10 +1,11 @@
 const NodeComponent = {
-    props: ['eventData', 'mapData', 'nodeData'],
+    props: ['eventData', 'mapData', 'nodeData', 'compObject'],
         
     data: () => ({
         nodeTypeItemList: [            
             { key: 100, display: "Battle", nodeData: COMMON.NODE_TYPES.NORMAL_BATTLE_NODE },
-            { key: 101, display: "Ambush", nodeData: COMMON.NODE_TYPES.AMBUSH_NODE },
+            { key: 101, display: "Sub node battle", nodeData: COMMON.NODE_TYPES.SUBMARINE_BATTLE_NODE },
+            { key: 102, display: "Ambush", nodeData: COMMON.NODE_TYPES.AMBUSH_NODE },
             
             { key: -1, separator: true },
 
@@ -36,7 +37,10 @@ const NodeComponent = {
     }),
 
     computed: {
-        
+        routeUnlockItemList() {
+            if (!this.mapData.hiddenRoutes) return [];
+            return Object.keys(this.mapData.hiddenRoutes).map(route => ({ key: route, display: route}));
+        }
     },
 
     methods: {
@@ -78,6 +82,11 @@ const NodeComponent = {
             <tr>
                 <td>Y position</td>
                 <td><input v-model="nodeData.y" type="number" /></td>
+            </tr>
+            
+            <tr>
+                <td>Route unlock required</td>
+                <td><vcomboboxeditor :data-source="nodeData" :item-list="routeUnlockItemList" data-field="hidden" :can-be-null="true"/></td>
             </tr>
 
             <tr>
@@ -122,6 +131,11 @@ const NodeComponent = {
             </tr>
 
             <tr v-if="displayNodeTypeInfo">
+                <td>Sub battle node ?</td>
+                <td><input v-model="nodeData.subonly" type="checkbox" /></td>
+            </tr>
+
+            <tr v-if="displayNodeTypeInfo">
                 <td>Anchor node ?</td>
                 <td><input v-model="nodeData.dropoff" type="checkbox" /></td>
             </tr>
@@ -132,12 +146,19 @@ const NodeComponent = {
             </tr>
 
 
-            <tr>
-                <td colspan="3"><vroutinglist :rule-list="nodeData.rules" :map-data="mapData"></vroutinglist></td>
-            </tr>
-
         </table>
-    </div>        
+
+        <div class="group-title">Routing</div>
+        <vroutinglist :rule-list="nodeData.rules" :map-data="mapData"></vroutinglist>
+
+        <div class="group-title">End node</div>   
+        Is end node rule (if no rule, use the checkbox value)  
+        <input v-model="nodeData.end" type="checkbox" />
+        <vroutinglist :rule-list="nodeData.endRules" :map-data="mapData"></vroutinglist>
+
+        <div class="group-title">Enemy comps</div>   
+        <vnodeenemycompeditor :node-data="nodeData" :map-data="mapData" :comp-object="compObject" ></vnodeenemycompeditor>
+    </div>
     
     `,
 }

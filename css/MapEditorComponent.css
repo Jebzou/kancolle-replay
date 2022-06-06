@@ -10,7 +10,6 @@
 
 .map-editor-groups .editor-group {
     overflow-y: scroll;
-    width: 100%;
 }
 
 .mapButtons {
@@ -38,6 +37,10 @@ select.mapButton  {
 
 .map-settings .rule-editor {
     overflow-y: visible;
+}
+
+.editor-group-no-scroll {
+    overflow-y: visible !important;
 }
 
 .equipDataRuleEditor {

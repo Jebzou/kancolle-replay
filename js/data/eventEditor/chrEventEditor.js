@@ -6,6 +6,8 @@ Vue.createApp({
     selectedMap: {},
     selectedMapNumber: 0,
 
+    selectedEventToLoad: null,
+
     isMapSelected: false,
 
     /**
@@ -81,6 +83,7 @@ Vue.createApp({
           for (var key in basic) this.chData[key] = basic[key];
 
           if (this.chData.customEventData) this.eventData = this.chData.customEventData.eventData;
+          if (!this.eventData.comps) this.eventData.comps = {};
         }
       }
 
@@ -88,14 +91,18 @@ Vue.createApp({
 
       // --- Load rules (to access its methods)
       for (const mapNum in this.eventData.maps) {
+
         for (const nodeKey in this.eventData.maps[mapNum].nodes) {
           const nodeData = this.eventData.maps[mapNum].nodes[nodeKey];
+          if (!nodeData.endRules) nodeData.endRules = [];
+          if (!nodeData.rules) nodeData.rules = [];
 
-          try {
-            MAPDATA[97].loadNodeFromChData(nodeData);
-          } catch (error) {
-            console.debug(nodeData);
-          }
+        }
+
+        try {
+          MAPDATA[97].initializeMap(this.eventData.maps[mapNum]);
+        } catch (error) {
+          console.error(error);
         }
       }
     },
@@ -176,5 +183,18 @@ Vue.createApp({
 .component('vequiplisteditor', EquipmentListEditorComponent)
 .component('vcountruleeditor', CountRuleEditorComponent)
 .component('vshipidslisteditor', ShipIdsListEditorComponent)
+.component('vhiddenrouteeditor', HiddenRoutesEditorComponent)
+
+// --- Gimmicks
+.component('vgimmicklist', GimmickListComponent)
+.component('vgimmickeditor', GimmickEditorComponent)
+
+// --- Enemy comps
+.component('vnodeenemycompeditor', NodeEnemyCompEditorComponent)
+.component('vnodeenemycompobjectseditor', NodeEnemyCompObjectsEditorComponent)
+
+.component('venemycomplist', EnemyCompListEditorComponent)
+.component('venemycomplistperdiff', EnemyCompListPerDiffEditorComponent)
+
 .use(COMMON.i18n)
 .mount('#eventEditor');

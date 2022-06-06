@@ -9,9 +9,24 @@ const MapEditorComponent = {
         mouseY: 0,
         
         currentNode: null,
+
+        trueFalseNodesList: [
+            { key: true, display: 'Valid' },
+            { key: false, display: 'Not valid' },
+        ]
     }),
 
     computed: {
+        currentNodeCompObject() {
+            if (!this.currentNode) return {};
+            
+            if (!this.eventData.comps) this.eventData.comps = {};
+            if (!this.eventData.comps[this.mapData.name]) this.eventData.comps[this.mapData.name] = {};
+            if (!this.eventData.comps[this.mapData.name][this.currentNode]) this.eventData.comps[this.mapData.name][this.currentNode] = {};
+
+            return this.eventData.comps[this.mapData.name][this.currentNode];
+        },
+
         fleetsItemSource () {
             const fleets = [];
             
@@ -27,6 +42,7 @@ const MapEditorComponent = {
 
         locksItemSource () {
             const locks = [];
+            if (!this.eventData.locksData) return [];
             
             for (const lock of this.eventData.locksData) {
 
@@ -43,27 +59,46 @@ const MapEditorComponent = {
 
         nodeList() {
             return Object.keys(this.mapData.nodes).map(key => ({ key: key, display: key }));
+        },
+
+        
+        mapNumber () {
+            for (const mapkey in this.eventData.maps) {
+                if (this.eventData.maps[mapkey].name == this.mapData.name) {
+                    return mapkey;
+                }
+            }
+            
+            return 0;
+        },
+
+        isFleetTypePerPart() {
+            return !this.mapData.fleetTypes;
+        },
+
+        isMultipleLockMap() {
+            return Array.isArray(this.mapData.giveLock);
+        },
+
+        additionalChecksRules() {
+            if (!this.mapData.additionalChecksRules) this.mapData.additionalChecksRules = [];
+
+            return this.mapData.additionalChecksRules;
+        },
+
+        startCheckRule() {
+            if (!this.mapData.startCheckRule) this.mapData.startCheckRule = [];
+
+            return this.mapData.startCheckRule;
         }
+
     },
 
     methods: {
-        // getCurrentNode() {
-            // if (this.currentTab != 'nodes') return null;
-            // return this.currentNode;
-        // },
-
         onMouseMoveOnMap (event) {
             this.mouseX = event.pageX - event.target.offsetLeft;
             this.mouseY = event.pageY - event.target.offsetTop;
         },
-
-        // onClickOnMap () {
-            // const node = this.getCurrentNode();
-            // if (!node) return;
-
-            // node.x = this.mouseX;
-            // node.y = this.mouseY;
-        // },
 
         deleteMap () {
             if (confirm("Are you sure you want to delete this map ?")) {
@@ -93,10 +128,11 @@ const MapEditorComponent = {
             return tabName == this.currentTab;
         },
         
-        addNode(nodeName,x=0,y=0) {
+        addNode(nodeName,x=0,y=0,route=null) {
             this.mapData.nodes[nodeName] = new ChNodeData();
             this.mapData.nodes[nodeName].x = x;
             this.mapData.nodes[nodeName].y = y;
+			if (route) this.mapData.nodes[nodeName].hidden = route;
             this.mapData.nodes[nodeName].rules = [];
             this.onNodeChanged(nodeName);
         },
@@ -129,10 +165,39 @@ const MapEditorComponent = {
                     4: 0,
                 },
             };
+
+            if (this.isFleetTypePerPart) {
+                this.mapData.parts[key].fleetTypes = [];
+            }
         },
 
         deletePart(partNumber) {
             delete this.mapData.parts[partNumber];
+        },
+
+        toggleAvailableFleetPerPart() {
+            if (this.isFleetTypePerPart) {
+                this.mapData.fleetTypes = [];
+                
+                for (const key in this.mapData.parts) {
+                    delete this.mapData.parts[key].fleetTypes;
+                }
+
+            } else {
+                delete this.mapData.fleetTypes;
+
+                for (const key in this.mapData.parts) {
+                    this.mapData.parts[key].fleetTypes = [];
+                }
+            }
+        },
+
+        toggleMultiLockMap() {
+            if (this.isMultipleLockMap) {
+                this.mapData.giveLock = '';
+            } else {
+                this.mapData.giveLock = [];
+            }
         }
     },
     

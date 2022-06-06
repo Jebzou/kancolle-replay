@@ -42,5 +42,52 @@ class ChMapData {
         this.startCheckRule = [];
 
         this.nodes = {};
+
+        /**
+         * @type {ChRule[]} List of rules, returned nodes must be true or false
+         */
+        this.additionalChecksRules = [];
+
+        /**
+         * Use this to manage complex locking
+         */
+        this.lockInfos = {
+
+            isTagAllowed: {
+                // --- Per start
+                startNode: {
+                    /*
+                    example : 
+                    Start1: ['52_1'],
+                    */
+                },
+
+                // --- Per fleet type
+                fleetType: {
+                    /*
+                    example:
+                    0: ['52_1'],
+                    */
+                }
+            },
+
+            tagGiven: {
+                // --- Per start
+                startNode: {
+                    /*
+                    example : 
+                    Start1: '52_1',
+                    */
+                },
+
+                // --- Per fleet type
+                fleetType: {
+                    /*
+                    example:
+                    0: '52_1',
+                    */
+                }
+            },
+        }
     }
 }
