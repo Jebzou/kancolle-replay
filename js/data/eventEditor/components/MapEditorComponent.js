@@ -13,7 +13,9 @@ const MapEditorComponent = {
         trueFalseNodesList: [
             { key: true, display: 'Valid' },
             { key: false, display: 'Not valid' },
-        ]
+        ],
+
+        currentNodeForCutomBGM: null,
     }),
 
     computed: {
@@ -21,10 +23,40 @@ const MapEditorComponent = {
             if (!this.currentNode) return {};
             
             if (!this.eventData.comps) this.eventData.comps = {};
-            if (!this.eventData.comps[this.mapData.name]) this.eventData.comps[this.mapData.name] = {};
-            if (!this.eventData.comps[this.mapData.name][this.currentNode]) this.eventData.comps[this.mapData.name][this.currentNode] = {};
+            if (!this.eventData.comps[this.compsKeys]) this.eventData.comps[this.compsKeys] = {};
+            if (!this.eventData.comps[this.compsKeys][this.currentNode]) this.eventData.comps[this.compsKeys][this.currentNode] = {};
 
-            return this.eventData.comps[this.mapData.name][this.currentNode];
+            return this.eventData.comps[this.compsKeys][this.currentNode];
+        },
+
+        compsKeys() {
+            return this.mapData.name[0] + '-' + this.mapData.name[1];
+        },
+
+        currentNodeForCustomBGMDisplay() {
+            if (this.currentNodeForCutomBGM <= 26) return String.fromCharCode(this.currentNodeForCutomBGM);
+            return this.currentNodeForCutomBGM;
+        },
+
+        allCompsObject () {
+            const comps = {};
+
+            if (!this.currentNode) return comps;
+            
+            if (!this.eventData.comps) this.eventData.comps = comps;
+            if (!this.eventData.comps[this.compsKeys]) this.eventData.comps[this.compsKeys] = comps;
+
+            for (const nodeName in this.eventData.comps[this.compsKeys]) {
+                const nodeComps = this.eventData.comps[this.compsKeys][nodeName];
+
+                for (const compName in nodeComps) {
+                    const key = nodeName + '-' + compName;
+                    comps[key] = {};
+                    Object.assign(comps[key], nodeComps[compName]);
+                }
+            }
+
+            return comps;
         },
 
         fleetsItemSource () {
@@ -198,6 +230,23 @@ const MapEditorComponent = {
             } else {
                 this.mapData.giveLock = [];
             }
+        },
+
+        toggleCustomBGM() {
+            this.mapData.overrideBGM = this.mapData.overrideBGM ? null : {};
+        },
+
+        addNodeCustomBGM() {
+            if (this.currentNodeForCutomBGM.length == 1) {
+                this.currentNodeForCutomBGM = this.currentNodeForCutomBGM.charCodeAt(0) - 64;
+            }
+
+            this.mapData.overrideBGM[this.currentNodeForCutomBGM] = {
+                bgmDN: null,
+                bgmNN: null,
+                bgmDB: null,
+                bgmNB: null,
+            };
         }
     },
     

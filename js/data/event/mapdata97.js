@@ -208,7 +208,7 @@ MAPDATA[97].loadUnlockFromChData = function (map) {
              */
             const gimmicks = map.hiddenRoutes[unlockKey].unlockRules;
 
-            map.hiddenRoutes[unlockKey].unlockRules = new ChGimmickList(gimmicks.type, gimmicks.mapPartNumber, gimmicks.mapNum, gimmicks.gimmickData, gimmicks.additionnalParameters);
+            map.hiddenRoutes[unlockKey].unlockRules = new ChGimmickList(gimmicks.type, gimmicks.mapPartNumber, gimmicks.mapNum, gimmicks.gimmicks, gimmicks.additionnalParameters);
         }
     }
 
@@ -219,7 +219,16 @@ MAPDATA[97].loadUnlockFromChData = function (map) {
 }
 
 MAPDATA[97].loadStartBonusesFromChData = function (map) {
-    if (map.startBonus) delete map.startBonus;
+    
+    if (!map.startBonus) return;
+
+    const bonuses = [];
+
+    for (const bonus of map.startBonus) {
+        bonuses.push(MAPDATA[97].convertBonus(bonus));
+    }
+
+    map.startBonus = bonuses; 
 }
 
 MAPDATA[97].loadBonusesFromChData = function (nodeData) {
@@ -229,21 +238,48 @@ MAPDATA[97].loadBonusesFromChData = function (nodeData) {
     if (!nodeData.bonuses) return;
 
     for (const bonus of nodeData.bonuses) {
-        switch (bonus.bonusType) {
-            case 'ChShipIdsBonuses':
-                bonuses.push(new ChShipIdsBonuses(bonus.parameters, bonus.shipIds.map(x => parseInt(x)), bonus.amount));
-                break;
-
-            case 'ChShipTypeBonuses':
-                bonuses.push(new ChShipTypeBonuses(bonus.parameters, bonus.shipTypes, bonus.amount));
-                break;
-        
-            default:
-                break;
-        }
+        bonuses.push(MAPDATA[97].convertBonus(bonus));
     }
 
     nodeData.bonuses = bonuses; 
+}
+
+MAPDATA[97].convertBonus = function(bonus) {
+    switch (bonus.bonusType) {
+        case 'ChShipIdsBonuses':
+            return new ChShipIdsBonuses(bonus.parameters, bonus.shipIds.map(x => parseInt(x)), bonus.amount);
+
+        case 'ChShipTypeBonuses':
+            return new ChShipTypeBonuses(bonus.parameters, bonus.shipTypes, bonus.amount);
+
+        case 'ChWholeFleetBonuses':
+            return new ChWholeFleetBonuses(bonus.parameters, bonus.amount);
+            
+        case 'ChEquipIdsBonuses':
+            return new ChEquipIdsBonuses(bonus.parameters, bonus.equipIds, bonus.operator, bonus.reqCount, bonus.amount);
+            
+        case 'ChEquipTypesBonuses':
+            return new ChEquipTypesBonuses(bonus.parameters, bonus.equipTypes, bonus.operator, bonus.reqCount, bonus.amount);
+            
+        case 'ChEquipTypesComboBonuses':
+            return new ChEquipTypesComboBonuses(bonus.parameters, bonus.comboData, bonus.amount);
+
+        case 'ChDebuffBonuses':
+            return new ChDebuffBonuses(bonus.parameters, bonus.amount);
+
+        case 'ChEquipIdsBonusTable':
+            return new ChEquipIdsBonusTable(bonus.parameters, bonus.equipIds, bonus.tableId, bonus.amount);
+
+        case 'ChShipWithoutBonusesBonuses':
+            return new ChShipWithoutBonusesBonuses(bonus.parameters, bonus.amount);
+            
+        case 'none':
+            return new ChBonuses(bonus.parameters);
+        
+        default:
+            console.debug(bonus);
+            throw 'unhandled bonus type';
+    }
 }
 
 /**
@@ -358,6 +394,7 @@ MAPDATA[97].convertRule = function (ruleToConvert) {
     }
 
     if (ruleToConvert.mapParts) rule.mapParts = ruleToConvert.mapParts;
+    if (ruleToConvert.not) rule.not = ruleToConvert.not;
 
     return rule;
 }
