@@ -40,35 +40,55 @@ MAPDATA[97] = {
     }
 }
 
-MAPDATA[97].initializeAllMaps = function () {
+MAPDATA[97].initializeAllMaps = function (callback) {
     
     if (!CHDATA.event) CHDATA.event = {};
-
+    
     if (localStorage.customEventDataToLoad) {
         CHDATA.customEventData = JSON.parse(localStorage.customEventDataToLoad);
         localStorage.removeItem('customEventDataToLoad');
     }
 
-    for (const key in CHDATA.customEventData.eventData) {
-        MAPDATA[97][key] = CHDATA.customEventData.eventData[key];
-    }
-
-    if (CHDATA.customEventData.eventData && CHDATA.customEventData.eventData.comps) {
-        CHDATA.event.comps = CHDATA.customEventData.eventData.comps;
-    }
-
-    if (CHDATA.customEventData.eventData && CHDATA.customEventData.eventData.assets) {
-        MAPDATA[97].initializeAssets(CHDATA.customEventData.eventData.assets);
-    }
-
-    CHDATA.maps = {};
-
-    for (const mapNum in MAPDATA[97].maps) {
-        CHDATA.maps[mapNum] = { world: 97 };
-    }
     
-    for (const mapNumber in CHDATA.maps) {
-        MAPDATA[97].initializeMap(MAPDATA[97].maps[mapNumber]);
+    const loadEventData = () => {
+        for (const key in CHDATA.customEventData.eventData) {
+            MAPDATA[97][key] = CHDATA.customEventData.eventData[key];
+        }
+    
+        if (CHDATA.customEventData.eventData && CHDATA.customEventData.eventData.comps) {
+            CHDATA.event.comps = CHDATA.customEventData.eventData.comps;
+        }
+    
+        if (CHDATA.customEventData.eventData && CHDATA.customEventData.eventData.assets) {
+            MAPDATA[97].initializeAssets(CHDATA.customEventData.eventData.assets);
+        }
+    
+        CHDATA.maps = {};
+    
+        for (const mapNum in MAPDATA[97].maps) {
+            CHDATA.maps[mapNum] = { world: 97 };
+        }
+        
+        for (const mapNumber in CHDATA.maps) {
+            MAPDATA[97].initializeMap(MAPDATA[97].maps[mapNumber]);
+        }
+
+        if (!!callback) callback();
+    }
+
+    if (CHDATA.eventURL) {
+        $.ajax(CHDATA.eventURL).done(function(data) {
+            if (!data) {
+                return alert("Error loading data");
+            }
+
+            let eventData = JSON.parse(data);
+
+            CHDATA.customEventData = eventData;
+            loadEventData();
+        });
+    } else {
+        loadEventData();
     }
 }
 
@@ -79,11 +99,24 @@ MAPDATA[97].initializeAssets = function(assets) {
 		EQDATA[id] = equipmentData;
     }
 
+    const addShip = (shipData) => {
+		const id = shipData.id;
+		SHIPDATA[id] = shipData;
+    }
+
     if (assets.equipments) {
         for (const equipment of assets.equipments) {
             addEquipment(equipment);
         }
     }
+
+    if (assets.ships) {
+        for (const ship of assets.ships) {
+            addShip(ship);
+        }
+    }
+
+    chFillDialogShip(1);
 }
 
 MAPDATA[97].initializeMap = function (mapData) {
@@ -885,23 +918,49 @@ MAPDATA[97].ChrRandomizeMap = function (eventNumber, mapNumber) {
 MAPDATA[97].chrLoadCustomEventData = function() {
     return new Promise((resolve) => {
         let file = document.getElementById("customEventFile").files[0];
-        if (!file) throw 'Event file is required';
-    
-        const reader = new FileReader();
-        reader.addEventListener('load', (event) => {
-            let eventData = JSON.parse(event.target.result);
-    
-            CHDATA.customEventData = eventData;
+        let url =  $("#customEventUrl").val()
 
-            MAPDATA[97].initializeAllMaps();
+        if (!file && !url) throw 'Event file is required';
+
+        if (file) {
+            const reader = new FileReader();
+            reader.addEventListener('load', (event) => {
+                let eventData = JSON.parse(event.target.result);
+        
+                CHDATA.eventURL = null;
+                CHDATA.customEventData = eventData;
     
-            // --- Refresh after load
-            //chSave = () => null;
-            //location.reload();
-            resolve();
-        });
+                MAPDATA[97].initializeAllMaps();
+        
+                // --- Refresh after load
+                //chSave = () => null;
+                //location.reload();
+                resolve();
+            });
+        
+            reader.readAsText(file);
+        }
+
+        if (url) {
+            $.ajax(url).done(function(data) {
+                if (!data) {
+                    return alert("Error loading data");
+                }
+
+                let eventData = JSON.parse(data);
     
-        reader.readAsText(file);
+                CHDATA.customEventData = eventData;
+
+                CHDATA.eventURL = null;
+
+                MAPDATA[97].initializeAllMaps();
+        
+                CHDATA.eventURL = url;
+                resolve();
+            });
+        }
+    
+        
     });
 	
 }

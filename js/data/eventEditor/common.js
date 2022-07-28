@@ -19,6 +19,7 @@ var COMMON = {
 		
 	
 		customEquipmentsStartId: 6000,
+		customShipsStartId: 10000,
 	},
 	global: {},
 	
@@ -65,16 +66,23 @@ var COMMON = {
 		return +id > 1500 && +id < 3000;
 	},
 	isShipIdArpeggio: function(id) {
-		return +id > 9000;
+		return +id > 9000 && +id < this.consts.customShipsStartId;
 	},
 	isShipIdCustom: function(id) {
-		return +id > 3000 && +id < 4000;
+		return +id >= this.consts.customShipsStartId;
 	},
 	isEquipIdAbyssal: function(id) {
 		return +id > 500;
 	},
 	isEquipIdCustom: function(id) {
 		return +id >= this.consts.customEquipmentsStartId;
+	},
+
+	getShipImagePath: function(id) {
+		if (!id) return 'assets/icons/Kblank.png';
+		if (!SHIPDATA[id]) return 'assets/icons/Kblank.png';
+		if (SHIPDATA[id].customImage) return SHIPDATA[id].customImage;
+		return 'assets/icons/' + SHIPDATA[id].image;
 	},
 
 	FLEET_TYPES: [
@@ -177,35 +185,35 @@ var COMMON = {
     },
 
 	SHIP_TYPES: [
-		{ key: 'DD', display: "DD" },
-		{ key: 'DE', display: "DE" },
+		{ key: 'DD', display: "DD", },
+		{ key: 'DE', display: "DE", },
 
-		{ key: 'CL', display: "CL" },
-		{ key: 'CLT', display: "CLT" },
+		{ key: 'CL', display: "CL", },
+		{ key: 'CLT', display: "CLT", },
 
-		{ key: 'CA', display: "CA" },
-		{ key: 'CAV', display: "CAV" },
+		{ key: 'CA', display: "CA", },
+		{ key: 'CAV', display: "CAV", },
 
-		{ key: 'aBB', display: "(F)BB(V)" },
-		{ key: 'BB', display: "BB" },
-		{ key: 'FBB', display: "FBB" },
-		{ key: 'BBV', display: "BBV" },
+		{ key: 'aBB', display: "(F)BB(V)", notReal: true },
+		{ key: 'BB', display: "BB", },
+		{ key: 'FBB', display: "FBB", },
+		{ key: 'BBV', display: "BBV", },
 
 
-		{ key: 'SS', display: "SS" },
-		{ key: 'SSV', display: "SSV" },
+		{ key: 'SS', display: "SS", },
+		{ key: 'SSV', display: "SSV", },
 
-		{ key: 'aCV', display: "CV(L/B)" },
-		{ key: 'CVL', display: "CVL" },
-		{ key: 'CV', display: "CV" },
-		{ key: 'CVB', display: "CVB" },
+		{ key: 'aCV', display: "CV(L/B)", notReal: true },
+		{ key: 'CVL', display: "CVL", },
+		{ key: 'CV', display: "CV", },
+		{ key: 'CVB', display: "CVB", },
 
-		{ key: 'AV', display: "AV" },
-		{ key: 'LHA', display: "LHA" },
-		{ key: 'AS', display: "AS" },
-		{ key: 'AR', display: "AR" },
-		{ key: 'AO', display: "AO" },
-		{ key: 'CT', display: "CT" },
+		{ key: 'AV', display: "AV", },
+		{ key: 'LHA', display: "LHA", },
+		{ key: 'AS', display: "AS", },
+		{ key: 'AR', display: "AR", },
+		{ key: 'AO', display: "AO", },
+		{ key: 'CT', display: "CT", },
 	],
 
 	DIFFICULTIES: [
@@ -273,12 +281,23 @@ var COMMON = {
 		return this.SHIP_CLASSES;
 	},
 	
-	getLastCustomId ()  {
+	getLastCustomEquipId ()  {
 		let last = this.consts.customEquipmentsStartId;
 
 		for (const eqKey in EQDATA) {
 			if (eqKey < last) continue;
 			last = eqKey;
+		}
+
+		return last;
+	},
+
+	getLastCustomShipId ()  {
+		let last = this.consts.customShipsStartId;
+
+		for (const shipKey in SHIPDATA) {
+			if (shipKey < last) continue;
+			last = shipKey;
 		}
 
 		return last;
@@ -290,5 +309,37 @@ var COMMON = {
 		EQDATA[id] = equipmentData;
 		COMMON.global.equipSelector.addEquipment(id)
 		COMMON.addEquipmentTranslation(id); 
+
 	},
+
+	addCustomShip(shipData) {
+
+		const id = shipData.id;
+		SHIPDATA[id] = shipData;
+		COMMON.global.shipSelector.addShip(id)
+		COMMON.addShipTranslation(id); 
+		COMMON.reloadShip(id);
+
+	},
+
+	reloadShip(shipId) {
+		COMMON.unsetNextShip(shipId);
+		COMMON.setNextShip(shipId);
+		COMMON.global.shipSelector.reloadList()
+	},
+	
+	setNextShip(idToSet) {
+
+		const previousShip = SHIPDATA[idToSet].prev;
+		if (!previousShip) return;
+		if (!SHIPDATA[previousShip]) return;
+		SHIPDATA[previousShip].next = idToSet;
+	},
+
+	unsetNextShip(idToUnset) {
+		for (const shipKey in SHIPDATA) {
+			const shipData = SHIPDATA[shipKey];
+			if (shipData.next == idToUnset) delete shipData.next;
+		}
+	}
 };
