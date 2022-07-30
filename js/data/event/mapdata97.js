@@ -116,7 +116,7 @@ MAPDATA[97].initializeAssets = function(assets) {
         }
     }
 
-    chFillDialogShip(1);
+    if (typeof(chFillDialogShip) != 'undefined') chFillDialogShip(1);
 }
 
 MAPDATA[97].initializeMap = function (mapData) {
@@ -446,6 +446,7 @@ MAPDATA[97].convertRule = function (ruleToConvert) {
 
     if (ruleToConvert.mapParts) rule.mapParts = ruleToConvert.mapParts;
     if (ruleToConvert.not) rule.not = ruleToConvert.not;
+    if (ruleToConvert.noCompass) ChDontShowCompass(rule);
 
     return rule;
 }
