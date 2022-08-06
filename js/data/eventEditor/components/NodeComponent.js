@@ -40,6 +40,32 @@ const NodeComponent = {
         routeUnlockItemList() {
             if (!this.mapData.hiddenRoutes) return [];
             return Object.keys(this.mapData.hiddenRoutes).map(route => ({ key: route, display: route}));
+        },
+
+        distance() {
+            let partCountForLBAS = 0;
+
+            for (const partKey in this.mapData.parts) {
+                const part = this.mapData.parts[partKey];
+                if (part.lbPart && part.lbPart > partCountForLBAS) partCountForLBAS = part.lbPart;
+            }
+
+            if (partCountForLBAS && !Array.isArray(this.nodeData.distance)) this.nodeData.distance = [this.nodeData.distance];
+            if (!partCountForLBAS && Array.isArray(this.nodeData.distance)) this.nodeData.distance = 0;
+
+            if (Array.isArray(this.nodeData.distance)) {
+                
+                for (let count = 1; count < partCountForLBAS; count++) {
+                    if (!this.nodeData.distance[count]) this.nodeData.distance[count] = 0;
+                }
+            }
+
+            return this.nodeData.distance;
+        },
+        
+
+        friendFleetItemList() {
+            return Object.keys(this.eventData.friendFleet).map(x => ({ key: x, display: x }));
         }
     },
 
@@ -61,6 +87,20 @@ const NodeComponent = {
 
         toggleDisplayNodeTypeInfo() {
             this.displayNodeTypeInfo = !this.displayNodeTypeInfo;
+        },
+
+        toggleFriendFleet() {
+            const enable = !this.nodeData.friendFleet;
+
+            if (enable) {
+                this.nodeData.friendFleet = [];
+                this.nodeData.friendFleetS = [];
+                this.nodeData.friendFleetSX = [];
+            } else {
+                delete this.nodeData.friendFleet;
+                delete this.nodeData.friendFleetS;
+                delete this.nodeData.friendFleetSX;
+            }
         }
     },
 
@@ -87,6 +127,23 @@ const NodeComponent = {
             <tr>
                 <td>Route unlock required</td>
                 <td><vcomboboxeditor :data-source="nodeData" :item-list="routeUnlockItemList" data-field="hidden" :can-be-null="true"/></td>
+            </tr>
+
+            <tr v-if="!Array.isArray(nodeData.distance)">
+                <td>Distance from air base</td>
+                <td><input v-model="nodeData.distance" type="number" /></td>
+            </tr>
+
+            <tr v-if="Array.isArray(distance)">
+                <td>Distance from air base (per phase)</td>
+                <td>
+                    <table>
+                        <tr v-for="(_, key) of distance" :key="key">
+                            <td>Part {{key + 1}}</td>
+                            <td><input v-model="distance[key]" type="number" /></td>
+                        </tr>
+                    </table>
+                </td>
             </tr>
 
             <tr>
@@ -152,6 +209,23 @@ const NodeComponent = {
             <vroutinglist :rule-list="nodeData.rules" :map-data="mapData"></vroutinglist>
         </uigroup>
 
+        <uigroup title="Friend Fleet">
+
+            <button v-if="!nodeData.friendFleet" @click="toggleFriendFleet">Enable Friend Fleet</button>
+            <button v-else @click="toggleFriendFleet">Disable Friend Fleet</button>
+
+            <div v-if="!!nodeData.friendFleet">
+                Normal friend fleet<br>
+                <velementlist v-if="!!nodeData.friendFleet" :data-source="nodeData.friendFleet" :item-list="friendFleetItemList" />
+
+                Strong friend fleet<br>
+                <velementlist v-if="!!nodeData.friendFleet" :data-source="nodeData.friendFleetS" :item-list="friendFleetItemList" />
+
+                Stronger friend fleet <br>
+                <velementlist v-if="!!nodeData.friendFleet" :data-source="nodeData.friendFleetSX" :item-list="friendFleetItemList" />
+            </div>
+        </uigroup>
+
         <uigroup title="End node">
             Is end node rule (if no rule, use the checkbox value)  
             <input v-model="nodeData.end" type="checkbox" />
@@ -166,7 +240,7 @@ const NodeComponent = {
             <button v-if="!!nodeData.bonuses" @click="delete nodeData.bonuses">Disable bonuses</button> 
             <button v-else @click="nodeData.bonuses = []">Handle bonuses</button>
 
-            <vbonuslist v-if="!!nodeData.bonuses" :bonus-list="nodeData.bonuses" :map-data="mapData" />
+            <vbonuslist v-if="!!nodeData.bonuses" :bonus-list="nodeData.bonuses" :map-data="mapData" :event-data="eventData" />
         </uigroup>
     </div>
     

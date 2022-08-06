@@ -70,6 +70,18 @@ MAPDATA[97].initializeAllMaps = function (callback) {
         }
         
         for (const mapNumber in CHDATA.maps) {
+
+            if (CHDATA && CHDATA.event && CHDATA.event.maps && !CHDATA.event.maps[mapNumber]) {
+                // --- new map detected !
+                CHDATA.event.maps[mapNumber] = { visited:[], hp:null };
+                
+                if (CHDATA.config.unlockAll) {                    
+                    for (let n=1; n<100; n++) {
+                        if (!MAPDATA[EVENTNUM].maps[n]) { CHDATA.event.unlocked = n-1; break; }
+                    }
+                }
+            }
+
             MAPDATA[97].initializeMap(MAPDATA[97].maps[mapNumber]);
         }
 
@@ -82,7 +94,7 @@ MAPDATA[97].initializeAllMaps = function (callback) {
                 return alert("Error loading data");
             }
 
-            let eventData = JSON.parse(data);
+            let eventData = typeof(data) == "string" ? JSON.parse(data) : data;
 
             CHDATA.customEventData = eventData;
             loadEventData();
@@ -102,6 +114,18 @@ MAPDATA[97].initializeAssets = function(assets) {
     const addShip = (shipData) => {
 		const id = shipData.id;
 		SHIPDATA[id] = shipData;
+        
+        if (typeof(VOICES) != "undefined") {
+
+            const voiceLines = ["start","attack","nbattack","damage1","damage2","damage3","sunk"];
+
+            for (const voiceLine of voiceLines) {
+                if (shipData["voice_"+voiceLine]) {
+                    if (!VOICES[shipData.id]) VOICES[shipData.id] = {};
+                    VOICES[shipData.id][voiceLine] = shipData["voice_"+voiceLine];
+                }
+            }
+        }
     }
 
     if (assets.equipments) {
@@ -298,7 +322,7 @@ MAPDATA[97].loadBonusesFromChData = function (nodeData) {
 MAPDATA[97].convertBonus = function(bonus) {
     switch (bonus.bonusType) {
         case 'ChShipIdsBonuses':
-            return new ChShipIdsBonuses(bonus.parameters, bonus.shipIds.map(x => parseInt(x)), bonus.amount);
+            return new ChShipIdsBonuses(bonus.parameters, Array.isArray(bonus.shipIds) ? bonus.shipIds.map(x => parseInt(x)) : bonus.shipIds, bonus.amount);
 
         case 'ChShipTypeBonuses':
             return new ChShipTypeBonuses(bonus.parameters, bonus.shipTypes, bonus.amount);
@@ -307,7 +331,7 @@ MAPDATA[97].convertBonus = function(bonus) {
             return new ChWholeFleetBonuses(bonus.parameters, bonus.amount);
             
         case 'ChEquipIdsBonuses':
-            return new ChEquipIdsBonuses(bonus.parameters, bonus.equipIds, bonus.operator, bonus.reqCount, bonus.amount);
+            return new ChEquipIdsBonuses(bonus.parameters, bonus.equipIds.map(x => parseInt(x)), bonus.operator, bonus.reqCount, bonus.amount);
             
         case 'ChEquipTypesBonuses':
             return new ChEquipTypesBonuses(bonus.parameters, bonus.equipTypes, bonus.operator, bonus.reqCount, bonus.amount);
@@ -925,8 +949,8 @@ MAPDATA[97].chrLoadCustomEventData = function() {
 
         if (file) {
             const reader = new FileReader();
-            reader.addEventListener('load', (event) => {
-                let eventData = JSON.parse(event.target.result);
+            reader.addEventListener('load', (event) => {                
+                let eventData = typeof(event.target.result) == "string" ? JSON.parse(event.target.result) : event.target.result;
         
                 CHDATA.eventURL = null;
                 CHDATA.customEventData = eventData;
@@ -948,7 +972,7 @@ MAPDATA[97].chrLoadCustomEventData = function() {
                     return alert("Error loading data");
                 }
 
-                let eventData = JSON.parse(data);
+                let eventData = typeof(data) == "string" ? JSON.parse(data) : data;
     
                 CHDATA.customEventData = eventData;
 
