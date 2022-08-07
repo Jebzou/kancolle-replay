@@ -2328,7 +2328,7 @@ function endMap() {
 					}
 				}
 			}
-		} else if (CHDATA.event.unlocked == MAPNUM || (CHDATA.config.unlockAll && !CHDATA.event.maps[MAPNUM].clear)) {
+		} else if ((CHDATA.event.unlocked == MAPNUM || CHDATA.config.unlockAll) && !CHDATA.event.maps[MAPNUM].clear) {
 			if (CHDATA.config.unlockAll) CHDATA.event.maps[MAPNUM].clear = 1;
 			else increaseNumberOfMapCleared();
 			cleared = true;
@@ -2365,12 +2365,32 @@ function endMap() {
 		$('#noclick').hide();
 		if (cleared) {
 			var reward = MAPDATA[WORLD].maps[MAPNUM].reward;
+			const rewardsToGive = {
+				ships: [],
+				items: []
+			};
+
 			if (reward) {
 				if (reward[3]) reward = reward[CHDATA.event.maps[MAPNUM].diff];
 				if (reward.firstOnly || reward.limit) reward = chRestrictReward(reward);
-				chAddReward(reward);
-				chShowReward(reward);
+
+				if (reward.ships) rewardsToGive.ships.push(...reward.ships);
+				if (reward.items) rewardsToGive.items.push(...reward.items);
+
 			}
+
+			var reward = MAPDATA[WORLD].maps[MAPNUM].rewardPerDiff;
+			if (reward && reward[CHDATA.event.maps[MAPNUM].diff]) {
+				reward = reward[CHDATA.event.maps[MAPNUM].diff];
+
+				if (reward.firstOnly || reward.limit) reward = chRestrictReward(reward);
+				
+				if (reward.ships) rewardsToGive.ships.push(...reward.ships);
+				if (reward.items) rewardsToGive.items.push(...reward.items);
+			}
+
+			chAddReward(rewardsToGive);
+			chShowReward(rewardsToGive);
 		}
 		
 		for (var mapnum in MAPDATA[WORLD].maps) {
@@ -2725,7 +2745,8 @@ function showResults() {
 	
 	var cleared = CHDATA.event.unlocked == MAPNUM
 		&& CHDATA.event.maps[MAPNUM].hp <= 0
-		&& (!MAPDATA[WORLD].maps[MAPNUM].parts || !MAPDATA[WORLD].maps[MAPNUM].parts[CHDATA.event.maps[MAPNUM].part+1]);
+		&& (!MAPDATA[WORLD].maps[MAPNUM].parts || !MAPDATA[WORLD].maps[MAPNUM].parts[CHDATA.event.maps[MAPNUM].part+1])
+		&& !CHDATA.event.maps[MAPNUM].clear;
 	var rlaurel;
 	addTimeout(function() {
 		rlaurel = getFromPool('resultlaurel','assets/maps/resultlaurel.png');
