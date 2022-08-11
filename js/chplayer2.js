@@ -240,6 +240,7 @@ stage.addChild(mapShutterTop); stage.addChild(mapShutterBottom);
 var map = new PIXI.Container();
 stage.addChild(map);
 var mapnodes = {};
+const mapNodeLetters = {};
 
 var mapAirBase = PIXI.Sprite.fromImage('assets/maps/airbase.png');
 mapAirBase.pivot.set(13);
@@ -470,6 +471,11 @@ function chResetMapSpritePos() {
 	bcompass.position.set(35,445);
 	map.alpha = mapship.alpha = bcompass.alpha = bneedle.alpha = bottombar.alpha = mapAirBase.alpha = 1;
 	for (var letter in mapnodes) mapnodes[letter].alpha = 1;
+	for (const lettr in mapNodeLetters) {
+		for (const letterSprite of mapNodeLetters[lettr]) {
+			letterSprite.alpha = 1;
+		}
+	}
 	bneedle.pivot.set(14,101); bneedle.rotation = Math.PI/4;
 	bneedle.position.set(35,445);
 	mapship.pivot.set(mapship.defpivotx,mapship.defpivoty);
@@ -478,13 +484,17 @@ function chResetMapSpritePos() {
 
 
 
-function addMapNode(letter,type) {
+function addMapNode(letter,type,forceWhite) {
 	var node = MAPDATA[WORLD].maps[MAPNUM].nodes[letter];
 	if (node.aironly && WORLD <= 27 && WORLD > 20) return; //already drawn on Summer 2014 map
 	var hidden = node.hidden && (!CHDATA.event.maps[MAPNUM].routes || CHDATA.event.maps[MAPNUM].routes.indexOf(node.hidden) == -1);
 	if (hidden) return;
 	var nodeG = null;
-	if (node.aironly) {
+	if (forceWhite) {
+		nodeG = PIXI.Sprite.fromImage('assets/maps/nodeW.png');
+		nodeG.pivot.set(10,10);
+	}
+	else if (node.aironly) {
 		if (CHDATA.event.maps[MAPNUM].visited.indexOf(letter) == -1) {
 			nodeG = PIXI.Sprite.fromImage('assets/maps/nodeW.png');
 			nodeG.pivot.set(10,10);
@@ -548,6 +558,37 @@ function addMapNode(letter,type) {
 	if (mapnodes[letter]) stage.removeChild(mapnodes[letter]);
 	mapnodes[letter] = nodeG;
 	stage.addChildAt(nodeG,stage.getChildIndex(mapship));
+
+	// --- Remove node letters 
+	if (mapNodeLetters[letter])
+	{
+		while (mapNodeLetters[letter].length)
+		{
+			const letterSprite = mapNodeLetters[letter].pop();
+			stage.removeChild(letterSprite);
+		}
+	}
+
+	// --- Add node letters
+	if (node.letterOffsetX !== undefined && node.letterOffsetY !== undefined  && node.letterOffsetX !== null && node.letterOffsetY !== null) {		
+		var offset = -10;	
+		mapNodeLetters[letter] = [];
+
+		for (const char of letter) {
+			if (/[A-Z0-9]/g.test(char.toUpperCase())) {
+				const path = "assets/maps/letters/"+ char.toUpperCase() +".png";
+
+				const letterSprite = PIXI.Sprite.fromImage(path);
+				letterSprite.pivot.set(offset + node.letterOffsetX, -10 + node.letterOffsetY);
+				letterSprite.position.set(node.x+MAPOFFX,node.y+MAPOFFY);
+				offset -= 10;
+				stage.addChild(letterSprite);
+				mapNodeLetters[letter].push(letterSprite);
+				stage.addChildAt(letterSprite,stage.getChildIndex(nodeG));
+			}
+		}
+	}
+
 	console.log(stage.getChildIndex(map));
 }
 
@@ -587,7 +628,8 @@ function mapMoveShip(ship,x,y) {
 
 var FORMSELECTED;
 function mapBattleNode(ship,letter) {
-	if (!mapnodes[letter]) addMapNode(letter);
+	if (mapnodes[letter]) stage.removeChild(mapnodes[letter]);
+	addMapNode(letter);
 	let node = MAPDATA[WORLD].maps[MAPNUM].nodes[letter];
 	if ((node.aironly || node.raid || node.night2 || node.nightToDay2 || node.ambush) && (WORLD > 27 || WORLD <= 20)) addMapNode(letter);
 
@@ -655,6 +697,11 @@ function mapBattleNode(ship,letter) {
 				bcompass.rotation -= .05;
 				bottombar.y += 2;
 				for (var lettr in mapnodes) mapnodes[lettr].alpha -= .025;
+				for (const lettr in mapNodeLetters) {
+					for (const letterSprite of mapNodeLetters[lettr]) {
+						letterSprite.alpha -= .025;
+					}
+				}
 				return (map.alpha <= 0);
 			},[]]);
 			SM.fadeBGM();
@@ -1171,6 +1218,14 @@ function chLoadMap(mapnum) {
 
 	for (var letter in mapnodes) { stage.removeChild(mapnodes[letter]); }
 	mapnodes = {};
+
+	for (const letter in mapNodeLetters) {
+		for (const letterSprite of mapNodeLetters[letter]) {
+			stage.removeChild(letterSprite);
+		}
+		delete mapNodeLetters[letter];
+	}
+
 	for (var i=0; i<CHDATA.event.maps[mapnum].visited.length; i++) {
 		var letter = CHDATA.event.maps[mapnum].visited[i];
 		if (letter == 'Start') continue;
@@ -1183,6 +1238,14 @@ function chLoadMap(mapnum) {
 			if (node.replacedBy && CHDATA.event.maps[MAPNUM].routes.indexOf(MAPDATA[WORLD].maps[MAPNUM].nodes[node.replacedBy].hidden) != -1) continue;
 			if ((node.aironly||node.raid||node.night2||node.nightToDay2||node.ambush) && CHDATA.event.maps[mapnum].visited.indexOf(letter) == -1) addMapNode(letter);
 		}
+	}
+
+	for (var letter in MAPDATA[WORLD].maps[MAPNUM].nodes) {
+		var node = MAPDATA[WORLD].maps[MAPNUM].nodes[letter];
+		if (node.replacedBy && CHDATA.event.maps[MAPNUM].routes.indexOf(MAPDATA[WORLD].maps[MAPNUM].nodes[node.replacedBy].hidden) != -1) continue;
+		if (node.letterOffsetX === undefined && node.letterOffsetY === undefined) continue;
+		if (node.letterOffsetX === null && node.letterOffsetY === null) continue;
+		if (CHDATA.event.maps[mapnum].visited.indexOf(letter) == -1) addMapNode(letter, null, true);
 	}
 	
 	mapAirBase.visible = false;
@@ -2466,6 +2529,17 @@ function showRouteUnlock(route,routeId) {
 			map.addChild(spr);
 			sprs.push(spr);
 		}
+		
+		if (node.replacedBy && MAPDATA[WORLD].maps[MAPNUM].nodes[node.replacedBy].hidden != routeId) continue;
+		if (node.letterOffsetX === undefined && node.letterOffsetY === undefined) continue;
+		if (node.letterOffsetX === null && node.letterOffsetY === null) continue;
+		var spr = PIXI.Sprite.fromImage('assets/maps/nodeW.png');
+		spr.position.set(node.x,node.y);
+		spr.alpha = 0;
+		spr.pivot.set(10);
+		map.addChild(spr);
+		sprs.push(spr);
+			
 	}
 	updates.push([function() {
 		var done = false;
@@ -3527,6 +3601,11 @@ function mapEnemyRaid() {
 			bcompass.rotation -= .05;
 			bottombar.y += 2;
 			for (var lettr in mapnodes) mapnodes[lettr].alpha -= .025;
+			for (const lettr in mapNodeLetters) {
+				for (const letterSprite of mapNodeLetters[lettr]) {
+					letterSprite.alpha -= .025;
+				}
+			}
 			return (map.alpha <= 0);
 		},[]]);
 		SM.fadeBGM();

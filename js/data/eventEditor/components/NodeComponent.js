@@ -125,6 +125,18 @@ const NodeComponent = {
             </tr>
             
             <tr>
+                <td>Letter offset X</td>
+                <td><input v-model="nodeData.letterOffsetX" type="number" /></td>
+                <td><button @click="delete nodeData.letterOffsetX">Clear</button></td>
+            </tr>
+
+            <tr>
+                <td>Letter offset Y</td>
+                <td><input v-model="nodeData.letterOffsetY" type="number" /></td>
+                <td><button @click="delete nodeData.letterOffsetY">Clear</button></td>
+            </tr>
+            
+            <tr>
                 <td>Route unlock required</td>
                 <td><vcomboboxeditor :data-source="nodeData" :item-list="routeUnlockItemList" data-field="hidden" :can-be-null="true"/></td>
             </tr>
