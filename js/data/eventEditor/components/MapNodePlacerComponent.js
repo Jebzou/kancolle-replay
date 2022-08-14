@@ -237,6 +237,7 @@ function MapNode() {
 	}
 	
 	this._getImg = function(nodeData) {
+		if (nodeData.start) return 'nodeStart';
 		if (nodeData.dropoff) return 'anchor';
 		if (nodeData.type == COMMON.NODE_TYPES.RESOURCE_GAIN_NODE.type) return 'resource';
 		if (nodeData.type == COMMON.NODE_TYPES.EMPTY_NODE.type) return 'empty';
@@ -258,31 +259,25 @@ function MapPath() {
 	this.nodePlacer = null;
 	this.name = null;
 	this.graphic = new PIXI.Container();
-	//this.gGlow = SpritePool.get('assets/maps/nodeGlow.png');
 	this.gPath = null;
-	//this.hitbox = new PIXI.Graphics();
 	this.hovered = false;
 
-	//this.graphic.addChild(this.hitbox);
-	//this.graphic.addChild(this.gGlow);
-	//this.gGlow.pivot.set(28);
-	//this.gGlow.visible = false;
-	//this.hitbox.beginFill(0);
-	//this.hitbox.drawCircle(15,15,15);
-	//this.hitbox.pivot.set(15);
-	//this.hitbox.alpha = 0;
-	//this.hitbox.interactive = this.hitbox.buttonMode = true;
-	//this.hitbox.click = function() {
-	//	this.nodePlacer.layerNodes.removeChild(this.graphic);
-	//	this.nodePlacer.layerNodes.addChild(this.graphic);
-	//	this.nodePlacer.component.clickedNode(this.name);
-	//}.bind(this);
-	//this.hitbox.mouseover = function() {
-	//	this.hovered = true;
-	//}.bind(this);
-	//this.hitbox.mouseout = function() {
-	//	this.hovered = false;
-	//}.bind(this);
+	this.hitbox = new PIXI.Graphics();
+	this.hitbox.beginFill(0);
+	this.hitbox.drawCircle(15,15,15);
+	this.hitbox.pivot.set(15);
+	this.hitbox.alpha = 0.35;
+	this.hitbox.interactive = this.hitbox.buttonMode = true;
+	this.hitbox.click = function() {
+		this.nodePlacer.component.clickedPath(this.name);
+	}.bind(this);
+	this.hitbox.mouseover = function() {
+		this.hovered = true;
+	}.bind(this);
+	this.hitbox.mouseout = function() {
+		this.hovered = false;
+	}.bind(this);
+	this.graphic.addChild(this.hitbox);
 
 	this.paths = [];
 	
@@ -300,67 +295,48 @@ function MapPath() {
 	
 	this.update = function() {
 
-		let pathData = this.nodePlacer.component.mapData.paths[this.name];
-		let nodeA = this.nodePlacer.component.mapData.nodes[pathData.nodeA];
-		let nodeB = this.nodePlacer.component.mapData.nodes[pathData.nodeB];
 
+		let pathData = this.nodePlacer.component.mapData.paths[this.name];
+		let nodeA = pathData.pointA;
+		let nodeB = pathData.pointB;
+		
 		// remove
 		while (this.paths.length) {
 			const rectangleToDelete = this.paths.pop();
 			this.graphic.removeChild(rectangleToDelete);
 		}
-
-		// create
-		const rectangle = new PIXI.Graphics();
-
-		rectangle.lineStyle(3, this.hovered ? 0x000000 : 0xcbcde9, 0.75);
-
-		const a = nodeA.x - nodeB.x;
-		const b = nodeA.y - nodeB.y;
-		const h = Math.sqrt(Math.pow(Math.abs(a), 2) + Math.pow(Math.abs(b), 2));
-		var timesRequired = (h / 15);
-		const aStep = (a / timesRequired) * -1;
-		const bStep = (b / timesRequired) * -1;
-		const aSpaceStep = (a / (timesRequired) * .25) * -1;
-		const bSpaceStep = (b / (timesRequired) * .25) * -1;
-		timesRequired *= 0.75;
-
-		var aOffSet = nodeA.x + (aStep);
-		var bOffset = nodeA.y + (bStep);
 		
-		rectangle.moveTo(aOffSet, bOffset);
 
-		var security = 0;
-		while (Math.sqrt(Math.pow(Math.abs(nodeA.x - aOffSet), 2) + Math.pow(Math.abs(nodeA.y - bOffset), 2)) < h) {
+		const gLine = new PIXI.Graphics();
+		const line = new PIXI.DashLine(gLine, {
+			dashes: [20, 0, 20, 10],
+			width: 4,
+			color: this.hovered ? 0x66ffff : 0xcbcde9,
+			alpha: 1,
 
-			rectangle.lineTo(aOffSet, bOffset);
-
-			aOffSet += aSpaceStep;
-			bOffset += bSpaceStep;
-
-			rectangle.moveTo(aOffSet, bOffset);
-
-			aOffSet += aStep;
-			bOffset += bStep;
-
-			security++;
-			if (security > 1000) break;
-		}
-
-		rectangle.interactive = rectangle.buttonMode = true;
-		rectangle.click = function() {
-			//this.nodePlacer.component.clickedNode(this.name);
-		}.bind(this);
-		rectangle.mouseover = function() {
-			this.hovered = true;
-		}.bind(this);
-		rectangle.mouseout = function() {
-			this.hovered = false;
-		}.bind(this);
-
-		this.graphic.addChild(rectangle);
-		this.paths.push(rectangle);
+		})
 		
+		this.graphic.addChild(gLine);
+		this.paths.push(gLine);
+
+		var offsetStart = 10;
+		if (pathData.nodeAOffset) offsetStart = pathData.nodeAOffset;
+
+		var offsetEnd = 10;
+		if (pathData.nodeBOffset) offsetEnd = pathData.nodeBOffset;
+
+		line.moveTo(nodeA.x,nodeA.y);
+		line.lineTo(nodeB.x,nodeB.y, true, offsetStart, offsetEnd, pathData.endB || pathData.endA);
+
+		this.hitbox.position.x = nodeA.x + ((nodeB.x - nodeA.x)) / 2;
+		this.hitbox.position.y = nodeA.y + ((nodeB.y - nodeA.y)) / 2;
+
+		let hiddenA = pathData.hiddenA;
+		let hiddenB = pathData.hiddenB;
+
+		const hidden = (hiddenA && !this.nodePlacer.component.routeToggles[hiddenA]) || (hiddenB && !this.nodePlacer.component.routeToggles[hiddenB]);
+		gLine.alpha = hidden ? 0 : 1	
+		this.hitbox.alpha = hidden ? 0 : 0.35				
 	}
 }
 
@@ -377,6 +353,7 @@ MapNode.NODE_TYPES = {
 	empty: { img: 'assets/maps/nodeB.png', pivotX: 10, pivotY: 10 },
 	maelstrom: { img: 'assets/maps/nodeP.png', pivotX: 10, pivotY: 10 },
 	anchor: { img: 'assets/maps/nodeAnchor.png', pivotX: 25, pivotY: 25 },
+	nodeStart: { img: 'assets/maps/nodeStart.png', pivotX: 30, pivotY: 30 },
 };
 
 let ObjectPool = {
@@ -422,6 +399,7 @@ window.MapNodePlacerComponent = {
 		autoNextNode: true,
 		addLetter: false,
 		routeToggles: {},
+		currentPath: null
 	}),
 	
 	mounted() {
@@ -474,7 +452,12 @@ window.MapNodePlacerComponent = {
 		},
 		
 		clickedNode(name) {
+			this.currentPath = null;
 			this.$emit('node-changed',name);
+		},
+
+		clickedPath(name) {
+			this.currentPath = name;
 		},
 		
 		clickedPlaceButton() {
@@ -489,22 +472,48 @@ window.MapNodePlacerComponent = {
 		},
 		
 		keydownNodePlacer() {
-			let nodeData = this.mapData.nodes[this.currentNode];
-			if (!nodeData) return;
-			switch (event.key) {
-				case 'w': case 'W': case 'ArrowUp':
-					nodeData.y--;
-					break;
-				case 's': case 'S': case 'ArrowDown':
-					nodeData.y++;
-					break;
-				case 'a': case 'A': case 'ArrowLeft':
-					nodeData.x--;
-					break;
-				case 'd': case 'D': case 'ArrowRight':
-					nodeData.x++;
-					break;
+			if (this.currentPath) {
+				let pathData = this.mapData.paths[this.currentPath];
+				if (!pathData) return;
+				switch (event.key) {
+					case 'w': case 'W': case 'ArrowUp':
+						pathData.pointA.y--;
+						pathData.pointB.y--;
+						break;
+					case 's': case 'S': case 'ArrowDown':
+						pathData.pointA.y++;
+						pathData.pointB.y++;
+						break;
+					case 'a': case 'A': case 'ArrowLeft':
+						pathData.pointA.x--;
+						pathData.pointB.x--;
+						break;
+					case 'd': case 'D': case 'ArrowRight':
+						pathData.pointA.x++;
+						pathData.pointB.x++;
+						break;
+				}
 			}
+			else if (this.currentNode) {
+				let nodeData = this.mapData.nodes[this.currentNode];
+				if (!nodeData) return;
+				switch (event.key) {
+					case 'w': case 'W': case 'ArrowUp':
+						nodeData.y--;
+						break;
+					case 's': case 'S': case 'ArrowDown':
+						nodeData.y++;
+						break;
+					case 'a': case 'A': case 'ArrowLeft':
+						nodeData.x--;
+						break;
+					case 'd': case 'D': case 'ArrowRight':
+						nodeData.x++;
+						break;
+				}
+			}
+
+			
 		},
 		
 		updateRouteToggles() {
@@ -522,11 +531,9 @@ window.MapNodePlacerComponent = {
 		},
 
 		generatePaths() {
-			return;
-			this.mapData.paths.push({
-				nodeA: "K",
-				nodeB: "Y",
-			});
+			const pathGeneration = new PathGeneration(this.mapData);
+			pathGeneration.generatePaths();
+			this.mapData.paths = pathGeneration.pathsGenerated;
 		}
 	},
 	
@@ -575,8 +582,167 @@ window.MapNodePlacerComponent = {
 		</div>
 		<div class="note" v-show="currentNode">WASD/Arrows = Adjust node position</div>
 		<div class="tabberButton" @click="generatePaths()">Generate paths</div>
+
+		<div v-if="currentPath"> 
+			Start X : <input v-model="this.mapData.paths[this.currentPath].pointA.x" type="number" /><br>
+			Start Y : <input v-model="this.mapData.paths[this.currentPath].pointA.y" type="number" /><br>
+
+			End X : <input v-model="this.mapData.paths[this.currentPath].pointB.x" type="number" /><br>
+			End Y : <input v-model="this.mapData.paths[this.currentPath].pointB.y" type="number" /><br>
+
+			Part (node A) : <input v-model="this.mapData.paths[this.currentPath].hiddenA" type="number" /><br>
+			Part (node B) : <input v-model="this.mapData.paths[this.currentPath].hiddenB" type="number" /><br>
+
+		</div>
 	</div>
 	`
+}
+
+function PathGeneration(map) {
+
+	this.pathsGenerated = [];
+	
+    this.countSecurity = 0;
+    this.checkLoop = () => {
+        this.countSecurity++;
+        if (this.countSecurity > 99999) {
+            throw 'loop detected';
+        }
+    }
+
+	this.constructPathOfPath = (path, rule, node) => {
+		let nextNode = rule.conditionCheckedNode || rule.fixedNode;
+
+		if (rule.type == 'routeSelect')  {
+
+			for (const selectNode of rule.routeSelect) {
+				this.generateOnePath(selectNode, node);
+			}
+
+			return;
+		}
+
+		if (rule.type == 'random')  {
+
+			for (const randomNode of Object.keys(rule.randomNodes)) {
+				if (randomNode) this.generateOnePath(randomNode, node);
+			}
+
+			return;
+		}
+
+		if (rule.type == 'ifthenelse' || rule.type == 'LOSCheckIfRuleChecked')  {
+
+			this.constructPathOfPath(path, rule.ifthenelse.then, node);
+
+			if (rule.ifthenelse.else) {
+				this.constructPathOfPath(path, rule.ifthenelse.else, node);
+			}
+
+			return;
+		}
+
+		if (!nextNode) {
+			console.debug(rule);
+			throw 'Error reading rule of node ' + node;
+		}
+
+		this.generateOnePath(nextNode, node);
+
+		nextNode = rule.conditionFailedNode;
+
+		if (nextNode) {
+			this.generateOnePath(nextNode, node);
+		}
+	}
+
+	this.constructPaths = (node) => {
+
+		this.checkLoop();
+
+		/**
+		 * @type {{ rules: ChRule[] }}
+		 */
+		let nodeData = map.nodes[node];
+
+		/**
+		 * 
+		 */
+		let path = {};
+
+		path.node = node;
+		path.nodeData = nodeData;
+
+		// --- Init node data
+		if (!path.nodeData.rules) { 
+			path.pathEnd = true;
+			return path; 
+		}
+
+		for (const rule of path.nodeData.rules) {
+			this.constructPathOfPath(path, rule, node);
+		}
+	}
+
+	this.generatePaths = () => {
+
+        for (const node in map.nodes) {
+            this.constructPaths(node);
+        }
+    }
+
+	this.nodeOff = 0;
+	this.generateOnePath = (nodeStart, nodeEnd) => {
+
+		const nodeStartData = map.nodes[nodeStart];
+		const nodeEndData = map.nodes[nodeEnd];
+
+		var exists = false;
+
+		for (const pathMade of this.pathsGenerated) {
+			if (pathMade.nodeA == nodeStart && pathMade.nodeB == nodeEnd) exists = true;
+			if (pathMade.nodeB == nodeStart && pathMade.nodeA == nodeEnd) exists = true;
+		}
+
+		if (!exists) {
+			const pointA = {
+				x: nodeStartData.x,
+				y: nodeStartData.y,
+			};
+
+			const pointB = {
+				x: nodeEndData.x,
+				y: nodeEndData.y,
+			};
+			
+			getOffset = function(nodeData) {
+				if (nodeData.start) return 30;
+				if (nodeData.dropoff) return 25;
+
+				if (nodeData.type == COMMON.NODE_TYPES.NORMAL_BATTLE_NODE.type) {
+					if (nodeData.raid) return 20;
+					if (nodeData.boss) return 20;
+				}
+				return 10;
+			}
+
+			this.pathsGenerated.push({
+				nodeA: nodeStart,
+				nodeB: nodeEnd,
+				pointA: pointA,
+				pointB: pointB,
+				hiddenA: nodeStartData.hidden,
+				hiddenB: nodeEndData.hidden,
+				endA: nodeStartData.end || (nodeStartData.endRules && nodeStartData.endRules.length),
+				endB: false, //nodeEndData.end || (nodeEndData.endRules && nodeEndData.endRules.length),
+				startA: nodeStart.includes("Start"),
+				startB: nodeEnd.includes("Start"),
+				nodeAOffset: getOffset(nodeStartData),
+				nodeBOffset: getOffset(nodeEndData),
+			});
+		}
+
+	}
 }
 
 })();

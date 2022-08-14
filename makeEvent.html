@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="css/EquipEditorComponent.css">
     <link rel="stylesheet" href="css/MapEditorComponent.css">
     <script src="js/pixi.min.js"></script>
+    <script src="js/dashedLines.js"></script>
     <script src="js/bonuses.js"></script>
     <script src="js/routing.js"></script>
     <script src="js/routingSpecial.js"></script>
@@ -350,6 +351,10 @@
 
                     </uigroup>
 
+                    <uigroup title="Debuff">
+                        <vdebuffeditor :map-data="mapData" :map-number="mapNumber" />
+                    </uigroup>
+
                     <uigroup title="Hidden routes">
                         <vhiddenrouteeditor :map-data="mapData" :map-number="mapNumber" gimmick-type="mapPart" />
                     </uigroup>
@@ -624,6 +629,7 @@
 <script src="js/data/eventEditor/components/HiddenRoutesEditorComponent.js"></script>
 <script src="js/data/eventEditor/components/Gimmick/GimmickEditorComponent.js"></script>
 <script src="js/data/eventEditor/components/Gimmick/GimmickListComponent.js"></script>
+<script src="js/data/eventEditor/components/DebuffEditorComponent.js"></script>
 <script src="js/data/eventEditor/components/EnemyComps/EnemyCompListEditorComponent.js"></script>
 <script src="js/data/eventEditor/components/EnemyComps/EnemyCompListPerDiffEditorComponent.js"></script>
 <script src="js/data/eventEditor/components/EnemyComps/NodeEnemyCompEditorComponent.js"></script>
