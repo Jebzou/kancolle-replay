@@ -56,6 +56,8 @@ class ChrMap  {
                     case 3: img = 'assets/maps/nodeB.png'; break;
                     case 4: img = 'assets/maps/nodeP.png'; break;
                 }
+
+                if (!img) return;
                 nodeG = PIXI.Sprite.fromImage(img);
                 nodeG.pivot.set(10,10);
             }
