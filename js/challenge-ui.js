@@ -1628,6 +1628,14 @@ function chDoStartChecksFleet(fleetnum,errors) {
 	let locksToCheck = null;
 
 	if (mdata.lockInfos) {
+
+		var mainFleet = chLoadFleet(CHDATA.fleets[1],1);
+		CHSHIPCOUNT = mainFleet[1];
+		var escort = chLoadFleet(CHDATA.fleets[2],2);
+		CHSHIPCOUNT.escort = escort[1];
+		CHSHIPCOUNT.speed = Math.min(CHSHIPCOUNT.speed,CHSHIPCOUNT.escort.speed);
+		chCombineShipCount();
+
 		// Complex locks
 		const lockInfos = mdata.lockInfos;
 

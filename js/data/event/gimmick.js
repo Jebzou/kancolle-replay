@@ -127,7 +127,7 @@ function ChGimmickList(type, mapPartNumber, mapNum, gimmickData, additionnalPara
             if (!CHDATA.event.maps[MAPNUM].routes) return;
             if (!CHDATA.event.maps[MAPNUM].routes.length) return;
 
-            if (CHDATA.event.maps[MAPNUM].routes.indexOf(additionnalParameters.routeUnlockRequired) == -1) return;
+            if (CHDATA.event.maps[MAPNUM].routes.indexOf(parseInt(additionnalParameters.routeUnlockRequired)) == -1) return;
         }
 
         if (mapPartNumber) {
@@ -414,7 +414,7 @@ function ChGimmick(parameters) {
             if (!CHDATA.event.maps[MAPNUM].routes) return 0;
             if (!CHDATA.event.maps[MAPNUM].routes.length) return 0;
 
-            if (CHDATA.event.maps[MAPNUM].routes.indexOf(this.routeUnlockRequired) == -1) return 0;
+            if (CHDATA.event.maps[MAPNUM].routes.indexOf(parseInt(this.routeUnlockRequired)) == -1) return 0;
         }
 
         if (parameters.fleetType) {
@@ -472,5 +472,5 @@ ChGimmick.IsUnlockDone = (routeUnlock) => {
     if (!CHDATA.event.maps[MAPNUM].routes) return false;
     if (!CHDATA.event.maps[MAPNUM].routes.length) return false;
 
-    return CHDATA.event.maps[MAPNUM].routes.indexOf(routeUnlock) != -1;
+    return CHDATA.event.maps[MAPNUM].routes.indexOf(parseInt(routeUnlock)) != -1;
 }

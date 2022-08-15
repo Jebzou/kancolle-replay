@@ -506,8 +506,15 @@ function addMapNode(letter,type,forceWhite) {
 	if (hidden) return;
 	var nodeG = null;
 	if (forceWhite) {
-		nodeG = PIXI.Sprite.fromImage('assets/maps/nodeW.png');
-		nodeG.pivot.set(10,10);
+		if (node.boss) {
+			nodeG = PIXI.Sprite.fromImage('assets/maps/nodeR.png');
+			nodeG.pivot.set(10,10);
+			nodeG.scale.x = 1.3;
+			nodeG.scale.y = 1.3;
+		} else {
+			nodeG = PIXI.Sprite.fromImage('assets/maps/nodeW.png');
+			nodeG.pivot.set(10,10);
+		}
 	}
 	else if (node.start) {
 		nodeG = PIXI.Sprite.fromImage('assets/maps/nodeStart.png');
