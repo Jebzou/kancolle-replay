@@ -64,7 +64,13 @@ const GimmickEditorComponent = {
             if (!gimmickType) return;
 
             for (const property in gimmickType.init) {
-                this.gimmickData[property] = gimmickType.init[property];
+                if (typeof(gimmickType.init[property]) == "object")
+                {
+                    this.gimmickData[property] = {};
+                    Object.assign(this.gimmickData[property], gimmickType.init[property]);
+                }
+                else 
+                    this.gimmickData[property] = gimmickType.init[property]
             }
         }
     },

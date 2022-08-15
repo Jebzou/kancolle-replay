@@ -187,7 +187,7 @@ function chMenuClickedNewFile() {
 	return true;
 }
 
-function chMenuSelectedEvent(eventnum) {
+function chMenuSelectedEvent(eventnum, eventCustomURL) {
 	EVENTNUM = eventnum;
 
 	$('#menucurbanner').attr('src',MAPDATA[EVENTNUM].bannerImg);
@@ -226,6 +226,12 @@ function chMenuSelectedEvent(eventnum) {
 	if (EVENTNUM == 97) {
 		$("#customEventFile").show();
 		$("#customEventUrl").show();
+
+		if (eventCustomURL) {
+			$("#customEventUrl").val(eventCustomURL);
+			$("#customEventUrl").attr('readonly', true);
+			$("#customEventFile").hide();
+		}
 	} else {
 		$("#customEventFile").hide();
 		$("#customEventUrl").hide();

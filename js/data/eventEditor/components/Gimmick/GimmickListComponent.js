@@ -18,7 +18,8 @@ const GimmickListComponent = {
 
     methods: {
         addGimick() {
-            this.gimmickList.gimmicks.push(new ChGimmick({}));
+            const gimmick = new ChGimmick({});
+            this.gimmickList.gimmicks.push(gimmick);
         },
 
         deleteGimmick(key) {

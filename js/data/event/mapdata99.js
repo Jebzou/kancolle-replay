@@ -577,7 +577,7 @@ function chrApplyBaseForm(abyssal) {
     // --- CVH II
     for (let mid = 2105; mid <= 2108; mid++) {
         VOICES[mid].attack = VOICES[mid].attackN;
-        VOICES[mid].damage = VOICES[mid].attackN;
+        VOICES[mid].damage = VOICES[mid].damageN;
     }
 }
 
