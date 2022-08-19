@@ -7905,7 +7905,10 @@
                   "bonusType": "ChEquipIdsBonuses",
                   "amount": 1.08,
                   "reqCount": 0,
-                  "equipIds": [],
+                  "equipIds": [
+                    283,
+                    400
+                  ],
                   "operator": ">"
                 },
                 {
