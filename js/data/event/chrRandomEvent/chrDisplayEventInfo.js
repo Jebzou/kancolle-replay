@@ -454,6 +454,7 @@ class ChrDisplayEventInfo {
             let imgEl = $(`<img>`);
     
             imgEl.attr("src", chGetShipImagePath(shipId));
+            imgEl.attr("title", SHIPDATA[shipId].name);
 
             column.append(imgEl);
 
