@@ -1484,6 +1484,8 @@ function mapPhase2(nextletter, rule) {
 
 	eventqueue.push([mapMoveShip,[mapship,nextnode.x+MAPOFFX,nextnode.y+MAPOFFY]]);
 	
+	eventqueue.push([turnPathBlue, [curletter, nextletter]])
+	
 	var enemyRaid = MAPDATA[WORLD].maps[MAPNUM].enemyRaid;
 	if (enemyRaid) {
 		var diff = CHDATA.event.maps[MAPNUM].diff;
@@ -1530,8 +1532,23 @@ function mapPhase2(nextletter, rule) {
 		default:
 			break;
 	}
+
 	
 	curletter = nextletter;
+}
+
+function turnPathBlue(curletter, nextletter) {
+	// turn path blue
+	if (MAPDATA[WORLD].maps[MAPNUM].paths) {
+		for (const pathIndex in MAPDATA[WORLD].maps[MAPNUM].paths) {
+			const path = MAPDATA[WORLD].maps[MAPNUM].paths[pathIndex];
+			 
+			if (path.nodeA == curletter && path.nodeB == nextletter) mapPaths[pathIndex].turnBlue();
+			if (path.nodeB == curletter && path.nodeA == nextletter) mapPaths[pathIndex].turnBlue();
+		}
+	}
+	
+	addTimeout(function() { ecomplete = true; }, 100);
 }
 
 function lbSelectPhase() {
@@ -2783,6 +2800,7 @@ function MapPath(pathData) {
 	this.graphic = new PIXI.Container();
 	this.gPath = null;
 	this.routesUnlocked = [];
+	this.isBlue = false;
 
 	this.paths = [];
 	
@@ -2797,6 +2815,11 @@ function MapPath(pathData) {
 
 	this.changeRoutes = function (routes) {
 		this.routesUnlocked = routes;
+		this.update();
+	}
+
+	this.turnBlue = function () {
+		this.isBlue = true;
 		this.update();
 	}
 	
@@ -2815,9 +2838,9 @@ function MapPath(pathData) {
 		const line = new PIXI.DashLine(gLine, {
 			dashes: [20, 0, 20, 10],
 			width: 4,
-			color: this.hovered ? 0x66ffff : 0xcbcde9,
+			color: this.hovered ? 0x66ffff : (this.isBlue ? 0x00fbff : 0xcbcde9),
 			alpha: 1,
-
+			arrowPicture: this.isBlue ? "assets/maps/arrowB.png" : "assets/maps/arrow.png"
 		})
 		
 		this.graphic.addChild(gLine);

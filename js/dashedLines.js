@@ -19,7 +19,8 @@ var dashLineOptionsDefault = {
     alpha: 1,
     scale: 1,
     useTexture: false,
-    alignment: 0.5
+    alignment: 0.5,
+    arrowPicture: "assets/maps/arrow.png"
 };
 var DashLine = /** @class */ (function () {
     /**
@@ -162,7 +163,7 @@ var DashLine = /** @class */ (function () {
                 if (endWithArrow && dashDone == 0 && !arrowDrawn) {
                     arrowDrawn = true;
                     // --- Draw end arrow
-                    const arrow = PIXI.Sprite.fromImage("assets/maps/arrow.png");
+                    const arrow = PIXI.Sprite.fromImage(this.options.arrowPicture);
                     this.graphics.addChild(arrow)
                     arrow.position.x = x0 + ((cos * dist) );
                     arrow.position.y = y0 + ((sin * dist) );
