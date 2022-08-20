@@ -19128,9 +19128,9 @@
                   "requiredFlagshipType": []
                 },
                 "bonusType": "ChShipTypeBonuses",
-                "amount": 1.15,
+                "amount": 1.09,
                 "bonusToApply": {
-                  "mod": 1.15
+                  "mod": 1.09
                 }
               },
               {
@@ -19163,9 +19163,9 @@
                   "requiredFlagshipType": []
                 },
                 "bonusType": "ChShipTypeBonuses",
-                "amount": 1.1,
+                "amount": 1.05,
                 "bonusToApply": {
-                  "mod": 1.1
+                  "mod": 1.05
                 }
               },
               {
