@@ -673,6 +673,11 @@ class ChrDisplayEventInfo {
 
         $("#mapInfoMapInfo").html(mapInfos);
 
+        // Locks
+        if (map.lockInfos) {
+            $("#mapInfoMapInfo").append(this.DisplayLockInfos(map, MAPDATA[this.GetCurrentWorld()]));
+        }
+
         // --- Historical routing
 
         /**
@@ -769,6 +774,97 @@ class ChrDisplayEventInfo {
             $("#mapInfoMapInfo").append(this.DisplayBonusInfos(map));
         }
     } 
+
+    DisplayLockInfos(mapData, eventData) {
+        const el = $("<div>").addClass("foldable-element");
+        el.append($(`<div class="mapInfoTitle foldable-element-title">Locks</div>`));
+        const lockInfoContent = $("<div>").addClass("mapInfoContent");
+        el.append(lockInfoContent);
+
+        const lockInfos = mapData.lockInfos;
+
+        // Difficulties
+        if (lockInfos.difficulties && lockInfos.difficulties.length) {
+            lockInfoContent.append(`Locks applies to ${lockInfos.difficulties.map(x => this.GetDiffText(x)).join(", ")}`);
+        }
+
+        // Tag given
+
+        // Per start
+        if (lockInfos.tagGiven.startNode && Object.values(lockInfos.tagGiven.startNode).length) {
+
+            const tagGivenPerStartEl = $("<div>");
+            lockInfoContent.append(tagGivenPerStartEl);
+            tagGivenPerStartEl.append(`Tag given per start node : `);
+            const tagGivenPerStartElList = $(`<ul>`);
+            tagGivenPerStartEl.append(tagGivenPerStartElList);
+
+            for (const start in lockInfos.tagGiven.startNode) {
+                const lock = lockInfos.tagGiven.startNode[start];
+
+                tagGivenPerStartElList.append(`<li>${start} : <img src="${chGetLockPicture(lock)}" /> ${lock}</li>`);
+            }
+
+        }
+
+        // Per fleet type
+        if (lockInfos.tagGiven.fleetType && Object.values(lockInfos.tagGiven.fleetType).length) {
+
+            const tagGivenPerStartEl = $("<div>");
+            lockInfoContent.append(tagGivenPerStartEl);
+            tagGivenPerStartEl.append(`Tag given per fleet type : `);
+            const tagGivenPerStartElList = $(`<ul>`);
+            tagGivenPerStartEl.append(tagGivenPerStartElList);
+
+            for (const fleetType in lockInfos.tagGiven.fleetType) {
+                const lock = lockInfos.tagGiven.fleetType[fleetType];
+
+                tagGivenPerStartElList.append(`<li>${ChrDisplayEventInfo.GetFleetTypeAsString(parseInt(fleetType))} : <img src="${chGetLockPicture(lock)}" /> ${lock}</li>`);
+            }
+
+        }
+
+        
+        // Tag allowed
+
+        // Per start
+        if (lockInfos.isTagAllowed.startNode && Object.values(lockInfos.isTagAllowed.startNode).length) {
+
+            const tagGivenPerStartEl = $("<div>");
+            lockInfoContent.append(tagGivenPerStartEl);
+            tagGivenPerStartEl.append(`Tag allowed per start node : `);
+            const tagGivenPerStartElList = $(`<ul>`);
+            tagGivenPerStartEl.append(tagGivenPerStartElList);
+
+            for (const start in lockInfos.isTagAllowed.startNode) {
+                const locks = lockInfos.isTagAllowed.startNode[start];
+
+                tagGivenPerStartElList.append(`<li>${start} : ${locks.map(lock => "<img src=\""+chGetLockPicture(lock)+ "\"/>" ). join('')}</li>`);
+            }
+
+        }
+        
+
+        // Per fleet type
+        if (lockInfos.isTagAllowed.fleetType && Object.values(lockInfos.isTagAllowed.fleetType).length) {
+
+            const tagGivenPerStartEl = $("<div>");
+            lockInfoContent.append(tagGivenPerStartEl);
+            tagGivenPerStartEl.append(`Tag allowed per fleet type : `);
+            const tagGivenPerStartElList = $(`<ul>`);
+            tagGivenPerStartEl.append(tagGivenPerStartElList);
+
+            for (const fleetType in lockInfos.isTagAllowed.fleetType) {
+                const locks = lockInfos.isTagAllowed.fleetType[fleetType];
+
+                tagGivenPerStartElList.append(`<li>${ChrDisplayEventInfo.GetFleetTypeAsString(parseInt(fleetType))}  : ${locks.map(lock => "<img src=\""+chGetLockPicture(lock)+ "\"/>" ). join('')}</li>`);
+            }
+
+        }
+
+
+        return el;
+    }
 
     /**
      * 
@@ -1377,4 +1473,20 @@ function chGetShipImagePath(id, damaged) {
 	
 	if (damaged && sData.imageDam) return sData.imageDam;
 	return 'assets/icons/' + sData.image;
+}
+
+function chGetLockPicture(lockId) {
+	if (WORLD == 97) {
+		const locks = MAPDATA[97].locksData;
+
+		if (!locks) return 'assets/maps/lock'+lockId+'.png';
+
+		const lock = Object.values(locks).find(lockData => lockData.name == lockId);
+
+		if (!lock || !lock.image) return 'assets/maps/lock'+lockId+'.png';
+		return lock.image;
+	} 	
+	
+	return 'assets/maps/lock'+lockId+'.png';
+	
 }
