@@ -267,6 +267,10 @@ const CustomShipComponent = {
                     <td><input v-model="shipData.voice_sunk"/></td>
                     <td><button class="play-bgm" @click="playVoice(shipData.voice_sunk)">Play</button></td>
                 </tr>
+                <tr>
+                    <td>Playable ?</td>
+                    <td><input v-model="shipData.playable" type="checkbox"/></td>
+                </tr>
             </table>
         </div>
     
