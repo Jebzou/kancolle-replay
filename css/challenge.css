@@ -700,3 +700,28 @@ input.chrshipfilter {
 		background-color: #525252;
 	}
 }
+
+/* Quest stuff */ 
+.quest-map {
+    margin: 5px;
+}
+
+.quest-map-title {
+    font-size: x-large;
+}
+
+.quest-element  {
+	background-color: #d0d0d0;
+    padding: 10px;
+    border-radius: 21px;
+}
+
+.quest-element-title {
+    font-size: larger;
+}
+
+@media (prefers-color-scheme: dark) {
+	.quest-element  {
+		background-color: #525252;
+	}
+}

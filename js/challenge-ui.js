@@ -1,3 +1,8 @@
+/**
+ * @type {{
+ * quests: QuestManager 
+ * }}
+ */
 var CHDATA = {};
 var FILE = 1;
 var EVENTNUM = 27;
@@ -289,6 +294,14 @@ function chClickedTab(tab) {
 	} else {
 		$('#chrSpacewrap').show();
 		chrFillArsenalTab();
+	}
+
+	if (id != 'tabQuests') {
+		$('#tabQuests').attr('value', 1);
+		$('#questSpaceWrap').hide();
+	} else {
+		$('#questSpaceWrap').show();
+		chrUpdateQuestTab();
 	}
 }
 

@@ -274,5 +274,9 @@ Vue.createApp({
 .component('vcustomshipeditor', CustomShipComponent)
 .component('vcustomshiplist', CustomShipListComponent)
 
+// --- Quests
+.component('vquestlist', QuestListComponent)
+.component('vquestdetail', QuestDetailComponent)
+
 .use(COMMON.i18n)
 .mount('#eventEditor');

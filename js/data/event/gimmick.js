@@ -1,6 +1,6 @@
 /**
  * 
- * @param {'debuff' | 'mapPart' | 'route'} type 
+ * @param {'debuff' | 'mapPart' | 'route' | 'quest'} type 
  * @param {ChGimmickParameters[]} gimmickData 
  * @param {{
  *  numberOfStepRequired: number

@@ -97,3 +97,9 @@ tr > button {
 .group-foldable {
     margin-bottom: 50px;
 }
+
+.quest-detail {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}

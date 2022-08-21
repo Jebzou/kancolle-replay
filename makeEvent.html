@@ -463,6 +463,10 @@
                         </div>
 
                     </uigroup>
+
+                    <uigroup title="Quests">
+                        <vquestlist :event-data="eventData" :map-data="mapData" :map-number="mapNumber" />
+                    </uigroup>
                 </div>
 
                 <div v-if="selectedTab('nodes')" class="map-settings">
@@ -647,6 +651,11 @@
 <script src="js/data/eventEditor/components/Assets/CustomEquipmentListComponent.js"></script>
 <script src="js/data/eventEditor/components/Assets/CustomShipComponent.js"></script>
 <script src="js/data/eventEditor/components/Assets/CustomShipListComponent.js"></script>
+
+<!-- Quests -->
+<script src="js/data/eventEditor/components/Quests/QuestDetailComponent.js"></script>
+<script src="js/data/eventEditor/components/Quests/QuestListComponent.js"></script>
+<script src="js/data/event/chrRandomEvent/QuestManager.js"></script>
 
 <!-- Main code -->
 <script src="js/data/eventEditor/chrEventEditor.js"></script>

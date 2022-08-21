@@ -30,6 +30,8 @@ function InitUI() {
 			WORLD = CHDATA.maps[MAPNUM].world;
 		}
 		
+		chrInitQuests();
+		
 		for (let mechanic in MECHANICDATES) { //refresh mechanics for updates
 			CHDATA.config.mechanics[mechanic] = (MECHANICDATES[mechanic] <= CHDATA.config.mechanicsdate);
 		}
