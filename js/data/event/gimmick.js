@@ -74,6 +74,10 @@ function ChGimmickList(type, mapPartNumber, mapNum, gimmickData, additionnalPara
             gimmickObject.id += '-U' + additionnalParameters.partToUnlock;
         }
 
+        if (type == 'quest') {
+            gimmickObject.id += '-Q';
+        }
+
         if (gimmick.fleetType) {
             gimmickObject.id += `-FT${gimmick.fleetType.join('_')}`;
         }
@@ -207,7 +211,7 @@ function ChGimmickList(type, mapPartNumber, mapNum, gimmickData, additionnalPara
 let ChGimmickParameters = {
     node: '',
     /**
-     * @type {'battle' | 'NoHPLoss' | 'AirState' | 'ReachNode' | 'MapHP' | 'PartClear'}
+     * @type {'battle' | 'NoHPLoss' | 'AirState' | 'ReachNode' | 'MapHP' | 'PartClear' | 'RandomChance'}
      */
     type: 'battle',
     timesRequiredPerDiff: {
@@ -308,13 +312,27 @@ function ChGimmick(parameters) {
 
         if (this.node == 'AB' && CHDATA.config.disableRaidReq) return true;
 
-        let count = CHDATA.event.maps[this.mapIdForChdata].debuff[this.id];
-        let requiredCount = this.timesRequiredPerDiff[getDiff()];
+        let count = this.getGimmickProgress();
+        let requiredCount = this.getTimesRequired();
 
         if (!requiredCount) return true;
         if (!count) return false;
 
         return count >= requiredCount;
+    }
+
+    this.getTimesRequired = () => {
+        return this.timesRequiredPerDiff[getDiff()];
+    }
+
+    this.getGimmickProgress = () => {
+        if (typeof(CHDATA) === "undefined") return 0;
+        if (!CHDATA.event) return 0;
+        if (!CHDATA.event.maps) return 0;
+        if (!CHDATA.event.maps[this.mapIdForChdata]) return 0;
+        if (!CHDATA.event.maps[this.mapIdForChdata].debuff) return 0;
+
+        return CHDATA.event.maps[this.mapIdForChdata].debuff[this.id];
     }
 
     switch (parameters.type) {
@@ -327,6 +345,10 @@ function ChGimmick(parameters) {
                 if (!this.timesRequiredPerDiff[diff]) return '-';
                 return 'Take no damage' + (this.timesRequiredPerDiff[diff] > 1 ? (' x' + this.timesRequiredPerDiff[diff]) : '');
             }
+            
+            parameters.getLongDescription = (diff) => {        
+                return `Take no damage on node ${this.node}`;
+            }    
 
             break;
         }
@@ -340,6 +362,10 @@ function ChGimmick(parameters) {
                 if (!this.timesRequiredPerDiff[diff]) return '-';
                 return 'Reach' + (this.timesRequiredPerDiff[diff] > 1 ? (' x' + this.timesRequiredPerDiff[diff]) : '');
             }
+
+            parameters.getLongDescription = (diff) => {        
+                return `Reach node ${this.node}`;
+            }            
             
             break;
         }
@@ -364,6 +390,12 @@ function ChGimmick(parameters) {
         
                 return 0;
             }
+
+            parameters.getLongDescription = (diff) => {
+                let rank = this.ranksRequiredPerDiff[diff];
+        
+                return `Achieve ${ChGimmick.ConvertAirStateNumberToString(rank)} on node ${this.node}`;
+            }
             
             break;
         }
@@ -379,7 +411,7 @@ function ChGimmick(parameters) {
                 return 0;
             }
             
-            parameters.getDescription = (diff) => {
+            parameters.getLongDescription = parameters.getDescription = (diff) => {
                 if (!this.ranksRequiredPerDiff[diff]) return '-';
                 return 'Map HP <= ' + this.ranksRequiredPerDiff[diff];
             }
@@ -395,10 +427,33 @@ function ChGimmick(parameters) {
                 return 1;
             }
             
-            parameters.getDescription = (diff) => {
+            parameters.getLongDescription = parameters.getDescription = (diff) => {
                 return 'Clear part '+ parameters.partToClear + '        ';
             }
             
+            break;
+        }
+
+        case 'battle': {
+            parameters.getLongDescription = (diff) => {
+                let rank = this.ranksRequiredPerDiff[diff];
+
+                return `Achieve ${rank} rank on node ${this.node}`;
+            }
+
+            break;
+        }
+
+        case 'RandomChance': {
+
+            parameters.shouldCountBeIncreased = (checkGimmickParameters) => {
+                return (Math.random() * 100) > this.ranksRequiredPerDiff[getDiff()];
+            }
+            
+            parameters.getLongDescription = parameters.getDescription = (diff) => {
+                return `Random chance (${this.ranksRequiredPerDiff[diff]}%) on node ${this.node}`;
+            }
+
             break;
         }
     }
@@ -456,7 +511,31 @@ function ChGimmick(parameters) {
 
         return this.ranksRequiredPerDiff[diff] + (this.timesRequiredPerDiff[diff] > 1 ? (' x' + this.timesRequiredPerDiff[diff]) : '');
     }
+
+    this.getLongDescription = (diff) => {
+        
+        if (parameters.getLongDescription) {
+            return parameters.getLongDescription(diff);
+        }
+
+        return '';
+    }
 }
+
+/*ChGimmick.ConvertBattleRankNumberToString = (rank) => {
+
+    rank = parseInt(rank);
+
+    switch (rank) {
+        case 1: return 'S';
+        case 2: return 'A';
+        case 3: return 'B';
+        case 4: return 'C';
+        case 5: return 'D';
+    }
+
+    return '???';
+}*/
 
 ChGimmick.ConvertAirStateNumberToString = (airState) => {
     switch (airState) {

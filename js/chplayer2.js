@@ -1364,6 +1364,8 @@ function mapPhase(first) {
 				hiddenRoutes[key].unlockRules.checkGimmickSteps(curletter);
 			}
 		}
+
+		CHDATA.quests.checkProgress(curletter);
 	}
 
 	if (end) {
@@ -2750,6 +2752,8 @@ function shuttersPostbattle(noshutters) {
 		MAPDATA[WORLD].maps[map].debuffRules.checkGimmickSteps(curletter);
 	}
 
+	CHDATA.quests.checkProgress(curletter);
+
 	FLEETS1[0].resetBattle();
 	if (CHDATA.fleets.combined) FLEETS1[1].resetBattle();
 	CHDATA.temp.done = true;
@@ -3879,6 +3883,11 @@ function doSimEnemyRaid(numLB,compd,forceHA) {
 			totalHPLost: totalHPLost
 		});
 	}
+
+	CHDATA.quests.checkProgress('AB', {
+		airstate: airState,
+		totalHPLost: totalHPLost
+	});
 	
 	CHAPI.battles.push(BAPI);
 	CHAPI.fleet1 = [];

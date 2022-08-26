@@ -28,8 +28,9 @@ function chrMakeQuestDescription(questData) {
     const element = $("<div>");
     element.addClass("quest-element");
 
-    element.append(`<div class="quest-element-title">${questData.name}</div>`)
-    element.append(`<div class="quest-element-description">${questData.description}</div>`)
+    element.append(`<div class="quest-element-title">${questData.name}</div>`);
+    element.append(`<div class="quest-element-description">${questData.description}</div>`);
+    element.append(`<div class="quest-element-progress">${questData.getProgressText()}</div>`);
 
     return element;
 }
@@ -38,4 +39,6 @@ function chrInitQuests() {
     CHDATA.quests = new QuestManager();
 
     if (MAPDATA[WORLD].quests) CHDATA.quests.loadQuests(MAPDATA[WORLD].quests);
+
+    CHDATA.quests.onReload();
 }

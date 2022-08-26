@@ -102,6 +102,15 @@ const GimmickEditorComponent = {
                     <vcomboboxeditor :data-source="gimmickData.ranksRequiredPerDiff" :item-list="rankItemList" :data-field="diff.key"/>
                 </div>
             </td>
+        </tr>        
+        <tr v-if="displayEditor('chancesRequiredPerDiff')">
+            <td>Chances per diff</td>
+            <td>
+                <div v-for="diff in diffItemList" :key="diff.key">
+                    {{diff.display}}
+                    <input v-model="gimmickData.ranksRequiredPerDiff[diff.key]" type="number" min="0" max="100" /> %
+                </div>
+            </td>
         </tr>
 
         <tr v-if="displayEditor('mapHPPerDiff')">
@@ -217,6 +226,27 @@ GimmickEditorComponent.GimmickDisplay = {
         },
 
         editors: ['partToClear']
+    },
+
+    RandomChance: {
+        
+        init: {
+            timesRequiredPerDiff: {
+                4: 1,
+                1: 1,
+                2: 1,
+                3: 1,
+            },
+            
+            ranksRequiredPerDiff: {
+                4: 100,
+                1: 100,
+                2: 100,
+                3: 100,
+            }
+        },
+        
+        editors: ["node", "chancesRequiredPerDiff"]
     }
 }
 
