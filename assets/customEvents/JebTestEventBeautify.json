@@ -6599,7 +6599,8 @@
                   "if": null,
                   "then": null,
                   "else": null
-                }
+                },
+                "noCompass": true
               },
               {
                 "operator": "=",
@@ -9050,7 +9051,8 @@
                   "if": null,
                   "then": null,
                   "else": null
-                }
+                },
+                "noCompass": true
               },
               {
                 "operator": "=",
@@ -9439,7 +9441,8 @@
                   "if": null,
                   "then": null,
                   "else": null
-                }
+                },
+                "noCompass": true
               },
               {
                 "operator": "=",
@@ -17321,7 +17324,8 @@
                   "if": null,
                   "then": null,
                   "else": null
-                }
+                },
+                "noCompass": true
               },
               {
                 "operator": "<",
@@ -18599,7 +18603,8 @@
                   "if": null,
                   "then": null,
                   "else": null
-                }
+                },
+                "noCompass": true
               },
               {
                 "operator": ">=",
@@ -19700,7 +19705,8 @@
                   "if": null,
                   "then": null,
                   "else": null
-                }
+                },
+                "noCompass": true
               },
               {
                 "operator": "=",
