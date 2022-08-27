@@ -111,7 +111,6 @@ function QuestData(questManager) {
     this.description = "";
 
     // Rewards
-    this.rewardJavascript = "";
     this.rewardShipData = [];
     this.rewardEquipmentData = [];
     this.rewardChance = {
@@ -153,7 +152,6 @@ function QuestData(questManager) {
 
         if ((Math.random() * 100) > this.rewardChance[getDiff()]) return;
 
-        if (this.rewardJavascript) eval(this.rewardJavascript);
         if (this.rewardShipData.length || this.rewardEquipmentData.length) {
 
             const rewardsToGive = {

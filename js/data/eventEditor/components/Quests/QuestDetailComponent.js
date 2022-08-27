@@ -37,13 +37,8 @@ const QuestDetailComponent = {
             </tr>        
 
             <tr>
-                <td>Trigger on reload (reapply javascript on reload)</td>
-                <td><input v-model="quest.triggerOnReload" type="checkbox" /></td>
-            </tr>        
-
-            <tr>
-                <td>Javascript to execute on complete</td>
-                <td><textarea v-model="quest.rewardJavascript" /></td>
+                <td>Trigger on reload</td>
+                <td><input v-model="quest.triggerOnReload" type="checkbox" readonly /></td>
             </tr>        
 
             <tr>
