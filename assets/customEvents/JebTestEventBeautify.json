@@ -2257,7 +2257,8 @@
                   "if": null,
                   "then": null,
                   "else": null
-                }
+                },
+                "noCompass": true
               },
               {
                 "operator": "<",
@@ -3469,7 +3470,8 @@
                   "if": null,
                   "then": null,
                   "else": null
-                }
+                },
+                "noCompass": false
               }
             ],
             "endRules": [],
@@ -3570,7 +3572,47 @@
               }
             ],
             "end": false,
-            "rules": [],
+            "rules": [
+              {
+                "operator": "=",
+                "logicOperator": "OR",
+                "type": "fixed",
+                "shipTypes": [],
+                "shipsIds": [],
+                "shipsIdsListName": "",
+                "historicalGroups": false,
+                "equipData": {
+                  "equipIds": [],
+                  "equipTypes": [],
+                  "LOS": 0,
+                  "haveAllEquips": false,
+                  "flagship": false
+                },
+                "rules": [],
+                "count": 0,
+                "shipWithEquipCount": 0,
+                "fixedNode": "S",
+                "conditionCheckedNode": "",
+                "conditionFailedNode": "",
+                "randomNodes": {},
+                "routeSelect": [],
+                "LOS": {},
+                "LOSCoef": null,
+                "speed": 10,
+                "fleetType": 0,
+                "escortOnly": false,
+                "mainFleetOnly": false,
+                "notOfType": false,
+                "not": false,
+                "mapParts": null,
+                "difficulties": [],
+                "ifthenelse": {
+                  "if": null,
+                  "then": null,
+                  "else": null
+                }
+              }
+            ],
             "endRules": [
               {
                 "operator": "=",
@@ -31848,6 +31890,7 @@
         167,
         170
       ]
-    }
+    },
+    "quests": []
   }
 }
