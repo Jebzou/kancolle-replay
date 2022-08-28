@@ -258,7 +258,9 @@ function ChRule () {
                 }
                 if (this.mainFleetOnly) shipsToCheck = ships.ids;
 
-                for (const shipId of this.getShipIds()) {
+                const shipsRequired = this.getShipIds();
+
+                for (const shipId of shipsRequired) {
                     if (isShipInList(shipsToCheck, shipId)) count++;
                 }
 

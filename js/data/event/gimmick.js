@@ -331,6 +331,7 @@ function ChGimmick(parameters) {
         if (!CHDATA.event.maps) return 0;
         if (!CHDATA.event.maps[this.mapIdForChdata]) return 0;
         if (!CHDATA.event.maps[this.mapIdForChdata].debuff) return 0;
+        if (!CHDATA.event.maps[this.mapIdForChdata].debuff[this.id]) return 0;
 
         return CHDATA.event.maps[this.mapIdForChdata].debuff[this.id];
     }

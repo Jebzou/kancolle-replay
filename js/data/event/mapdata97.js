@@ -114,6 +114,8 @@ MAPDATA[97].initializeAssets = function(assets) {
     const addShip = (shipData) => {
 		const id = shipData.id;
 		SHIPDATA[id] = shipData;
+
+        if (SHIPDATA[id].prev) SHIPDATA[SHIPDATA[id].prev].next = id;
         
         if (typeof(VOICES) != "undefined") {
 

@@ -860,13 +860,13 @@ ChBonuses.CheckIfCanBeApplied = (parameters) => {
         if (!parameters.diff.includes(diff)) return false;
     }
 
-    if (parameters.requiredFlagshipId && parameters.requiredFlagshipType.length) {
+    if (parameters.requiredFlagshipId && parameters.requiredFlagshipId.length) {
         let ships = ChBonuses.GetBonusShips(parameters);
 
         // --- Check the flagship
         let flagId = getBaseId(ships[0].mid);
 
-        if (!parameters.requiredFlagshipId.includes(flagId)) return false;
+        if (!parameters.requiredFlagshipId.includes(flagId) && !parameters.requiredFlagshipId.includes(ships[0].mid)) return false;
     }
 
     if (parameters.requiredFlagshipType && parameters.requiredFlagshipType.length) {

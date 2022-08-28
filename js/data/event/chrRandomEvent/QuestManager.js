@@ -131,10 +131,11 @@ function QuestData(questManager) {
     }
 
     this.getProgressText = () => {
+
+        if (!this.isMapUnlocked()) return `You haven't unlocked that quest yet`;
+
         let text = '';
-
-        if (!this.isMapUnlocked()) return text;
-
+        
         for (const objective of this.objectives.gimmicks) {
             text += `${objective.getLongDescription(getDiff())} ${objective.getGimmickProgress()}/${objective.getTimesRequired()}`;
             text += "<br>";

@@ -1369,7 +1369,7 @@ class ChrDisplayEventInfo {
                     }`);
                 }
 
-                if (currentBonus.requiredFlagshipType && currentBonus.requiredFlagshipId.length) {
+                if (currentBonus.requiredFlagshipType && currentBonus.requiredFlagshipType.length) {
                     bonusGroupColumn.append(`<br>If flagship is ${currentBonus.requiredFlagshipType.join(",")}`);
                 }
 
