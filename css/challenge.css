@@ -725,3 +725,13 @@ input.chrshipfilter {
 		background-color: #525252;
 	}
 }
+
+#rewardtext {
+    position: absolute;
+    margin-left: 91px;
+    background-color: #302a32bf;
+    color: white;
+    margin-top: 104px;
+    padding: 5px 9px 5px 34px;
+    max-width: 125px;
+}

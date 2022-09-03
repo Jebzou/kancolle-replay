@@ -455,6 +455,7 @@ function chShowReward(data,tracker) {
 		$('#dialogreward').dialog('open');
 		$('#rewardshine').css('animation','spin 5s linear infinite');
 		$('#rewardship').css('margin-top','105px');
+		$('#rewardtext').hide();
 		if (tracker < numShips) {
 			const id = typeof(data.ships[tracker]) == 'object' ? data.ships[tracker].mid : data.ships[tracker];
 			$('#rewardship').attr('src', chGetShipImagePath(id));
@@ -496,6 +497,8 @@ function chShowReward(data,tracker) {
 				$('#rewardship').attr('src', data.items[ind].image);
 			} else {
 				$('#rewardship').attr('src','assets/items/'+EQTDATA[EQDATA[id].type].image+'.png');
+				$('#rewardtext').text(EQDATA[id].name);
+				$('#rewardtext').show();
 			}
 		}
 		$('#rewardship').css('animation','appear 1s linear 1');
