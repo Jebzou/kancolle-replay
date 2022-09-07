@@ -385,6 +385,11 @@ MAPDATA[97].convertRule = function (ruleToConvert) {
             rule = ChIsRouteUnlockedRule(ruleToConvert.count, ruleToConvert.conditionCheckedNode, ruleToConvert.conditionFailedNode);
             break;
 
+        case "isQuestDone":
+            rule = ChIsQuestDoneRule(ruleToConvert.count, ruleToConvert.conditionCheckedNode, ruleToConvert.conditionFailedNode);
+            if (ruleToConvert.not) rule.not = true;
+            break;    
+
         case "default":
             rule = ChDefaultRouteRule(ruleToConvert.conditionCheckedNode);
             break;

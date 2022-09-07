@@ -156,7 +156,7 @@
                                 <td>If the returned "node" is empty or false, the fleet won't be allowed to sortie</td>
                             </tr>
                             <tr>
-                                <td><vroutinglist :rule-list="additionalChecksRules" :map-data="mapData" :result-nodes-list="trueFalseNodesList"></vroutinglist></td>
+                                <td><vroutinglist :rule-list="additionalChecksRules" :map-data="mapData" :result-nodes-list="trueFalseNodesList" :event-data="eventData"></vroutinglist></td>
                             </tr>
                         </table>
                     </uigroup>
@@ -167,7 +167,7 @@
                                 <td>If no rule, starts at the node called "Start"</td>
                             </tr>
                             <tr>
-                                <td><vroutinglist :rule-list="startCheckRule" :map-data="mapData"></vroutinglist></td>
+                                <td><vroutinglist :rule-list="startCheckRule" :map-data="mapData" :event-data="eventData"></vroutinglist></td>
                             </tr>
                         </table>
                     </uigroup>

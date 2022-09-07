@@ -13,7 +13,7 @@ function ChRule () {
     /**
      * @type {"shipType" | "random"| "fixed" | "shipCount" | "multiRules" | "random" | "speed" | "custom" | "ifthenelse" 
      * | "LOSCheckIfRuleChecked" | "allShipsMustBe" | 'isLastDance' | "equipType" | "los" | "default" | "shipIds" | 'fleetType' | 'routeSelect' 
-     * | 'mapPart' | 'isRouteUnlocked' | 'shipRetreatedCount' | 'difficulty' | 'debuff' | 'speedCount' | 'fleetBeenThrough' }
+     * | 'mapPart' | 'isRouteUnlocked' | 'shipRetreatedCount' | 'difficulty' | 'debuff' | 'speedCount' | 'fleetBeenThrough' | 'isQuestDone' }
      */
     this.type = "fixed";
 
@@ -524,7 +524,7 @@ function ChRule () {
                     for (const type of this.fleetType) {
                         if (type == 0 && !CHDATA.fleets.combined && !CHDATA.fleets.sf) return this.conditionCheckedNode;
                         else if (type == 7 && CHDATA.fleets.sf) return this.conditionCheckedNode;
-                        else if (type == CHDATA.fleets.combined) return this.conditionCheckedNode;
+                        else if (type != 0 && type == CHDATA.fleets.combined) return this.conditionCheckedNode;
                     }
 
                     return this.conditionFailedNode;
@@ -570,6 +570,19 @@ function ChRule () {
                 if (!CHDATA.event.maps[MAPNUM].routes.length) return this.conditionFailedNode;
                 
                 return CHDATA.event.maps[MAPNUM].routes.indexOf(this.getCount()) != -1 ? this.conditionCheckedNode : this.conditionFailedNode;
+            }
+
+            
+            case "isQuestDone": {
+                if (this.not) {
+                    if (!CHDATA.quests) return this.conditionCheckedNode;
+                    
+                    return CHDATA.quests.getQuest(this.getCount()).objectives.gimmickDone() ? this.conditionCheckedNode : this.conditionFailedNode;
+                }
+
+                if (!CHDATA.quests) return this.conditionFailedNode;
+                
+                return CHDATA.quests.getQuest(this.getCount()).objectives.gimmickDone() ? this.conditionCheckedNode : this.conditionFailedNode;
             }
 
             case 'shipRetreatedCount': {
@@ -930,6 +943,11 @@ function ChRule () {
             case "isRouteUnlocked": {
                 if (this.not) return `Unlock ${this.getCountAsText()} is not done`;
                 return `Unlock ${this.getCountAsText()} is done`;
+            }
+
+            case "isQuestDone": {
+                if (this.not) return `Quest ${this.getCountAsText()} is not done`;
+                return `Quest ${this.getCountAsText()} is done`;
             }
 
             case 'shipRetreatedCount' : {
@@ -1589,6 +1607,19 @@ function ChIsRouteNotUnlockedRule(routeNumber, conditionCheckedNode, conditionFa
     let rule = ChIsRouteUnlockedRule(routeNumber, conditionCheckedNode, conditionFailedNode);
 
     rule.not = true;
+
+    return rule;
+}
+
+function ChIsQuestDoneRule(questId, conditionCheckedNode, conditionFailedNode) {
+    let rule = new ChRule();
+
+    rule.type = "isQuestDone";
+
+    rule.count = questId;
+
+    rule.conditionCheckedNode = conditionCheckedNode;
+    rule.conditionFailedNode = conditionFailedNode;
 
     return rule;
 }

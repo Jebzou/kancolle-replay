@@ -22,6 +22,11 @@ const QuestDetailComponent = {
     <div class="quest-detail">
         <table>
             <tr>
+                <td>ID</td>
+                <td><input v-model="quest.id" /></td>
+            </tr>
+
+            <tr>
                 <td>Name</td>
                 <td><input v-model="quest.name" /></td>
             </tr>

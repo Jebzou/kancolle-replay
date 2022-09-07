@@ -218,7 +218,7 @@ const NodeComponent = {
         </table>
 
         <uigroup title="Routing">
-            <vroutinglist :rule-list="nodeData.rules" :map-data="mapData"></vroutinglist>
+            <vroutinglist :rule-list="nodeData.rules" :map-data="mapData" :event-data="eventData"></vroutinglist>
         </uigroup>
 
         <uigroup title="Friend Fleet">
@@ -241,7 +241,7 @@ const NodeComponent = {
         <uigroup title="End node">
             Is end node rule (if no rule, use the checkbox value)  
             <input v-model="nodeData.end" type="checkbox" />
-            <vroutinglist :rule-list="nodeData.endRules" :map-data="mapData"></vroutinglist>
+            <vroutinglist :rule-list="nodeData.endRules" :map-data="mapData" :event-data="eventData"></vroutinglist>
         </uigroup>
  
         <uigroup title="Enemy comps">

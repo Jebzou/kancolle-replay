@@ -1,5 +1,5 @@
 const RoutingListComponent = {
-    props: ['ruleList', 'mapData', 'conditionCheckedNode', 'resultNodesList'],
+    props: ['ruleList', 'mapData', 'conditionCheckedNode', 'resultNodesList', 'eventData'],
         
     data: () => ({
         
@@ -40,7 +40,7 @@ const RoutingListComponent = {
         <div class="mapButton" @click="addRule">Add rule</div>
 
         <div v-for="(rule, key) in ruleList" :key="key">
-            <vrouting :rule="rule" :map-data="mapData" @delete-rule="onDeleteRule" :result-nodes-list="resultNodesList"></vrouting>
+            <vrouting :rule="rule" :map-data="mapData" @delete-rule="onDeleteRule" :result-nodes-list="resultNodesList" :event-data="eventData"></vrouting>
         </div>
     
     `

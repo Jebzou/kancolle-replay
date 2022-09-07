@@ -127,7 +127,11 @@ function QuestData(questManager) {
     this.isMapUnlocked = () => {
         if (typeof(CHDATA) == 'undefined') return false;
 
-        return typeof(CHDATA.event.maps[this.objectives.mapNum].diff) !== "undefined"; 
+        if (typeof(CHDATA.event.maps[this.objectives.mapNum].diff) == "undefined") return false; 
+
+        if (this.objectives.additionnalParameters.routeUnlockRequired && CHDATA.event.maps[this.objectives.mapNum].routes.indexOf(this.objectives.additionnalParameters.routeUnlockRequired) == -1) return false;
+
+        return true;
     }
 
     this.getProgressText = () => {

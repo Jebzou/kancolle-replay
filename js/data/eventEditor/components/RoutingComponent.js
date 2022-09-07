@@ -2,6 +2,7 @@ const RoutingComponent = {
     props: {
         rule: ChRule, 
         mapData: Object,
+        eventData: Object,
         resultNodesList: Array
     },
     emits: ['deleteRule'],
@@ -31,6 +32,7 @@ const RoutingComponent = {
             { key: 'speedCount', display: "Number of ships with certain speed rule" },
             { key: 'isRouteUnlocked', display: "Is route unlocked rule" },
             { key: 'fleetBeenThrough', display: "Has fleet been through node rule" },
+            { key: 'isQuestDone', display: "Is quest done rule" },
         ],
 
         operatorList: [
@@ -91,6 +93,15 @@ const RoutingComponent = {
         routeUnlockItemList() {
             if (!this.mapData.hiddenRoutes) return [];
             return Object.keys(this.mapData.hiddenRoutes).map(route => ({ key: route, display: route}));
+        },
+
+        questItemList() {
+            if (!this.eventData.quests) return [];
+
+            return this.eventData.quests.map(x => ({
+                key: x.id,
+                display: x.name
+            }));
         }
     },
 
@@ -254,6 +265,11 @@ const RoutingComponent = {
                     <td><vcountruleeditor :data-source="rule" data-field="count" /></td>
                 </tr>
                 
+                <tr v-if="shouldEditorBeDisplayed('questId')">
+                    <td>Quest required</td>
+                    <td><vcomboboxeditor :data-source="rule" :item-list="questItemList" data-field="count" :can-be-null="true"/></td>
+                </tr>
+                
                 <tr v-if="shouldEditorBeDisplayed('routeNumber')">
                     <td>Route required</td>
                     <td><vcomboboxeditor :data-source="rule" :item-list="routeUnlockItemList" data-field="count" :can-be-null="true"/></td>
@@ -271,7 +287,7 @@ const RoutingComponent = {
 
                 <tr v-if="shouldEditorBeDisplayed('rules')">
                     <td>Rules</td>
-                    <td colspan="3"><vroutinglist :rule-list="rule.rules" :map-data="mapData" :condition-checked-node="rule.conditionCheckedNode ? rule.conditionCheckedNode : true" :result-nodes-list="resultNodesList"></vroutinglist></td>
+                    <td colspan="3"><vroutinglist :event-data="eventData" :rule-list="rule.rules" :map-data="mapData" :condition-checked-node="rule.conditionCheckedNode ? rule.conditionCheckedNode : true" :result-nodes-list="resultNodesList"></vroutinglist></td>
                 </tr>
 
                 <tr v-if="shouldEditorBeDisplayed('if')">
@@ -479,6 +495,14 @@ const RoutingComponent = {
 
         fleetBeenThrough: {
             node: true,
+            not: true,
+            
+            conditionCheckedNode : true, 
+            conditionFailedNode : true,
+        },
+        
+        isQuestDone: {
+            questId: true,
             not: true,
             
             conditionCheckedNode : true, 
