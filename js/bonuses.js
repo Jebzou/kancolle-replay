@@ -421,24 +421,25 @@ function ChEquipIdsBonuses(parameters, equipIds, operator, reqCount, amount) {
     this.operator = operator;
   
     this.getIds = () => {
-        return this.equipTypes;
+        return this.equipTypes.map(x => parseInt(x));
     }
 
     this.applyBonuses = () => {
         if (!ChBonuses.CheckIfCanBeApplied(parameters)) return;
 
         let ships = ChBonuses.GetBonusShips(parameters);
+        let specificShips = parameters.onlySpecificShips && parameters.onlySpecificShips.length ? ChBonuses.GetShipIds(parameters.onlySpecificShips, -1)() : -1;
 
         for (let ship of ships) {
 
-            if (parameters.onlySpecificShips && !parameters.onlySpecificShips.includes(getBaseId(ship.mid))) continue;
+            if (specificShips != -1 && !specificShips.includes(getBaseId(ship.mid))) continue;
             if (parameters.excludeSpecificShips && parameters.excludeSpecificShips.includes(getBaseId(ship.mid))) continue;
 
             let eqCount = 0;
             let level = 0;
 
             for (let equip of ship.equips) {
-                if (equipTypes.includes(equip.type)) {
+                if (this.getIds().includes(equip.type)) {
                     eqCount++;
                     level = equip.level || level;
                 }

@@ -129,7 +129,10 @@ function QuestData(questManager) {
 
         if (typeof(CHDATA.event.maps[this.objectives.mapNum].diff) == "undefined") return false; 
 
-        if (this.objectives.additionnalParameters.routeUnlockRequired && CHDATA.event.maps[this.objectives.mapNum].routes.indexOf(this.objectives.additionnalParameters.routeUnlockRequired) == -1) return false;
+        if (this.objectives.additionnalParameters.routeUnlockRequired) {
+            if (!CHDATA.event.maps[this.objectives.mapNum].routes) return false;
+            return CHDATA.event.maps[this.objectives.mapNum].routes.indexOf(parseInt(this.objectives.additionnalParameters.routeUnlockRequired)) != -1
+        }
 
         return true;
     }

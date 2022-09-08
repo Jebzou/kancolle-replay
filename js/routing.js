@@ -1541,6 +1541,7 @@ function ChShowCompass(rule) {
  */
  function ChDontShowCompass(rule) {
     rule.getSpinCompass = () => { return false; }
+    rule.noCompass = true;
 
     return rule;
 }
