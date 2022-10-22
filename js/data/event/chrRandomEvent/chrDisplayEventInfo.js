@@ -635,7 +635,7 @@ class ChrDisplayEventInfo {
         let fleet = new Fleet(1);
         fleet.loadShips(enemies);
 
-        let ap = fleet.fleetAirPower(false, false);
+        let ap = fleet.fleetAirPower('isPlane');
 
         return `${Math.floor(ap/3)} / ${Math.floor(ap/1.5)}<br>${Math.floor(ap*1.5)} / ${Math.floor(ap*3)}`;
     }
