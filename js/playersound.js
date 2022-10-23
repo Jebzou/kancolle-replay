@@ -62,7 +62,7 @@ SoundManager.prototype = {
 
 		// --- Custom BGM ? => Play from url
 		if (!BGMLIST[num])  {
-			if (!vol) vol = .3;
+			if (!vol) vol = .5;
 			src = [num];
 		}
 		else {
