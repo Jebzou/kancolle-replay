@@ -2008,12 +2008,49 @@ function prepBattle(letter) {
 		$('#enemyComp'+(combined ? 'C' : '')).append(enemyDiv);
 	}
 
+	function prepareShipWithNormalStats() {
+		if (!RUSH_MODE) {
+			enemies.push(createDefaultShip(sid,overrideStats));
+			return;
+		}
+
+		var currentBoss = false;
+				
+		if (MAPDATA[WORLD].maps[MAPNUM].currentBoss) currentBoss = MAPDATA[WORLD].maps[MAPNUM].currentBoss == letter;
+		else {
+			var bossnum = (typeof MAPDATA[WORLD].maps[MAPNUM].bossnode === 'object')? MAPDATA[WORLD].maps[MAPNUM].bossnode[0] : MAPDATA[WORLD].maps[MAPNUM].bossnode;
+			var letterboss = (typeof bossnum == 'string')? bossnum : String.fromCharCode(64+bossnum);
+			currentBoss = letterboss == letter;
+		}
+
+		if (!currentBoss) {
+			enemies.push(createDefaultShip(sid,overrideStats));
+			return;
+		}
+
+		if (i == 0 && mapdata.boss && RUSH_MODE && !chGetLastDance() && !CHDATA.sortie.reachedTransport) {
+			let oldShip = {};
+
+			Object.assign(oldShip, SHIPDATA[sid]);
+			SHIPDATA[sid].HP = CHDATA.event.maps[MAPNUM].hp - 1;
+	
+			let newShip = createDefaultShip(sid,overrideStats);
+
+			enemies.push(newShip);
+	
+			SHIPDATA[sid] = oldShip;
+		}
+		else {				
+			enemies.push(createDefaultShip(sid,overrideStats));
+		}
+	}
+
 	for (var i=0; i<compd.c.length; i++) {
 		var sid = compd.c[i];
 		var overrideStats = (MAPDATA[WORLD].overrideStats)? MAPDATA[WORLD].overrideStats[sid] : null;
 		
 		if (RANDO_MODE == 1) {
-			enemies.push(createDefaultShip(sid,overrideStats));
+			prepareShipWithNormalStats();			
 		}
 
 		if (RANDO_MODE == 4) {
