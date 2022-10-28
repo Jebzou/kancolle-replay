@@ -397,7 +397,7 @@ window.MapNodePlacerComponent = {
 		nodeNewRoute: null,
 		cursorMode: 'normal',
 		autoNextNode: true,
-		addLetter: false,
+		addLetter: true,
 		routeToggles: {},
 		currentPath: null
 	}),
