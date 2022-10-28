@@ -417,7 +417,15 @@ window.MapNodePlacerComponent = {
 			}
 			return obj;
 		},
-		
+
+		hiddenRoutesList() {
+			let obj = [];
+			for (let key in this.mapData.hiddenRoutes) {
+				obj.push({ key: key, display: key });
+			}
+			return obj;
+		},
+
 		routeTogglesKeys() { return Object.keys(this.routeToggles).sort((a,b) => +a-+b); },
 	},
 	
@@ -569,7 +577,10 @@ window.MapNodePlacerComponent = {
 						<label><input type="checkbox" v-model="addLetter"/>Add letter on the map</label>
 					</div>
 					<div>
-						<label>Add Placed Nodes to Unlock Route: <input type="number" v-model="nodeNewRoute" min="1" max="9"/></label>
+						<label>
+							Add Placed Nodes to Unlock Route: 
+							<vcomboboxeditor :data-source="this" :item-list="hiddenRoutesList" data-field="nodeNewRoute" :can-be-null="true" />
+						</label>
 					</div>
 				</div>
 			</div>
