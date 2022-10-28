@@ -644,7 +644,9 @@ function PathGeneration(map) {
 
 		if (!nextNode) {
 			console.debug(rule);
-			throw 'Error reading rule of node ' + node;
+			console.error('Error reading rule of node ' + node);
+			alert('Error reading rule of node ' + node);
+			return;
 		}
 
 		this.generateOnePath(nextNode, node);
