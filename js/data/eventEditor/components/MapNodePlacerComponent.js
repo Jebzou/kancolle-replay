@@ -633,6 +633,16 @@ function PathGeneration(map) {
 			return;
 		}
 
+		if (rule.type == 'los')  {
+
+			const array = rule.GetLOSArray();
+			for (const letter of Object.values(array)) {
+				this.generateOnePath(letter, node);
+			}
+
+			return;
+		}
+
 		if (rule.type == 'random')  {
 
 			for (const randomNode of Object.keys(rule.randomNodes)) {
