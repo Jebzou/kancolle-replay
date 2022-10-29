@@ -4,6 +4,7 @@ const EnemyCompListPerDiffEditorComponent = {
     data: () => ({
         compNameCurrent: '',
         compNewName: '',
+        errorMessage: '',
 
         otherCompSelected: '',
         copyCompSelected: '',
@@ -43,6 +44,12 @@ const EnemyCompListPerDiffEditorComponent = {
 
     methods: {
         addComp() {
+            if (!this.compNewName) {
+                this.errorMessage = "Comp name is required"
+                return;
+            }
+            this.errorMessage = "";
+
             this.compObject[this.compNewName] = { c: [] };
             this.compList[this.compNewName] = 100;
 
@@ -102,6 +109,7 @@ const EnemyCompListPerDiffEditorComponent = {
             <div>
                 <button @click="addComp">Add new comp</button>
                 <input placeholder="Name" maxlength="50" ref="compNameRef" v-model="compNewName" @keydown.enter="addComp"/>
+                <div style="color:red;">{{errorMessage}}</div>
             </div>
 
             <div>
@@ -114,7 +122,7 @@ const EnemyCompListPerDiffEditorComponent = {
                 <vcomboboxeditor :data-source="this" :item-list="allCompItemList" data-field="copyCompSelected" />
             </div>
             
-            <div class="tabber">
+            <div class="tabber" v-if="!!compList">
                 <div v-for="(odds, compName) in compList" :key="compName" class="tabberButton" :class="{selected:compName==compNameCurrent}" @click="compNameCurrent=compName">{{compName}}</div>
             </div>
 

@@ -12,6 +12,16 @@ const NodeEnemyCompObjectsEditorComponent = {
 
             return parts;
         },
+
+        compsPerDiff () {
+            if (!this.compList.compDiff) this.compList.compDiff = {};
+            if (!this.compList.compDiff[4]) this.compList.compDiff[4] = {};
+            if (!this.compList.compDiff[1]) this.compList.compDiff[1] = {};
+            if (!this.compList.compDiff[2]) this.compList.compDiff[2] = {};
+            if (!this.compList.compDiff[3]) this.compList.compDiff[3] = {};
+
+            return this.compList.compDiff;
+        },
     },
 
     methods: {
@@ -32,7 +42,7 @@ const NodeEnemyCompObjectsEditorComponent = {
     },
 
     template: `
-        <venemycomplist :comp-list="compList.compDiff" :comp-object="compObject" :init-values="initValues" :all-comps-object="allCompsObject"></venemycomplist>
+        <venemycomplist :comp-list="compsPerDiff" :comp-object="compObject" :init-values="initValues" :all-comps-object="allCompsObject"></venemycomplist>
 
 
 
