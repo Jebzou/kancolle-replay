@@ -637,7 +637,7 @@ const bossIds = [
 	1945, 1946, 1947, 1948, 1949, 1950,
 	1954, 1955, 1956,                       // --- Summer Ne kai 2, 3 and B
 	1957, 1958, 1959, 1960,                 // --- Light cruiser Princess B
-	1961, 1962, 1963, 1964,
+	1961, 1962, 1963, 
 	1965, 1966, 1967, 1968, 1969, 1970,
 	1971, 1972, 1973, 1974, 1975, 1976,
     1977, 1978,
@@ -663,7 +663,13 @@ const bossIds = [
     2080,2081,2082,2083,                    // --- Winter Entombed Anti-Air Guardian Princess
     2084,2085,2086,2087,2088,2089,          // --- Supply Depot Princess C
     2097,2098,2099,2100,                    // --- Outer Southern Sea Destroyer Princess
-
+    2105,2106,2107,2108,                    // --- Aircraft Carrier Princess B
+    2109,2110,2111,2112,2113,2114,          // --- Modernized Battleship Princess
+    1964,2117,2118,2119,                    // --- Aircraft Carrier Summer Princess B
+    2120,2121,2122,2123,2124,2125,          // --- Fast Light Carrier Water Demon
+    2126,2127,2128,2129,2130,2131,          // --- Prototype Carrier Princess Vacation
+    2132,2133,2134,2135,2136,2137,          // --- Incomplete Battleship Princess
+    2138, 2139, 2140, 2141, 2142, 2143, 2144, 2145, // --- Supply Depot Princess C Vacation Mode
 
     // --- Airfield Princess
     2047, 2048,                             // --- Base
@@ -681,6 +687,7 @@ const strongEnemiesIds = [
     1953, 1954,                         // --- Summer Ne kai 1 & 2
     2013, 2014,                         // --- Wa-Class B
     2090,                               // --- Ne kai 4
+    2115, 2116                          // --- CV Wo-Class Flagship Kai B
 ];
 
 var abyssalTablesInitialized = false;
