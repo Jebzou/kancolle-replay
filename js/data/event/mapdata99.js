@@ -123,6 +123,12 @@ function chrIsMapDone(event_id, map_number) {
 }
 
 function chRandomizeMap(MAPNUM) {
+    
+    if (CHDATA.event.world < 90) {
+        return { world : CHDATA.event.world };
+    }
+
+
     let possible_maps = [];
 
     for (event_id in MAPDATA) {
@@ -208,7 +214,7 @@ function chRandomizeCompsFromMapList(mapList) {
                 Object.assign(comp, node[compIndex]);
 
                 if (!DISABLE_RANDO) {
-                nodeComps[compIndex] = chRandomizeComp(comp, mapData, nodeIndex);
+                    nodeComps[compIndex] = chRandomizeComp(comp, mapData, nodeIndex);
                 }
                 else {
                     nodeComps[compIndex] = comp;
