@@ -268,6 +268,10 @@ const CustomShipComponent = {
                     <td><button class="play-bgm" @click="playVoice(shipData.voice_sunk)">Play</button></td>
                 </tr>
                 <tr>
+                    <td>Is PT Imp ?</td>
+                    <td><input v-model="shipData.isPT" type="checkbox"/></td>
+                </tr>
+                <tr>
                     <td>Playable ?</td>
                     <td><input v-model="shipData.playable" type="checkbox"/></td>
                 </tr>
