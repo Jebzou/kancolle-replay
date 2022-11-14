@@ -16,7 +16,7 @@ const ShipDataListEditorComponent = {
 		},
 		
 		deleteShip(shipDel) {
-			this.dataSource = this.dataSource.filter(ship => ship != shipDel);
+			this.dataSource.splice(this.dataSource.findIndex(ship => ship == shipDel), 1);
 		},
 		
 		swapShip(shipFrom,shipTo) {
