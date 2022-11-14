@@ -65,6 +65,15 @@ const MapEditorComponent = {
             return comps;
         },
 
+        rewardList () {
+            if (!this.mapData.reward) return null;
+            
+            if (!this.mapData.reward.ships) this.mapData.reward.ships = [];
+            if (!this.mapData.reward.items) this.mapData.reward.items = [];
+
+            return this.mapData.reward;
+        },
+
         fleetsItemSource () {
             const fleets = [];
             

@@ -360,27 +360,27 @@
                     </uigroup>
 
                     <uigroup title="Rewards">
-                        <button v-if="!mapData.reward" @click="mapData.reward={ ships: [], firstOnly: false, items: [] }">Enable rewards</button>
-                        <button v-else @click="mapData.reward=null">Disable rewards</button>
+                        <button v-if="!rewardList" @click="rewardList={ ships: [], firstOnly: false, items: [] }">Enable rewards</button>
+                        <button v-else @click="rewardList=null">Disable rewards</button>
 
-                        <div v-if="!!mapData.reward">
+                        <div v-if="!!rewardList">
 
                             <table>
                                 <tr>
                                     <td>Ships</td>
-                                    <td><vshipdatalisteditor :data-source="mapData.reward.ships" :numberOfShips="99" :editors="{ LVL: true }"/></td>
+                                    <td><vshipdatalisteditor :data-source="rewardList.ships" :numberOfShips="99" :editors="{ LVL: true }"/></td>
                                 </tr>
                                 
                                 <tr>
                                     <td>First only ?</td>
-                                    <td><input type="checkbox" :value="mapData.reward.firstOnly"/></td>
+                                    <td><input type="checkbox" :value="rewardList.firstOnly"/></td>
                                 </tr>
 
                                 <tr>
                                     <td>Equipments</td>
                                     <td>
                                         <div class="equipDataRuleEditor">
-                                            <vequiplisteditor :data-source="mapData.reward.items" handle-levels="true" handle-image="true" />
+                                            <vequiplisteditor :data-source="rewardList.items" handle-levels="true" handle-image="true" />
                                         </div>
                                     </td>
                                 </tr>
