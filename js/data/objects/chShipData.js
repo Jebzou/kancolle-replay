@@ -118,7 +118,7 @@ class ChShipData {
     
         //this.canNB = () => {};
     
-        //this.canOpTorp = () => {};
+        this.canOpTorp = false;
     
         this.installtype = 0;
     

@@ -272,6 +272,10 @@ const CustomShipComponent = {
                     <td><input v-model="shipData.isPT" type="checkbox"/></td>
                 </tr>
                 <tr>
+                    <td>Can Opening Torp ?</td>
+                    <td><input v-model="shipData.canOpTorp" type="checkbox"/></td>
+                </tr>
+                <tr>
                     <td>Playable ?</td>
                     <td><input v-model="shipData.playable" type="checkbox"/></td>
                 </tr>
