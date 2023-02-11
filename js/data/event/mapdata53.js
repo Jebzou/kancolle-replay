@@ -1528,7 +1528,7 @@ MAPDATA[53] =
 						hidden: 2,
 						boss: true,
 						setupSpecial: function() {
-							let debuffed = CHDATA.event.maps[2].debuffed || MAPDATA[53].maps[2].debuffRules.check();
+							let debuffed = CHDATA.event.maps[2].debuffed || MAPDATA[53].maps[2].debuffRules.checkIfDebuffed();
 							if (debuffed) {
 								chApplyBonus(MAPDATA[53].maps[2].bonuses.debuff);
 							}
@@ -2023,7 +2023,7 @@ MAPDATA[53] =
 								1: { 18: 'S', 13: 'Q' },
 								4: { 8: 'S', 3: 'Q' },
 							}[getDiff()];
-							let los = getELoS33(1,2) + getELoS33(1,2);
+							let los = getELoS33(1,2) + getELoS33(2,2);
 							return checkELoS33(los,vals);
 						}
 					},
@@ -2287,7 +2287,7 @@ MAPDATA[53] =
 						friendFleet: [],
 						friendFleetS: ['E3Z-1-1','E3Z-1-2','E3Z-1-3','E3Z-1-4','E3Z-1-5','E3Z-1-6','E3Z-1-7','E3Z-1-3','E3Z-1-4','E3Z-1-5','E3Z-1-6','E3Z-1-7'],
 						setupSpecial: function() {
-							let debuffed = CHDATA.event.maps[3].debuffed || MAPDATA[53].maps[3].debuffRules.check();
+							let debuffed = CHDATA.event.maps[3].debuffed || MAPDATA[53].maps[3].debuffRules.checkIfDebuffed();
 							if (debuffed) {
 								chApplyBonus(MAPDATA[53].maps[3].bonuses.debuff);
 							}
@@ -3365,7 +3365,7 @@ MAPDATA[53] =
 							chApplyBonus(MAPDATA[53].maps[4].bonuses.base);
 							chApplyBonus(MAPDATA[53].maps[4].bonuses.X);
 							
-							let debuffed = CHDATA.event.maps[4].debuffed || MAPDATA[53].maps[4].debuffRules.check();
+							let debuffed = CHDATA.event.maps[4].debuffed || MAPDATA[53].maps[4].debuffRules.checkIfDebuffed();
 							if (debuffed) {
 								chApplyBonus(MAPDATA[53].maps[4].bonuses.debuff);
 							}
@@ -4368,7 +4368,7 @@ MAPDATA[53] =
 						setupSpecial: function() {
 							chApplyBonus(MAPDATA[53].maps[5].bonuses.Y);
 							
-							let debuffed = CHDATA.event.maps[5].debuffed || MAPDATA[53].maps[5].debuffRules.check();
+							let debuffed = CHDATA.event.maps[5].debuffed || MAPDATA[53].maps[5].debuffRules.checkIfDebuffed();
 							if (debuffed) {
 								chApplyBonus(MAPDATA[53].maps[5].bonuses.debuff);
 							}
