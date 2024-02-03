@@ -676,12 +676,16 @@ const bossIds = [
     2126,2127,2128,2129,2130,2131,          // --- Prototype Carrier Princess Vacation
     2132,2133,2134,2135,2136,2137,          // --- Incomplete Battleship Princess
     2138, 2139, 2140, 2141, 2142, 2143, 2144, 2145, // --- Supply Depot Princess C Vacation Mode
+    2146, 2147, 2148, 2149, 2150, 2151,     // --- Remodeled Wartime Cargo Princess
+    2152, 2153, 2154, 2155, 2156, 2157,     // --- Abyssal Heavy Cruiser Water Princess
+    2158, 2159, 2160, 2161, 2162, 2163,     // --- Abyssal Stranded Landing Princess
+    2164, 2165, 2166, 2167, 2168, 2169, 2170, 2171, // --- Supply Depot Princess D
 
     // --- Airfield Princess
     2047, 2048,                             // --- Base
     2094, 2096, 2096,                       // --- Base
-    2091,2092,2093,                         // --- Patrol Aircraft Deployment
-    2077,2078,2079,                         // --- Super Heavy Bombing
+    2091, 2092, 2093,                       // --- Patrol Aircraft Deployment
+    2077, 2078, 2079,                       // --- Super Heavy Bombing
 
 	9012,9013,9014,9015,9016,9018,9019,9020,9021,9022, // --- Fog fleet
 ];
