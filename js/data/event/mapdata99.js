@@ -335,7 +335,7 @@ function chRandomizeComp(compData, mapData, nodeLetter) {
                     }
                 }
 
-                if (rand < 20) {
+                if (rand < 33) {
                     // Strong ennemy is removed
                     while (strongEnemiesIds.indexOf(parseInt(shipID)) != -1) {
                         shipID = obj_keys[Math.floor(Math.random() *obj_keys.length)];
