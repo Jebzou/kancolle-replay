@@ -198,7 +198,7 @@ function chRandomizeCompsFromMapList(mapList) {
     let comps = {};
 
     // reset 
-    Object.assign(ENEMYCOMPS, ENEMYCOMPS_BACKUP);
+    Object.assign(ENEMYCOMPS, JSON.parse(JSON.stringify(ENEMYCOMPS_BACKUP)));
 
     for (let map in mapList) {
 
@@ -295,7 +295,6 @@ function chRandomizeComp(compData, mapData, nodeLetter) {
         var ennemiesBoss = boss;
 
         let ship_data = SHIPDATA[ship_id.toString()];
-        //console.log(compData)
 
         if(ship_data.type === 'SS') {
             ennemies = submarines;
@@ -314,8 +313,8 @@ function chRandomizeComp(compData, mapData, nodeLetter) {
 
             compMain.push(parseInt(shipID));
 
-        } else if (isBoss && strongEnemiesIds.indexOf(ship_id)) {
-            const obj_keys = Object.keys(strongEnemiesIds);
+        } else if (isBoss && strongEnemiesIds.indexOf(ship_id) !== -1) {
+            const obj_keys = Object.keys(strongEnemies);
             const shipID = obj_keys[Math.floor(Math.random() *obj_keys.length)];
             compMain.push(parseInt(shipID));
 
@@ -324,9 +323,29 @@ function chRandomizeComp(compData, mapData, nodeLetter) {
             var obj_keys = Object.keys(ennemies);
             var shipID = obj_keys[Math.floor(Math.random() *obj_keys.length)];
 
-            if (!isBoss && strongEnemiesIds.indexOf(parseInt(shipID)) != -1) {
-                // --- REROLL ONCE
-                shipID = obj_keys[Math.floor(Math.random() *obj_keys.length)];
+            if (strongEnemiesIds.indexOf(parseInt(shipID)) != -1) {
+                var rand = Math.random() * 100;
+
+                if (isBoss) {
+                    rand += 50;
+                    
+                    // if ship was supossed to be strong, keep it
+                    if (strongEnemiesIds.indexOf(parseInt(ship_id)) != -1) {
+                        rand += 50;
+                    }
+                }
+
+                if (rand < 20) {
+                    // Strong ennemy is removed
+                    while (strongEnemiesIds.indexOf(parseInt(shipID)) != -1) {
+                        shipID = obj_keys[Math.floor(Math.random() *obj_keys.length)];
+                    }
+                } else if (rand > 95) {
+                    // Strong enemy is kept
+                } else {
+                    // Strong enemy is rerolled once
+                    shipID = obj_keys[Math.floor(Math.random() *obj_keys.length)];
+                }
             }
 
             compMain.push(parseInt(shipID));

@@ -188,6 +188,8 @@ class ChrDisplayEventInfo {
     GetRoutingRules() {
         let rules = {};
 
+        if (this.GetCurrentWorld() > 53) return {};
+
         if (MAPDATA[this.GetCurrentWorld()].maps[this.currentMap].startCheckRule) {
             rules.Start = {
                 rules: MAPDATA[this.GetCurrentWorld()].maps[this.currentMap].startCheckRule

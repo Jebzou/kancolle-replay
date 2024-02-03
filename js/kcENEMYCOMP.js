@@ -14978,5 +14978,4 @@ const ENEMYCOMPS = {
 	},
 };
 
-const ENEMYCOMPS_BACKUP = {};
-Object.assign(ENEMYCOMPS_BACKUP, ENEMYCOMPS);
+const ENEMYCOMPS_BACKUP = JSON.parse(JSON.stringify(ENEMYCOMPS));

@@ -1195,6 +1195,7 @@ ChGimmick.prototype.getLongDescription = function (diff) {
         default: {
             if (!this.timesRequiredPerDiff[diff]) return '-';
 
+            if (this.rank) return this.rank + (this.timesRequiredPerDiff[diff] > 1 ? (' x' + this.timesRequiredPerDiff[diff]) : '')
             return this.ranksRequiredPerDiff[diff] + (this.timesRequiredPerDiff[diff] > 1 ? (' x' + this.timesRequiredPerDiff[diff]) : '');
         }
     }
@@ -1214,6 +1215,7 @@ ChGimmick.prototype.getDescription = function (diff) {
         default: {
             if (!this.timesRequiredPerDiff[diff]) return '-';
 
+            if (this.rank) return this.rank + (this.timesRequiredPerDiff[diff] > 1 ? (' x' + this.timesRequiredPerDiff[diff]) : '')
             return this.ranksRequiredPerDiff[diff] + (this.timesRequiredPerDiff[diff] > 1 ? (' x' + this.timesRequiredPerDiff[diff]) : '');
         }
     }
