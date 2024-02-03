@@ -16,7 +16,7 @@ function QuestManager() {
             Object.assign(newQuest, quest);
 
             // Instanciate the gimmicks 
-            newQuest.objectives = new ChGimmickList("quest", newQuest.objectives.mapPartNumber, newQuest.objectives.mapNum, newQuest.objectives.gimmicks, newQuest.objectives.additionnalParameters);
+            newQuest.objectives = new ChGimmickList("quest", newQuest.objectives.mapPartNumber, newQuest.objectives.mapNum, newQuest.objectives.gimmicks, newQuest.objectives.additionalParameters);
         
             // Make this an option ?
             newQuest.objectives.playSoundOnStepDone = () => {return false;};
@@ -129,9 +129,9 @@ function QuestData(questManager) {
 
         if (typeof(CHDATA.event.maps[this.objectives.mapNum].diff) == "undefined") return false; 
 
-        if (this.objectives.additionnalParameters.routeUnlockRequired) {
+        if (this.objectives.additionalParameters.routeUnlockRequired) {
             if (!CHDATA.event.maps[this.objectives.mapNum].routes) return false;
-            return CHDATA.event.maps[this.objectives.mapNum].routes.indexOf(parseInt(this.objectives.additionnalParameters.routeUnlockRequired)) != -1
+            return CHDATA.event.maps[this.objectives.mapNum].routes.indexOf(parseInt(this.objectives.additionalParameters.routeUnlockRequired)) != -1
         }
 
         return true;
@@ -144,7 +144,7 @@ function QuestData(questManager) {
         let text = '';
         
         for (const objective of this.objectives.gimmicks) {
-            text += `${objective.getLongDescription(getDiff())} ${objective.getGimmickProgress()}/${objective.getTimesRequired()}`;
+            text += `TODO ${objective.getCount({})}/${objective.timesRequiredPerDiff[getDiff()]}`;
             text += "<br>";
         }
 
@@ -175,7 +175,7 @@ function QuestData(questManager) {
     this.onReload = () => {
         if (!this.isMapUnlocked()) return;
         if (!this.triggerOnReload) return;
-        if (this.objectives.gimmickDone()) this.giveRewards();
+        if (this.objectives.check()) this.giveRewards();
     }
 
     this.checkProgress = (node, data) => {
@@ -183,12 +183,12 @@ function QuestData(questManager) {
         if (!this.isMapUnlocked()) return;
 
         // Gimmick already done => no check
-        if (this.objectives.gimmickDone()) return;
+        if (this.objectives.check()) return;
 
-        this.objectives.checkGimmickSteps(node, data);
+        this.objectives.check(node, data);
 
         // Gimmick is now done ?
-        if (this.objectives.gimmickDone()) {
+        if (this.objectives.check()) {
             // Give reward
             this.giveRewards();
 

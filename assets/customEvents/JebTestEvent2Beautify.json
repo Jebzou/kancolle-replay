@@ -251,7 +251,7 @@
               "mapPartNumber": "2",
               "mapNum": "1",
               "mapIdForChdata": "1",
-              "additionnalParameters": {
+              "additionalParameters": {
                 "partToUnlock": 1,
                 "routeUnlockRequired": null
               },
@@ -1992,7 +1992,7 @@
               "mapPartNumber": null,
               "mapNum": "2",
               "mapIdForChdata": "2",
-              "additionnalParameters": {
+              "additionalParameters": {
                 "partToUnlock": 1,
                 "routeUnlockRequired": null
               },
@@ -2119,7 +2119,7 @@
               "mapPartNumber": "2",
               "mapNum": "2",
               "mapIdForChdata": "2",
-              "additionnalParameters": {
+              "additionalParameters": {
                 "partToUnlock": 2,
                 "routeUnlockRequired": "1"
               },
@@ -5180,7 +5180,7 @@
           "mapPartNumber": "2",
           "mapNum": "2",
           "mapIdForChdata": "2",
-          "additionnalParameters": {
+          "additionalParameters": {
             "lastDanceOnly": true,
             "routeUnlockRequired": null
           },
@@ -5424,7 +5424,7 @@
               "mapPartNumber": null,
               "mapNum": "3",
               "mapIdForChdata": "3",
-              "additionnalParameters": {
+              "additionalParameters": {
                 "partToUnlock": 1,
                 "routeUnlockRequired": null
               },
@@ -5561,7 +5561,7 @@
               "mapPartNumber": null,
               "mapNum": "3",
               "mapIdForChdata": "3",
-              "additionnalParameters": {
+              "additionalParameters": {
                 "partToUnlock": 2,
                 "routeUnlockRequired": "1"
               },
@@ -5658,7 +5658,7 @@
               "mapPartNumber": "2",
               "mapNum": "3",
               "mapIdForChdata": "3",
-              "additionnalParameters": {
+              "additionalParameters": {
                 "partToUnlock": 3,
                 "routeUnlockRequired": null
               },
@@ -9239,7 +9239,7 @@
           "mapPartNumber": "2",
           "mapNum": "3",
           "mapIdForChdata": "3",
-          "additionnalParameters": {
+          "additionalParameters": {
             "lastDanceOnly": true,
             "routeUnlockRequired": null
           },
@@ -9619,7 +9619,7 @@
               "mapPartNumber": null,
               "mapNum": "4",
               "mapIdForChdata": "4",
-              "additionnalParameters": {
+              "additionalParameters": {
                 "partToUnlock": 1,
                 "routeUnlockRequired": null
               },
@@ -9756,7 +9756,7 @@
               "mapPartNumber": "2",
               "mapNum": "4",
               "mapIdForChdata": "4",
-              "additionnalParameters": {
+              "additionalParameters": {
                 "partToUnlock": 2,
                 "routeUnlockRequired": null
               },
@@ -9771,7 +9771,7 @@
               "mapPartNumber": "2",
               "mapNum": "4",
               "mapIdForChdata": "4",
-              "additionnalParameters": {
+              "additionalParameters": {
                 "partToUnlock": 3,
                 "routeUnlockRequired": "2"
               },
@@ -9908,7 +9908,7 @@
               "mapPartNumber": "3",
               "mapNum": "4",
               "mapIdForChdata": "4",
-              "additionnalParameters": {
+              "additionalParameters": {
                 "partToUnlock": 4,
                 "routeUnlockRequired": null
               },
@@ -14431,7 +14431,7 @@
           "mapPartNumber": "3",
           "mapNum": "4",
           "mapIdForChdata": "4",
-          "additionnalParameters": {
+          "additionalParameters": {
             "routeUnlockRequired": null,
             "lastDanceOnly": true
           },
@@ -21870,7 +21870,7 @@
           "mapPartNumber": "2",
           "mapNum": "1",
           "mapIdForChdata": "1",
-          "additionnalParameters": {},
+          "additionalParameters": {},
           "gimmicks": [
             {
               "node": "E",
@@ -21991,7 +21991,7 @@
           "mapPartNumber": null,
           "mapNum": "3",
           "mapIdForChdata": "3",
-          "additionnalParameters": {
+          "additionalParameters": {
             "routeUnlockRequired": "2"
           },
           "gimmicks": [

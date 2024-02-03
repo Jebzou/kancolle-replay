@@ -577,12 +577,12 @@ function ChRule () {
                 if (this.not) {
                     if (!CHDATA.quests) return this.conditionCheckedNode;
                     
-                    return CHDATA.quests.getQuest(this.getCount()).objectives.gimmickDone() ? this.conditionCheckedNode : this.conditionFailedNode;
+                    return CHDATA.quests.getQuest(this.getCount()).objectives.check() ? this.conditionCheckedNode : this.conditionFailedNode;
                 }
 
                 if (!CHDATA.quests) return this.conditionFailedNode;
                 
-                return CHDATA.quests.getQuest(this.getCount()).objectives.gimmickDone() ? this.conditionCheckedNode : this.conditionFailedNode;
+                return CHDATA.quests.getQuest(this.getCount()).objectives.check() ? this.conditionCheckedNode : this.conditionFailedNode;
             }
 
             case 'shipRetreatedCount': {

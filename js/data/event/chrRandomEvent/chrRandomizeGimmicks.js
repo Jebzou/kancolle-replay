@@ -8,19 +8,19 @@ const ChrRandomizeGimmicks = {};
  *  partToUnlock: number
  *  routeUnlockRequired: number
  *  mapPartRequired: number
- * }} additionnalParameters Additionnal parameters to handle special cases
+ * }} additionalParameters Additionnal parameters to handle special cases
  */
-ChrRandomizeGimmicks.RandomizeGimmicks = function (type, mapNum, additionnalParameters, nodes, abPossible) {
+ChrRandomizeGimmicks.RandomizeGimmicks = function (type, mapNum, additionalParameters, nodes, abPossible) {
     /**
      * @type {ChGimmick[]}
      */
     const gimmickArray = [];
 
-    if (additionnalParameters.mapPartRequired) {
-        gimmickArray.push(new ChGimmick({ node: 'MapWide', type: 'PartClear', timesRequiredPerDiff: { 4:1, 1:1, 2:1, 3:1 }, partToClear: additionnalParameters.mapPartRequired }))
+    if (additionalParameters.mapPartRequired) {
+        gimmickArray.push(new ChGimmick({ node: 'MapWide', type: 'PartClear', timesRequiredPerDiff: { 4:1, 1:1, 2:1, 3:1 }, partToClear: additionalParameters.mapPartRequired }))
     }
 
-    const choosenNodes = ChrRandomizeGimmicks.ChooseNodes(additionnalParameters.routeUnlockRequired, nodes, abPossible);
+    const choosenNodes = ChrRandomizeGimmicks.ChooseNodes(additionalParameters.routeUnlockRequired, nodes, abPossible);
 
     while (choosenNodes.length) {
         const choosenNode = choosenNodes.pop();
@@ -30,9 +30,9 @@ ChrRandomizeGimmicks.RandomizeGimmicks = function (type, mapNum, additionnalPara
 
     return new ChGimmickList(type, null, mapNum, 
         gimmickArray, {
-        partToUnlock: additionnalParameters.partToUnlock | null,
+        partToUnlock: additionalParameters.partToUnlock | null,
         lastDanceOnly: type == "debuff",
-        routeUnlockRequired: additionnalParameters.routeUnlockRequired | null,
+        routeUnlockRequired: additionalParameters.routeUnlockRequired | null,
     });
 }
 

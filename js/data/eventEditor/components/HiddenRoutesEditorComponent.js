@@ -39,7 +39,7 @@ const HiddenRoutesEditorComponent = {
                 this.mapData.hiddenRoutes[count] = route;
 
                 if (this.gimmickType == "mapPart") {
-                    this.mapData.hiddenRoutes[count].unlockRules.additionnalParameters.partToUnlock = count;
+                    this.mapData.hiddenRoutes[count].unlockRules.additionalParameters.partToUnlock = count;
                 }
             }
         },

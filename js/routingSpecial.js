@@ -615,8 +615,8 @@ const CUSTOM_RULES = {
             let ruleJ = MAPDATA[39].maps[7].hiddenRoutes[1].unlockRules.gimmicks[1];
             let ruleK = MAPDATA[39].maps[7].hiddenRoutes[1].unlockRules.gimmicks[2];
 
-            let debuffJ = ruleJ.gimmickDone();
-            let debuffK = ruleK.gimmickDone();
+            let debuffJ = ruleJ.check();
+            let debuffK = ruleK.check();
             
             if (debuffK && !debuffJ) return 'J';
             if (debuffJ && !debuffK) return 'I';

@@ -124,7 +124,12 @@ loader.add('BG1','assets/82_res.images.ImgBackgroundDay.jpg')
 	.add('repairteam','assets/Emergency_Repair_Personnel_042_Card.png')
 	.add('repairgoddess','assets/Emergency_Repair_Goddess_043_Card.png')
 	.add('bossbar','assets/bossbar.png')
-	.add('mask','assets/mask.png');
+	.add('mask','assets/mask.png')
+	.add('skipbomb','assets/skipbomb.png')
+	.add('skipbombsplash','assets/skipbombsplash.png')
+	.add('smokebig','assets/smokeBig.png')
+	.add('smokemiddle','assets/smokeMiddle.png')
+	.add('smokesmall','assets/smokeSmall.png')
 for (var i=389; i <= 417; i+=2) loader.add(i.toString(),'assets/'+i+'.png');
 for (var i=0; i<=9; i++) loader.add('C'+i,'assets/C'+i+'.png');
 for (var i=0; i<=9; i++) loader.add('N'+i,'assets/N'+i+'.png');
@@ -383,6 +388,10 @@ function createShip(data,side,i,damaged) {
 	hpbar.drawRect((side==1)?3:161,3,5,38);
 	hptxt = new PIXI.Text(data[1]+'/'+data[1],{font:'13px "Arno Pro Semibold"',fill:'#ffffff'});
 	hptxt.position.set((side==1)?-7-hptxt.width:177,12);
+	if (data[1] == 'N/A') {
+		hptxt.visible = false;
+		ship.xorigin += 25;
+	}
 	var hpbarback = PIXI.Sprite.fromImage('assets/433.png');
 	hpbarback.position.set((side==1)?2:160,2);
 	graphic.addChild(hpbarback);
@@ -405,7 +414,7 @@ function createShip(data,side,i,damaged) {
 		if (eq) {
 			var eqt = EQTDATA[eq.type];
 			if (eq.b_image) ship.planetypes.push(eq.b_image);
-			else if (eqt.isfighter||eqt.istorpbomber||eqt.isdivebomber||eq.type==AUTOGYRO||eq.type==ASWPLANE) ship.planetypes.push(1+side);
+			else if (eqt.isfighter||eqt.istorpbomber||eqt.isdivebomber||eq.type==AUTOGYRO||eq.type==ASWPLANE) ship.planetypes.push({11:11,45:12}[eq.type] || 1+side);
 			//else if (eq.type==SEAPLANE||eq.type==FLYINGBOAT) ship.planetypes.push(11);
 			if (eqt.istorpbomber||eqt.isdivebomber||eq.type==AUTOGYRO||eq.type==ASWPLANE) ship.hasbomber = true;
 			if (eqt.istorpbomber) ship.hastorpbomber = true;
@@ -450,6 +459,9 @@ function processAPI(root) {
 	COMBINED = root.combined;
 	PVPMODE = (root.world <= 0);
 	OLDFORMAT = !!data.api_maxhps; //new format 2017-11-17
+	
+	//abyssal eq shift 2022-11-09 //root.time*1000 < Date.UTC(2022,11,9); 
+	let IS_BEFORE_ENEMY_EQ_SHIFT = !PVPMODE && !root.source;
 	
 	if (root.now_maphp && root.max_maphp) {
 		bossbar.maxhp = root.max_maphp;
@@ -592,6 +604,13 @@ function processAPI(root) {
 				if (data.api_ship_ke[i] < 1000) data.api_ship_ke[i] += 1000;
 			}
 		}
+		if (IS_BEFORE_ENEMY_EQ_SHIFT) {
+			for (let eSlot of data.api_eSlot) {
+				for (let i=0; i<eSlot.length; i++) {
+					if (eSlot[i] > 500 && eSlot[i] < 1000) eSlot[i] += 1000;
+				}
+			}
+		}
 		for (var i=0; i<data.api_ship_ke.length; i++) {
 			if (!data.api_ship_ke[i] || data.api_ship_ke[i] == -1) continue;
 			if (SHIPDATA[data.api_ship_ke[i]])
@@ -622,6 +641,13 @@ function processAPI(root) {
 				for (var i=0; i<data.api_ship_ke_combined.length; i++) {
 					if (data.api_ship_ke_combined[i] == -1) continue;
 					if (data.api_ship_ke_combined[i] < 1000) data.api_ship_ke_combined[i] += 1000;
+				}
+			}
+			if (IS_BEFORE_ENEMY_EQ_SHIFT) {
+				for (let eSlot of data.api_eSlot_combined) {
+					for (let i=0; i<eSlot.length; i++) {
+						if (eSlot[i] > 500 && eSlot[i] < 1000) eSlot[i] += 1000;
+					}
 				}
 			}
 			for (var i=0; i<data.api_ship_ke_combined.length; i++) {
@@ -728,6 +754,9 @@ function processAPI(root) {
 		
 		//for reading air phase
 		var processKouku = function(kouku,isbombing,isjet) {
+			if (IS_BEFORE_ENEMY_EQ_SHIFT && kouku && kouku.api_stage1 && kouku.api_stage1.api_touch_plane && kouku.api_stage1.api_touch_plane[1]) {
+				if (kouku.api_stage1.api_touch_plane[1] > 500 && kouku.api_stage1.api_touch_plane[1] < 1000) kouku.api_stage1.api_touch_plane[1] += 1000;
+			}
 			if (kouku && kouku.api_plane_from && ((kouku.api_plane_from[0] && kouku.api_plane_from[0][0] != -1) || (kouku.api_plane_from[1] && kouku.api_plane_from[1][0] != -1))) {
 				//air state
 				var AS1 = {0:0,1:2,2:1,3:-1,4:-2}[kouku.api_stage1.api_disp_seiku];
@@ -827,6 +856,7 @@ function processAPI(root) {
 							var hit = (kouku.api_stage3.api_frai_flag[ind] || kouku.api_stage3.api_fbak_flag[ind]);
 							if (hit) {
 								targetdata.push([fleet1[i],(dam>0)? dam:0,(dam!=kouku.api_stage3.api_fdam[ind]),kouku.api_stage3.api_fcl_flag[ind],kouku.api_stage3.api_frai_flag[ind]]);
+								if (kouku.api_stage3.api_f_sp_list) targetdata[targetdata.length-1].push(kouku.api_stage3.api_f_sp_list[ind]);
 								fleet1[i].hpTrack -= Math.floor(dam);
 							}
 						}
@@ -835,6 +865,7 @@ function processAPI(root) {
 							var dam = parseInt(kouku.api_stage3.api_edam[ind]);
 							hit = (kouku.api_stage3.api_erai_flag[ind] || kouku.api_stage3.api_ebak_flag[ind]);
 							if (hit) targetdata.push([f2[i],(dam>0)? dam:0,(dam!=kouku.api_stage3.api_edam[ind]),kouku.api_stage3.api_ecl_flag[ind],kouku.api_stage3.api_erai_flag[ind]]);
+							if (hit && kouku.api_stage3.api_e_sp_list) targetdata[targetdata.length-1].push(kouku.api_stage3.api_e_sp_list[ind]);
 						}
 						
 						if (kouku.api_stage3_combined) {
@@ -843,6 +874,7 @@ function processAPI(root) {
 								var hit = (kouku.api_stage3_combined.api_frai_flag[ind] || kouku.api_stage3_combined.api_fbak_flag[ind]);
 								if (hit) {
 									targetdata.push([fleet1C[i],(dam>0)? dam:0,(dam!=kouku.api_stage3_combined.api_fdam[ind]),kouku.api_stage3_combined.api_fcl_flag[ind],kouku.api_stage3_combined.api_frai_flag[ind]]);
+									if (kouku.api_stage3_combined.api_f_sp_list) targetdata[targetdata.length-1].push(kouku.api_stage3_combined.api_f_sp_list[ind]);
 									fleet1C[i].hpTrack -= Math.floor(dam);
 								}
 							}
@@ -850,6 +882,7 @@ function processAPI(root) {
 								var dam = parseInt(kouku.api_stage3_combined.api_edam[ind]);  //remember later, .1 = protect
 								var hit = (kouku.api_stage3_combined.api_erai_flag[ind] || kouku.api_stage3_combined.api_ebak_flag[ind]);
 								if (hit) targetdata.push([f2c[i],(dam>0)? dam:0,(dam!=kouku.api_stage3_combined.api_edam[ind]),kouku.api_stage3_combined.api_ecl_flag[ind],kouku.api_stage3_combined.api_erai_flag[ind]]);
+								if (hit && kouku.api_stage3_combined.api_e_sp_list) targetdata[targetdata.length-1].push(kouku.api_stage3_combined.api_e_sp_list[ind]);
 							}
 						}
 					}
@@ -1035,11 +1068,13 @@ function processAPI(root) {
 						eventqueue.push([shootNelsonTouch,args,getState()]); break;
 					case 101:
 					case 102:
+					case 401:
 						var attackers = (hou.api_at_eflag && hou.api_at_eflag[j])? [f2[0],f2[0],f2[1]] : [f1[0],f1[0],f1[1]];
 						var protects = []; for (let k=0; k<hou.api_damage[j].length; k++) protects.push(d[k+2] != hou.api_damage[j][k]);
 						var args = [attackers,defenders,d.slice(2,5),d.slice(5,8),protects];
 						eventqueue.push([shootNelsonTouch,args,getState()]); break;
 					case 103:
+					case 400:
 						var attackers = (hou.api_at_eflag && hou.api_at_eflag[j])? [f2[0],f2[1],f2[2]] : [f1[0],f1[1],f1[2]];
 						var protects = []; for (let k=0; k<hou.api_damage[j].length; k++) protects.push(d[k+2] != hou.api_damage[j][k]);
 						var args = [attackers,defenders,d.slice(2,5),d.slice(5,8),protects];
@@ -1148,11 +1183,13 @@ function processAPI(root) {
 						eventqueue.push([shootNelsonTouch,args,getState()]); break;
 					case 101:
 					case 102:
+					case 401:
 						var attackers = (hou.api_at_eflag && hou.api_at_eflag[j])? [f2[0],f2[0],f2[1]] : [f1[0],f1[0],f1[1]];
 						var protects = []; for (let k=0; k<hou.api_damage[j].length; k++) protects.push(d[k+2] != hou.api_damage[j][k]);
 						var args = [attackers,targets,d.slice(2,5),d.slice(5,8),protects];
 						eventqueue.push([shootNelsonTouch,args,getState()]); break;
 					case 103:
+					case 400:
 						var attackers = (hou.api_at_eflag && hou.api_at_eflag[j])? [f2[0],f2[1],f2[2]] : [f1[0],f1[1],f1[2]];
 						var protects = []; for (let k=0; k<hou.api_damage[j].length; k++) protects.push(d[k+2] != hou.api_damage[j][k]);
 						var args = [attackers,targets,d.slice(2,5),d.slice(5,8),protects];
@@ -1162,6 +1199,11 @@ function processAPI(root) {
 						var protects = []; for (let k=0; k<hou.api_damage[j].length; k++) protects.push(d[k+2] != hou.api_damage[j][k]);
 						var args = [attackers,targets,d.slice(2,4),d.slice(4,6),protects];
 						eventqueue.push([shootNelsonTouch,args,getState()]); break;
+					case 200:
+						var attackers = [d[0],d[0]];
+						var protects = []; for (let k=0; k<hou.api_damage[j].length; k++) protects.push(d[k+2] != hou.api_damage[j][k]);
+						var args = [attackers,targets,d.slice(2,4),d.slice(4,6),protects];
+						eventqueue.push([shootNightZuiun,args,getState()]); break;
 					case 300:
 					case 301:
 					case 302:
@@ -1223,6 +1265,10 @@ function processAPI(root) {
 				eventqueue.push([shutters,[true]]);
 				eventqueue.push([enemyEscortExit,[]]);
 			}
+		}
+		
+		if (data.api_smoke_type) {
+			eventqueue.push([phaseSmokescreenStart,[data.api_smoke_type]]);
 		}
 		
 		//jet LBAS phase
@@ -1298,6 +1344,10 @@ function processAPI(root) {
 		//opening torp
 		f = (COMBINED)? fleet1C : fleet1;
 		if (data.api_opening_atack) processRaigeki(data.api_opening_atack,f,(data.api_ship_ke_combined));
+		
+		if (data.api_smoke_type) {
+			eventqueue.push([phaseSmokescreenEnd,[]]);
+		}
 		
 		//engagement
 		var ldShooting = data.api_name == 'ld_shooting' || data.api_name == 'fc_ld_shooting';
@@ -1804,6 +1854,7 @@ function battleStart(battledata,newships,newshipsC,escape,bgm,showbosshp) {
 	}
 	
 	if (battledata[6]) SM.playVoice(fleet1[0].mid,'damage1',0);
+	else if (fleet1[0].mid == 5001) {}
 	else if (VOICES[fleet2[0].mid] && VOICES[fleet2[0].mid].start && !isPlayable(fleet2[0].mid)) SM.playVoice(fleet2[0].mid,'start',10);
 	else SM.playVoice(fleet1[0].mid,'start',0);
 	var j = 0;
@@ -2201,8 +2252,9 @@ function shootSpecialGun(ship,target,damage,forcecrit,protect) {
 }
 
 function shootNelsonTouch(ships,targets,damages,crits,protects) {
-	console.log(targets);
-	SM.playVoice(ships[0].mid,'special',ships[0].id);
+	let key = 'special';
+	if ((ships[0].mid == 911 || ships[0].mid == 916) && (ships[2] && ships[0].mid == ships[1].mid ? ships[2].mid : ships[1].mid) == 546) key = 'special2';
+	SM.playVoice(ships[0].mid,key,ships[0].id);
 	
 	for (var i=0; i<ships.length; i++) {
 		let ship = ships[i], target = targets[i], damage = damages[i], forcecrit = crits[i], protect = protects[i];
@@ -2234,6 +2286,76 @@ function shootNelsonTouch(ships,targets,damages,crits,protects) {
 	
 	addTimeout(function(){ ecomplete = true; }, 5500);
 }
+
+
+function shootNightZuiun(ships,targets,damages,crits,protects) {
+	SM.playVoice(ships[0].mid,'nbattack',ships[0].id);
+	
+	addTimeout(function() {
+		let ship = ships[0];
+		let planes = createPlane(ship.graphic.x+85,ship.graphic.y+22,[11],null,null,ship.side);
+		let xTarget = (ship.side==0)? 715:85;
+		let yTarget = targets[0].graphic.y+20;
+		let angle = Math.atan((yTarget-planes.y)/(xTarget-planes.x));
+		updates.push([movePlane,[planes,angle,(ship.side==0) ? 8 : -8, planes.x, xTarget]]);
+	},200);
+	
+	addTimeout(function() {
+		var flash = new PIXI.Graphics();
+		flash.beginFill(0xffffff);
+		flash.drawRect(0,0,800,480);
+		flash.lifetime = 20; flash.alpha = 0;
+		stage.addChild(flash);
+		updates.push([function(flash) {
+			flash.lifetime--;
+			if (flash.lifetime >= 10) flash.alpha += .06;
+			else if (flash.lifetime > 0) flash.alpha -= .06;
+			else { stage.removeChild(flash); return true; }
+			return false;
+		}, [flash]]);
+	}, 1000);
+	addTimeout(function() {
+		let ship = ships[0];
+		createFlare3((ship.side==0)?600:90,150-40*ship.side,-1,1);
+		createFlare3((ship.side==0)?670:160,140-40*ship.side,1,.85);
+	}, 1100);
+	
+	let delay = 1500;
+	let shipsDone = [];
+	for (var i=0; i<ships.length; i++) {
+		let ship = ships[i], target = targets[i], damage = damages[i], forcecrit = crits[i], protect = protects[i];
+		if (!shipsDone.includes(ship.id)) {
+			updates.push([shipMoveTo,[ship,ship.xorigin+25-50*ship.side,2]]);
+			addTimeout(function() {
+				updates.push([shipMoveTo,[ship,ship.xorigin,2]]);
+			},3000 + delay);
+			shipsDone.push(ship.id);
+		}
+		
+		if (!target) continue;
+		
+		if (protect) {
+			addTimeout(function() { updates.push([shipMoveTo,[target,target.xorigin+25-50*target.side,3]]); }, 1500*i+675 + delay);
+		}
+		addTimeout(function() {
+			shipShake(target,5,.125,40);
+			createExplosion(target.xorigin+40+80*Math.random(),target.graphic.y+42*Math.random(),1);
+			if (damage>14) addTimeout(function(){createExplosion(target.xorigin+40+80*Math.random(),target.graphic.y+42*Math.random(),1);},75);
+			addTimeout(function(){createExplosion(target.xorigin+40+80*Math.random(),target.graphic.y+42*Math.random(),1);},150);
+			if (damage>14) addTimeout(function(){createExplosion(target.xorigin+40+80*Math.random(),target.graphic.y+42*Math.random(),1);},225);
+			addTimeout(function(){createExplosion(target.xorigin+40+80*Math.random(),target.graphic.y+42*Math.random(),1);},300);
+			if (damage<=14) SM.play('fire');
+			else if (damage<40) SM.play('hit');
+			else { SM.play('crit'); SM.play('fire'); }
+		}, 1500*i+800 + delay);
+		addTimeout(function(){
+			standardHit(target,damage,true,protect,forcecrit);
+		}, 1500*i+1500 + delay);
+	}
+	
+	addTimeout(function(){ ecomplete = true; }, 4000 + delay);
+}
+
 
 function shootSSAttack(ships,targets,damages,crits,protects) {
 	SM.playVoice(ships[0].mid,'special',ships[0].id);
@@ -2676,6 +2798,62 @@ function createTorpedoBomber2(x,y,target) {
 	},[torp,speed]]);
 }
 
+function createSkipBomber(x,y,target) {
+	let bomb = getFromPool('skipbomb','assets/skipbomb.png'); bomb.notpersistent = true;
+	bomb.position.set(x,y-40); bomb.pivot.set(12,4); bomb.scale.set(.67);
+	stage.addChild(bomb); bomb.time = 0; bomb.yBase = y;
+	let speed = (target.graphic.x+(1-target.side)*160 - x)/80;
+	let dir = Math.atan((y-target.graphic.y-20)/(x-target.graphic.x-40-80*(1-target.side)))+Math.PI*(1-target.side);
+	bomb.rotation = speed < 0 ? Math.PI : 0;
+	let splash = getFromPool('skipbombsplash','assets/skipbombsplash.png'); splash.notpersistent = true;
+	splash.anchor.set(.5,1); splash.scale.set(0); splash.size = 0; splash.dirH = speed < 0 ? -1 : 1;
+	stage.addChild(splash);
+	updates.push([function(bomb,splash,speed,dir) {
+		let yOff = 0;
+		if (bomb.time < 30) {
+			let p = (bomb.time)/30;
+			yOff = 40*p*p*p-40;
+		} else if (bomb.time < 50) {
+			let p = 1-(bomb.time-30)/20;
+			yOff = 15*p*p*p-15;
+		} else if (bomb.time < 70) {
+			let p = (bomb.time-50)/20;
+			yOff = 15*p*p*p-15;
+		} else if (bomb.time < 82) {
+			let p = 1-(bomb.time-70)/12;
+			yOff = 9*p*p*p-9;
+		} else if (bomb.time < 94) {
+			let p = (bomb.time-82)/12;
+			yOff = 9*p*p*p-9;
+		} else if (bomb.time < 102) {
+			let p = 1-(bomb.time-94)/8;
+			yOff = 6*p*p*p-6;
+		} else {
+			let p = (bomb.time-102)/8;
+			yOff = 6*p*p*p-6;
+		}
+		if (bomb.time >= 30) {
+			bomb.x += speed;
+			bomb.yBase += Math.tan(dir)*speed;
+			bomb.rotation = dir;
+		}
+		bomb.y = bomb.yBase + yOff;
+		splash.position.set(bomb.x+12*splash.dirH,bomb.y+7);
+		if (bomb.time == 30 || bomb.time == 70 || bomb.time == 94) {
+			splash.size = 3;
+		}
+		let scale = .222*splash.size;
+		splash.scale.set(scale*splash.dirH,scale);
+		if (splash.size > 0) splash.size--;
+		bomb.time++;
+		if (bomb.time >= 110) {
+			recycle(bomb);
+			recycle(splash);
+			return true;
+		}
+	},[bomb,splash,speed,dir]]);
+}
+
 function GTorpedoPhase(shots) {
 	targets = []; damages = []; crits = [];
 	for (i=0; i<shots.length; i++) {
@@ -2814,6 +2992,19 @@ function GAirPhase(attackdata,targetdata,defenders,aaciShip1,aaciShip2,contact1,
 	}, 900 - 450*isjet);
 	
 	if (!issupport) addTimeout(function() {
+		for (var i=0; i<targetdata.length; i++) {
+			var target = targetdata[i][0];
+			if (targetdata[i][5] && targetdata[i][5].includes(1)) {
+				let src = attackdata.filter(d => d[0].side != target.side);
+				let bomber = src[Math.floor(Math.random()*src.length)];
+				let x = 480-160*target.side-isbombing*120;
+				let y = isbombing ? 200+(bomber[0]-7)*60 : bomber[0].graphic.y+80;
+				createSkipBomber(x,y,target);
+			}
+		}
+	}, 900);
+	
+	if (!issupport) addTimeout(function() {
 		var pos = [[],[]];
 		for (var i=0; i<attackdata.length; i++) {
 			if (isbombing&&(attackdata[i][0]-6)) pos[0].push(180+(attackdata[i][0]-7)*60);
@@ -2821,8 +3012,9 @@ function GAirPhase(attackdata,targetdata,defenders,aaciShip1,aaciShip2,contact1,
 		}
 		for (var i=0; i<targetdata.length; i++) {
 			var target = targetdata[i][0];
-			if (targetdata[i][4])
+			if (targetdata[i][4]) {
 				createTorpedoBomber1(380+40*target.side-isbombing*70,pos[(1-target.side)][Math.floor(Math.random()*pos[(1-target.side)].length)],target);
+			}
 		}
 	}, 1400 - 700*isjet);
 	
@@ -3160,6 +3352,94 @@ function moveSearchlight(light) {
 	return false;
 }
 
+
+function phaseSmokescreenStart(smokeType) {
+	createSmokescreen(smokeType);
+	addTimeout(function(){ ecomplete = true; }, 1000);
+}
+
+function phaseSmokescreenEnd() {
+	for (let smoke of SMOKESCREEN_ACTIVE) {
+		smoke.ended = true;
+	}
+	addTimeout(function(){ ecomplete = true; }, 1);
+}
+
+var SMOKESCREEN_TYPES = {
+	1: [[1,4,1,1],[3,19,16,1],[1,1,43,1],[2,25,34,1],[1,42,48,1],[3,22,50,1],[2,17,68,1],[1,6,73,1],[1,45,74,1],[1,8,78,1],[2,27,82,1],[3,48,90,0.9],[3,27,101,0.9],[2,43,117,0.8],[1,56,118,0.9],[2,11,119,0.9],[2,9,122,0.9],[1,65,127,0.9],[1,56,140,0.9],[2,6,144,0.9],[2,39,143,0.9],[1,61,154,0.8],[2,19,148,0.8],[2,28,169,0.6],[2,7,170,0.7],[1,1,173,0.7],[1,44,189,0.7],[2,47,176,0.6],[1,61,185,0.6],[1,18,191,0.6],[3,47,208,0.6],[3,8,210,0.6],[3,48,222,0.5],[3,27,231,0.5],[2,6,242,0.5],[3,32,259,0.6],[3,9,268,0.6],[3,57,279,0.4],[3,28,284,0.3],[3,48,297,0.3],[2,2,302,0.3],[3,18,302,0.3],[2,53,306,0.3],[2,8,328,0.3],[2,38,333,0.2],[3,56,337,0.2],[3,15,343,0.2]],
+	2: [[1,4,1,1],[3,19,16,1],[2,25,34,1],[1,1,43,1],[1,42,48,1],[3,22,50,1],[2,17,68,1],[1,6,73,1],[1,45,74,1],[1,8,78,1],[2,27,82,1],[3,48,90,0.9],[3,27,101,0.9],[2,43,117,0.6],[1,56,118,0.9],[2,11,119,0.8],[2,9,122,0.8],[1,65,127,0.7],[1,56,140,0.8],[2,6,144,0.7],[2,39,143,0.7],[2,19,148,0.6],[1,61,154,0.6],[2,28,169,0.4],[2,7,170,0.5],[1,1,173,0.5],[2,47,176,0.4],[1,61,185,0.4],[1,44,189,0.5],[1,18,191,0.3],[3,47,208,0.3],[3,8,210,0.3],[3,48,222,0.2],[3,27,231,0.2],[2,6,242,0.2]],
+	3: [[1,4,1,1],[3,19,16,1],[2,25,34,1],[1,1,43,1],[1,42,48,1],[3,22,50,1],[2,17,68,1],[1,6,73,1],[1,45,74,1],[1,8,78,1],[2,27,82,1],[3,48,90,0.9],[3,27,101,0.9],[2,43,117,0.6],[1,56,118,0.9],[2,11,119,0.8],[2,9,122,0.8],[1,65,127,0.7],[1,56,140,0.8],[2,6,144,0.7],[2,39,143,0.7],[2,19,148,0.6],[1,61,154,0.6],[2,28,169,0.4],[2,7,170,0.5],[1,1,173,0.5],[2,47,176,0.4],[1,61,185,0.4],[1,44,189,0.5],[1,18,191,0.3],[3,47,208,0.3],[3,8,210,0.3],[3,48,222,0.2],[3,27,231,0.2],[2,6,242,0.2]],
+	11: [[1,32,359,0.2],[2,9,368,0.2],[3,57,379,0.2]],
+	12: [[1,32,259,0.2],[2,9,268,0.2],[3,57,279,0.2]],
+}
+var SMOKESCREEN_ACTIVE = [];
+function createSmokescreen(smokeType) {
+	deleteSmokescreen();
+	SMOKESCREEN_ACTIVE = [];
+	let time = 0;
+	let ratio = smokeType == 3 ? 1.5 : smokeType == 2 ? 1.3 : 1;
+	for (let type=1; type<=smokeType; type++) {
+		let arrs = SMOKESCREEN_TYPES[type].slice();
+		if (fleet1.length >= 7 && SMOKESCREEN_TYPES[type+10]) arrs = arrs.concat(SMOKESCREEN_TYPES[type+10]);
+		for (let i=0; i<arrs.length; i++) {
+			let arr = arrs[i];
+			let size = arr[0], x = arr[1], y = arr[2], alpha = arr[3];
+			let smoke = size == 3 ? getFromPool('smokebig','assets/smokeBig.png') : size == 2 ? getFromPool('smokemiddle','assets/smokeMiddle.png') : getFromPool('smokesmall','assets/smokeSmall.png');
+			SMOKESCREEN_ACTIVE.push(smoke);
+			smoke.notpersistent = true;
+			smoke.anchor.set(.5);
+			smoke.scale.set(.667);
+			x += COMBINED ? 473 : 269;
+			if (type == 1) y += 136;
+			else if (type == 2 && smokeType == 2) y += 333;
+			else if (type == 2 && smokeType == 3) y += 283;
+			else if (type == 3) y += 406;
+			smoke.position.set(x*.667,y*.667);
+			smoke.alpha = alpha;
+			smoke.rotation = Math.random()*2*Math.PI;
+			smoke.xR = smoke.xOrig = x; smoke.yR = smoke.yOrig = y;
+			smoke.time = 0;
+			smoke.lifetime = (COMBINED ? 600 : 360) + 12*ratio*(i + (type == 3 ? 21 : type == 2 ? 12 : 0)) - Math.round(time*.06);
+			smoke.ended = false;
+			
+			let xTarget = 6*Math.random() - 3;
+			let yTarget = 6*Math.random() - 3;
+			let fadeSpeed = alpha/(120*ratio);
+			
+			addTimeout(function() {
+				stage.addChildAt(smoke,stage.getChildIndex(shutterTop2));
+				updates.push([moveSmokescreen,[smoke,xTarget,yTarget,fadeSpeed]]);
+			}, time);
+			time += 10;
+		}
+	}
+}
+
+function deleteSmokescreen() {
+	for (let smoke of SMOKESCREEN_ACTIVE) {
+		smoke.ended = true;
+		smoke.lifetime = smoke.alpha = 0;
+	}
+}
+
+function moveSmokescreen(smoke,xTarget,yTarget,fadeSpeed) {
+	let x = smoke.xOrig + xTarget*Math.sin(2*Math.PI*smoke.time/120);
+	let y = smoke.yOrig + yTarget*Math.sin(2*Math.PI*smoke.time/120);
+	smoke.position.set(x*.667, y*.667);
+	if (++smoke.time >= 120) smoke.time = 0;
+	if (smoke.lifetime <= 0) {
+		smoke.alpha -= fadeSpeed;
+		if (smoke.alpha <= 0) {
+			smoke.alpha = 0;
+			recycle(smoke);
+			return true;
+		}
+	} else {
+		if (smoke.ended) smoke.lifetime--;
+	}
+	return false;
+}
+
 function NBstart(flares,contact,bgm,combinedEType,isFriend) {
 	flares = flares || [-1,-1];
 	contact = contact || [-1,-1];
@@ -3490,6 +3770,7 @@ function resetBattle() {
 	$('#plAS1').text('');
 	$('#plAS2').text('');
 	bossBarReset();
+	deleteSmokescreen();
 }
 
 function shuttersNextBattle(battledata, newships) {

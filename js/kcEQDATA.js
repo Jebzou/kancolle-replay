@@ -50,7 +50,9 @@ const INTERCEPTOR = 48;
 const LANDSCOUT = 49;
 const TRANSPORTITEM = 50;
 const SUBRADAR = 51;
+const ARMYUNIT = 52;
 const LANDBOMBERL = 53;
+const SMOKESCREEN = 54;
 const JETBOMBER = 57;
 const JETSCOUT = 59;
 const RADARXL = 93;
@@ -253,7 +255,7 @@ EQTDATA[MAINGUNS] = {
 	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
 	canequip: ['DD','CL','CT','CLT','AS','AV','AO','AR','LHA','DE'],
 	canequipS: [541],
-	cannotequipS: [645, 650, 699, 717, 900],
+	cannotequipS: [645, 650, 699, 717, 900, 943],
 };
 EQTDATA[MAINGUNSAA] = {
 	name: 'Main Gun (S)',
@@ -264,7 +266,7 @@ EQTDATA[MAINGUNSAA] = {
 	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3,AAfleet:2,AAself:1},
 	canequip: ['DD','CL','CT','CLT','AS','AV','AO','AR','LHA','DE'],
 	canequipS: [541],
-	cannotequipS: [645, 650, 699, 717, 900],
+	cannotequipS: [645, 650, 699, 717, 900, 943],
 };
 EQTDATA[MAINGUNM] = {
 	name: 'Main Gun (M)',
@@ -301,7 +303,7 @@ EQTDATA[SECGUN] = {
 	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
 	canequip: ['CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','AS','AV','AR','LHA'],
 	canequipS: [500, 717],
-	cannotequipS: [477, 478, 622, 623, 624],
+	cannotequipS: [477, 478, 622, 623, 624, 945],
 };
 EQTDATA[SECGUNL] = {
 	name: 'Secondary Gun',
@@ -320,7 +322,7 @@ EQTDATA[SECGUNAA] = {
 	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3,AAfleet:2,AAself:1},
 	canequip: ['CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','AS','AV','AR','LHA'],
 	canequipS: [500, 717],
-	cannotequipS: [477, 478, 622, 623, 624],
+	cannotequipS: [477, 478, 622, 623, 624, 945],
 };
 EQTDATA[APSHELL] = {
 	name: 'AP Shell',
@@ -336,7 +338,7 @@ EQTDATA[TORPEDO] = {
 	btype: B_TORPEDO,
 	improve: {Ptorp:1.2,Pnb:1,ACCtorp:2,ACCnb:1.3},
 	canequip: ['DD','CL','CT','CLT','CA','CAV','SS','SSV'],
-	canequipS: [178, 591, 592, 877, 879],
+	canequipS: [178, 591, 592, 593, 877, 879, 954],
 	cannotequipS: [657],
 };
 EQTDATA[TORPEDOSS] = {
@@ -370,7 +372,7 @@ EQTDATA[AAFD] = {
 	atype: A_AAFD,
 	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3,AAfleet:2,AAself:1},
 	canequip: ['DD','CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','AS','AV','AO','AR','LHA','DE'],
-	cannotequipS: [621, 645, 650, 877],
+	cannotequipS: [621, 645, 650, 727, 877, 945],
 };
 EQTDATA[SONARS] = {
 	name: 'Sonar',
@@ -379,7 +381,7 @@ EQTDATA[SONARS] = {
 	btype: B_SONAR,
 	improve: {Pshell:.75,Pasw:1,ACCasw:1.3,EVtorp:1.5},
 	canequip: ['DD','CL','CT','CLT','SS','SSV','DE'],
-	canequipS: [352, 372, 380, 381, 382, 450, 491, 500, 529, 534, 536, 546, 554, 586, 591, 592, 626, 645, 650, 690, 699, 707, 713, 717, 879, 885, 889, 900, 911, 916],
+	canequipS: [352, 372, 380, 381, 382, 450, 491, 500, 529, 534, 536, 546, 554, 586, 591, 592, 593, 626, 645, 650, 690, 699, 707, 713, 717, 879, 885, 889, 894, 899, 900, 911, 916, 943, 948, 954],
 	canASWDamage: true,
 };
 EQTDATA[SONARL] = {
@@ -390,7 +392,7 @@ EQTDATA[SONARL] = {
 	improve: {Pshell:.75,Pasw:1,ACCasw:1.3,EVtorp:1.5},
 	canequip: ['CA','CAV','FBB','BB','BBV','CVL','CV','CVB','AS','AV','LHA'],
 	canequipS: [330, 346, 357, 500, 537, 538, 624, 629, 650, 662, 663, 668, 717],
-	cannotequipS: [380, 381, 382, 521, 522, 526, 534, 581, 877, 884],
+	cannotequipS: [380, 381, 382, 521, 522, 526, 534, 581, 727, 877, 884, 943, 945],
 	canASWDamage: true,
 };
 EQTDATA[DEPTHCHARGE] = {
@@ -399,7 +401,7 @@ EQTDATA[DEPTHCHARGE] = {
 	btype: B_DEPTHCHARGE,
 	improve: {Pshell:.75,Pasw:1,ACCasw:1.3},
 	canequip: ['DD','CL','CT','CLT','AV','DE'],
-	canequipS: [380, 381, 382, 500, 529, 534, 536, 699, 717, 889, 900],
+	canequipS: [380, 381, 382, 411, 412, 500, 529, 534, 536, 699, 717, 889, 900],
 	cannotequipS: [372, 491, 581, 586, 690],
 	canASWDamage: true,
 };
@@ -408,7 +410,7 @@ EQTDATA[FIGHTER] = {
 	image: 6,
 	canequip: ['CVL','CV','CVB','LHA','LandBase'],
 	canequipS: [553, 554, 717],
-	cannotequipS: [621, 626],
+	cannotequipS: [621, 626, 727, 943, 945],
 	isPlane: true,
 	isfighter: true,
 };
@@ -417,7 +419,7 @@ EQTDATA[TORPBOMBER] = {
 	image: 8,
 	canequip: ['CVL','CV','CVB','LandBase'],
 	canequipS: [352],
-	cannotequipS: [521],
+	cannotequipS: [521, 899],
 	isPlane: true,
 	isfighter: true,
 	istorpbomber: true,
@@ -430,7 +432,7 @@ EQTDATA[DIVEBOMBER] = {
 	name: 'Dive Bomber',
 	image: 7,
 	canequip: ['CVL','CV','CVB','LandBase'],
-	canequipS: [553, 554, 717],
+	canequipS: [553, 554, 717, 948],
 	isPlane: true,
 	isfighter: true,
 	isdivebomber: true,
@@ -457,7 +459,7 @@ EQTDATA[SEAPLANEBOMBER] = {
 	btype: B_RECON,
 	improve: {LOS:1.15},
 	canequip: ['CAV','BBV','SSV','AV','AO','LandBase'],
-	canequipS: [305, 306, 307, 314, 358, 361, 392, 446, 447, 488, 496, 547, 574, 579, 591, 626, 630, 639, 640, 652, 662, 663, 668, 724, 879, 911],
+	canequipS: [305, 306, 307, 314, 358, 361, 392, 446, 447, 488, 496, 547, 574, 579, 591, 593, 626, 630, 639, 640, 652, 662, 663, 668, 724, 879, 911, 954],
 	cannotequipS: [645, 650, 699, 717, 900],
 	isPlane: true,
 	isfighter: true,
@@ -491,9 +493,12 @@ EQTDATA[AUTOGYRO] = {
 	name: 'Anti-Sub Plane',
 	dname: 'Anti-sub Gyros',
 	image: 21,
-	canequip: ['CAV','BBV','CVL','AS','AO','AR','LHA'],
+	canequip: ['CAV','BBV','CVL','AS','AO','AR','LHA','LandBase'],
 	canequipS: [372, 477, 478, 491, 546, 547, 573, 574, 586, 630, 646, 652, 662, 663, 668, 690, 713, 885, 911, 920],
-	cannotequipS: [380, 381, 382, 521, 522, 526, 534, 621, 645, 699, 884, 889, 900],
+	cannotequipS: [380, 381, 382, 521, 522, 526, 534, 621, 645, 699, 727, 884, 889, 900, 943, 945],
+	isPlane: true,
+	isfighter: true,
+	isdivebomber: true,
 	isASWPlane: true,
 	canASWDamage: true,
 	canSupportASW: true,
@@ -502,9 +507,12 @@ EQTDATA[ASWPLANE] = {
 	name: 'Anti-Sub Plane',
 	dname: 'Anti-Sub Plane',
 	image: 22,
-	canequip: ['CVL','LHA'],
+	canequip: ['CVL','LHA','LandBase'],
 	canequipS: [553, 554, 646, 717, 900],
-	cannotequipS: [521, 522, 526, 534, 621, 626, 884],
+	cannotequipS: [521, 522, 526, 534, 621, 626, 727, 884, 894, 945],
+	isPlane: true,
+	isfighter: true,
+	isdivebomber: true,
 	isASWPlane: true,
 	canASWDamage: true,
 	canSupportASW: true,
@@ -515,6 +523,7 @@ EQTDATA[RADARS] = {
 	btype: B_RADAR,
 	improve: {ACCshell:1,ACCnb:1.3,LOS:1.25},
 	canequip: ['DD','CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','AS','AV','AO','AR','LHA','DE'],
+	cannotequipS: [945],
 };
 EQTDATA[RADARL] = {
 	name: 'Radar (L)',
@@ -522,7 +531,7 @@ EQTDATA[RADARL] = {
 	btype: B_RADAR,
 	improve: {ACCshell:1,ACCnb:1.3,LOS:1.4},
 	canequip: ['CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','AV'],
-	canequipS: [330, 346, 352, 357, 419, 421, 422, 423, 470, 532, 533, 537, 538, 626, 645, 650, 699, 717],
+	canequipS: [330, 346, 352, 357, 419, 421, 422, 423, 470, 532, 533, 537, 538, 626, 645, 650, 699, 717, 948],
 	cannotequipS: [477, 478, 521, 522, 574, 623, 624, 877],
 };
 EQTDATA[RADARXL] = {
@@ -539,6 +548,7 @@ EQTDATA[ENGINE] = {
 	image: 19,
 	improve: {EVshell:1.5},
 	canequip: ['DD','CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','SS','SSV','AS','AV','AO','AR','LHA'],
+	cannotequipS: [],
 };
 EQTDATA[TYPE3SHELL] = {
 	name: 'Anti-Air Shell',
@@ -553,7 +563,7 @@ EQTDATA[BULGEM] = {
 	dname: 'Torpedo Bulge (Medium)',
 	image: 23,
 	canequip: ['CT','CA','CAV','CVL','AS','AV','AR'],
-	canequipS: [146, 147, 216, 217, 305, 306, 307, 314, 330, 346, 357, 500, 537, 538, 542, 543, 547, 563, 564, 566, 567, 568, 569, 578, 579, 621, 622, 623, 624, 626, 629, 630, 645, 649, 650, 652, 656, 657, 662, 663, 668, 670, 699, 717, 900, 915],
+	canequipS: [146, 147, 216, 217, 305, 306, 307, 314, 330, 346, 357, 500, 537, 538, 542, 543, 547, 556, 559, 563, 564, 566, 567, 568, 569, 578, 579, 621, 622, 623, 624, 626, 629, 630, 645, 649, 650, 652, 656, 657, 662, 663, 668, 670, 699, 717, 727, 900, 915, 943, 948, 961],
 };
 EQTDATA[BULGEL] = {
 	name: 'Torpedo Bulge',
@@ -569,8 +579,8 @@ EQTDATA[LANDINGCRAFT] = {
 	btype: B_LC1,
 	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
 	canequip: ['AV','LHA'],
-	canequipS: [147, 198, 199, 200, 260, 352, 382, 418, 419, 434, 435, 464, 468, 469, 470, 478, 487, 488, 489, 490, 498, 500, 506, 541, 547, 548, 563, 587, 623, 630, 645, 647, 650, 657, 666, 667, 699, 703, 707, 716, 718, 720, 889, 908, 915, 916],
-	cannotequipS: [445, 491],
+	canequipS: [147, 198, 199, 200, 260, 352, 382, 418, 419, 434, 435, 464, 468, 469, 470, 478, 487, 488, 489, 490, 498, 500, 506, 541, 547, 548, 559, 563, 587, 623, 630, 645, 647, 650, 657, 666, 667, 699, 703, 707, 716, 718, 720, 725, 889, 899, 908, 915, 916, 959],
+	cannotequipS: [445, 491, 727, 945],
 };
 EQTDATA[SEARCHLIGHTS] = {
 	name: 'Night Equip',
@@ -578,7 +588,7 @@ EQTDATA[SEARCHLIGHTS] = {
 	image: 24,
 	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
 	canequip: ['DD','CL','CA','CAV','FBB','BB','BBV','AV'],
-	canequipS: [343, 356, 500, 626, 639, 640, 645, 650, 699],
+	canequipS: [343, 356, 500, 626, 639, 640, 645, 650, 699, 727, 948],
 };
 EQTDATA[SEARCHLIGHTL] = {
 	name: 'Night Equip',
@@ -593,7 +603,7 @@ EQTDATA[STARSHELL] = {
 	dname: 'Starshell',
 	image: 27,
 	canequip: ['DD','CL','CLT','CA','CAV','FBB','BB','BBV','AS','AV','AR'],
-	canequipS: [500, 699],
+	canequipS: [500, 699, 727],
 };
 EQTDATA[PICKET] = {
 	name: 'Night Equip',
@@ -601,7 +611,7 @@ EQTDATA[PICKET] = {
 	image: 32,
 	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
 	canequip: ['DD','CL','CT','CLT','CA','CAV','FBB','BB','BBV','AS','AV','DE'],
-	canequipS: [381, 500, 529, 536, 621, 626, 699, 889],
+	canequipS: [381, 500, 529, 536, 621, 626, 699, 889, 894, 899],
 };
 EQTDATA[WG42] = {
 	name: 'Misc',
@@ -609,8 +619,8 @@ EQTDATA[WG42] = {
 	image: 31,
 	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
 	canequip: ['DD','CL','CAV','BBV','SS','SSV','AS','AV','LHA'],
-	canequipS: [500, 573, 591, 592, 699, 877, 878, 879],
-	cannotequipS: [445, 553, 554],
+	canequipS: [500, 573, 591, 592, 593, 699, 877, 878, 879, 954],
+	cannotequipS: [445, 553, 554, 943, 948],
 };
 EQTDATA[SRF] = {
 	name: 'Misc',
@@ -625,23 +635,23 @@ EQTDATA[FCF] = {
 	image: 28,
 	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
 	canequip: ['CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','AS','AV','LHA'],
-	canequipS: [330, 346, 357, 419, 421, 422, 423, 464, 497, 498, 500, 532, 533, 537, 538, 542, 543, 567, 587, 628, 629, 645, 649, 650, 651, 656, 667, 699, 720, 915],
-	cannotequipS: [521, 522, 877],
+	canequipS: [330, 346, 357, 419, 421, 422, 423, 464, 497, 498, 500, 532, 533, 537, 538, 542, 543, 567, 587, 628, 629, 645, 649, 650, 651, 656, 667, 699, 720, 915, 961],
+	cannotequipS: [521, 522, 727, 877, 943, 945, 948],
 };
 EQTDATA[DRUM] = {
 	name: 'Misc',
 	dname: 'Drum',
 	image: 25,
 	canequip: ['DD','CL','CAV','AV','AO','LHA'],
-	canequipS: [530, 539, 605, 707],
-	cannotequipS: [717, 900],
+	canequipS: [530, 539, 605, 707, 899],
+	cannotequipS: [717, 900, 943, 948],
 };
 EQTDATA[SCAMP] = {
 	name: 'Misc',
 	dname: 'SCAMP',
 	image: 29,
 	canequip: ['CAV','BBV','CVL','CV','CVB','AO'],
-	canequipS: [166, 372, 450, 488, 491, 496, 547, 574, 579, 581, 586, 626, 630, 652, 662, 663, 668, 690, 879],
+	canequipS: [166, 372, 450, 488, 491, 496, 547, 574, 579, 581, 586, 626, 630, 652, 662, 663, 668, 690, 879, 943, 948],
 	cannotequipS: [645, 699],
 };
 EQTDATA[FLYINGBOAT] = {
@@ -673,7 +683,7 @@ EQTDATA[SEAPLANEFIGHTER] = {
 	name: 'Seaplane Fighter',
 	image: 43,
 	canequip: ['CAV','BBV','SSV','AS','AV','AO','LandBase'],
-	canequipS: [136, 148, 275, 276, 358, 361, 446, 447, 488, 496, 541, 546, 547, 573, 592, 621, 626, 652, 668, 879, 911],
+	canequipS: [136, 148, 275, 276, 358, 361, 446, 447, 488, 496, 541, 546, 547, 573, 592, 593, 621, 626, 652, 668, 879, 911],
 	cannotequipS: [645, 650, 699, 717, 900],
 	isPlane: true,
 	isfighter: true,
@@ -686,14 +696,15 @@ EQTDATA[LANDINGTANK] = {
 	btype: B_LC3,
 	improve: {Pshell:1,Pnb:1},
 	canequip: ['SS','SSV','AV','LHA'],
-	canequipS: [147, 198, 199, 200, 352, 418, 464, 468, 470, 478, 487, 488, 489, 490, 497, 500, 506, 541, 547, 548, 564, 568, 569, 573, 578, 587, 588, 623, 647, 656, 657, 662, 663, 666, 667, 668, 670, 908, 915, 916],
-	cannotequipS: [445, 491, 581],
+	canequipS: [147, 198, 199, 200, 352, 418, 464, 468, 470, 478, 487, 488, 489, 490, 497, 500, 506, 541, 547, 548, 556, 564, 568, 569, 573, 578, 587, 588, 623, 647, 656, 657, 662, 663, 666, 667, 668, 670, 899, 908, 915, 916, 954, 961],
+	cannotequipS: [445, 491, 581, 943],
 };
 EQTDATA[OILDRUM] = {
 	name: 'Misc',
 	dname: 'Oil drum',
 	image: 35,
 	canequip: ['AO'],
+	canequipS: [943, 948],
 };
 EQTDATA[LANDBOMBER] = {
 	name: 'Misc',
@@ -760,6 +771,19 @@ EQTDATA[JETBOMBER] = {
 	isfighter: true,
 	isdivebomber: true,
 	isjet: true,
+};
+EQTDATA[ARMYUNIT] = {
+	name: 'Army Unit',
+	image: 52,
+	canequip: [],
+	canequipS: [727, 945],
+};
+EQTDATA[SMOKESCREEN] = {
+	name: 'Smoke Generator',
+	image: 54,
+	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
+	canequip: ['DE','DD','CL','CLT','CA','CT'],
+	canequipS: [411, 412, 645, 650, 699],
 };
 EQTDATA[OTHER] = {
 	name: 'Misc',
@@ -1001,7 +1025,7 @@ var EQDATA = {
 	},
 	22: {
 		name: 'Prototype Reppuu Late Model',
-		nameJP: '烈風',
+		nameJP: '試製烈風 前期型',
 		added: '2013-04-17',
 		type: FIGHTER,
 		AA: 10
@@ -1088,8 +1112,8 @@ var EQDATA = {
 		ACC: 8
 	},
 	32: {
-		name: 'Type 14 Air RADAR',
-		nameJP: '14号対空電探',
+		name: 'Type 42 Air RADAR',
+		nameJP: '42号対空電探',
 		added: '2013-04-17',
 		type: RADARL,
 		AA: 6,
@@ -1159,7 +1183,7 @@ var EQDATA = {
 	},
 	41: {
 		name: 'Type A Ko-hyoteki',
-		nameJP: '甲標的',
+		nameJP: '甲標的 甲型',
 		added: '2013-04-17',
 		type: MIDGETSUB,
 		TP: 12
@@ -1209,8 +1233,8 @@ var EQDATA = {
 		ACC: 2
 	},
 	48: {
-		name: '12.7 cm Single High-Angle Cannon',
-		nameJP: '12.7cm単装高角砲',
+		name: '12cm Single High-Angle Cannon',
+		nameJP: '12cm単装高角砲',
 		added: '2013-06-05',
 		type: SECGUN, image: 16,
 		FP: 1,
@@ -1255,7 +1279,7 @@ var EQDATA = {
 	},
 	53: {
 		name: 'Reppuu Model 11',
-		nameJP: '烈風改',
+		nameJP: '烈風 一一型',
 		added: '2013-05-17',
 		type: FIGHTER,
 		AA: 12
@@ -2166,8 +2190,8 @@ var EQDATA = {
 		AR: -2
 	},
 	147: {
-		name: '120mm Twin Gun Mount',
-		nameJP: '120mm連装砲',
+		name: '120mm/50 Twin Gun Mount',
+		nameJP: '120mm/50 連装砲',
 		added: '2015-08-10',
 		type: MAINGUNS,
 		FP: 3,
@@ -2562,7 +2586,7 @@ var EQDATA = {
 	},
 	185: {
 		name: 'Type 3 Fighter Hien Model 1D',
-		nameJP: '三式戦 飛燕１型丁',
+		nameJP: '三式戦 飛燕一型丁',
 		added: '2016-08-12',
 		image: 44,
 		type: INTERCEPTOR,
@@ -3437,6 +3461,16 @@ var EQDATA = {
 		ACC: 2,
 		EV: 4,
 	},
+	265: {
+		name: 'Shiden Kai (343 Air Group) 407th Fighter Squadron',
+		nameJP: '紫電改(三四三空) 戦闘407',
+		added: '2023-03-01',
+		type: INTERCEPTOR,
+		AA: 11,
+		AR: 2,
+		ACC: 2,
+		EV: 4,
+	},
 	266: {
 		name: '12.7cm Twin Gun Mount Model C Kai 2',
 		nameJP: '12.7cm連装砲C型改二',
@@ -3578,8 +3612,8 @@ var EQDATA = {
 		LOS: 10,
 	},
 	279: {
-		name: 'SK&SG Radar',
-		nameJP: 'SK&SG レーダー',
+		name: 'SK+SG Radar',
+		nameJP: 'SK+SG レーダー',
 		added: '2018-02-16',
 		type: RADARL,
 		FP: 1,
@@ -4193,7 +4227,7 @@ var EQDATA = {
 		EV: 3,
 	},
 	335: {
-		name: '	Reppuu Kai (Prototype Carrier-based Model)',
+		name: 'Reppuu Kai (Prototype Carrier-based Model)',
 		nameJP: '烈風改(試製艦載型)',
 		added: '2019-05-20',
 		type: FIGHTER,
@@ -4214,7 +4248,7 @@ var EQDATA = {
 		EV: 1,
 	},
 	337: {
-		name: '	Reppuu Kai Ni (CarDiv 1/Skilled)',
+		name: 'Reppuu Kai Ni (CarDiv 1/Skilled)',
 		nameJP: '烈風改二(一航戦/熟練)',
 		added: '2019-05-20',
 		type: FIGHTER,
@@ -5532,6 +5566,7 @@ var EQDATA = {
 		nameJP: 'B-25',
 		added: '2022-05-28',
 		type: LANDBOMBER,
+		isSkipBomber: true,
 		FP: 3,
 		DIVEBOMB: 16,
 		TP: 8,
@@ -5763,8 +5798,8 @@ var EQDATA = {
 		RNG: 4,
 	},
 	479: {
-		name: 'Mosquito FB Mk.IV',
-		nameJP: 'Mosquito FB Mk.IV',
+		name: 'Mosquito FB Mk.VI',
+		nameJP: 'Mosquito FB Mk.VI',
 		added: '2022-08-31',
 		type: LANDBOMBER,
 		aaResistShip: .6,
@@ -5827,21 +5862,254 @@ var EQDATA = {
 		ASW: 4,
 		LOS: 5,
 	},
+	485: {
+		name: 'Kyoufuu Kai Ni',
+		nameJP: '強風改二',
+		added: '2022-11-30',
+		type: SEAPLANEFIGHTER,
+		AA: 6,
+		ACC: 1,
+		EV: 4,
+		LOS: 2,
+	},
+	486: {
+		name: 'Type 0 Fighter Model 64 (Air Superiority Fighter Specification)',
+		nameJP: '零式艦戦64型(制空戦闘機仕様)',
+		added: '2022-12-06',
+		type: FIGHTER,
+		FP: 1,
+		AA: 9,
+		ACC: 1,
+		EV: 3,
+		LOS: 1,
+	},
+	487: {
+		name: 'Type 0 Fighter Model 64 (Skilled Fighter-Bomber)',
+		nameJP: '零式艦戦64型(熟練爆戦)',
+		added: '2022-12-06',
+		type: DIVEBOMBER,
+		isFighterBomber: true,
+		aaResistShip: .6,
+		FP: 1,
+		DIVEBOMB: 6,
+		AA: 7,
+		ACC: 2,
+		ASW: 3,
+		LOS: 2,
+	},
+	488: {
+		name: 'Type 2 Depth Charge Kai Ni',
+		nameJP: '二式爆雷改二',
+		added: '2022-12-31',
+		type: DEPTHCHARGE,
+		isDCOnly: true,
+		canASWPenetrate: true,
+		AR: 1,
+		ACC: 1,
+		EV: 1,
+		ASW: 8,
+	},
+	489: {
+		name: 'Type 1 Fighter Hayabusa Model II Kai (20th Squadron)',
+		nameJP: '一式戦 隼II型改(20戦隊)',
+		added: '2023-01-31',
+		type: ASWPLANE,
+		FP: 2,
+		DIVEBOMB: 4,
+		AA: 6,
+		EV: 3,
+		ASW: 8,
+	},
+	490: {
+		name: 'Prototype Night Zuiun (Attack Equipment)',
+		nameJP: '試製 夜間瑞雲(攻撃装備)',
+		added: '2023-02-14',
+		type: SEAPLANEBOMBER, image: 51,
+		aaResistShip: .5,
+		aaResistFleet: .7,
+		FP: 3,
+		DIVEBOMB: 10,
+		AA: 4,
+		ACC: 2,
+		ASW: 6,
+		LOS: 7,
+	},
+	491: {
+		name: 'Type 1 Fighter Hayabusa Model III Kai (Skilled / 20th Squadron)',
+		nameJP: '一式戦 隼III型改(熟練/20戦隊)',
+		added: '2023-02-27',
+		type: ASWPLANE,
+		aaResistShip: .6,
+		FP: 2,
+		DIVEBOMB: 5,
+		AA: 7,
+		ACC: 1,
+		EV: 3,
+		ASW: 8,
+	},
+	492: {
+		name: 'Zero Fighter Model 52C (Hachiman Force)',
+		nameJP: '零戦52型丙(八幡部隊)',
+		added: '2023-03-18',
+		type: FIGHTER,
+		FP: 1,
+		AA: 10,
+		ACC: 1,
+		EV: 1,
+	},
+	493: {
+		name: 'Type 1 Land-based Attack Aircraft (Hachiman Force)',
+		nameJP: '一式陸攻(八幡部隊)',
+		added: '2023-03-18',
+		type: LANDBOMBER,
+		DIVEBOMB: 12,
+		TP: 11,
+		AA: 3,
+		ACC: 1,
+		ASW: 2,
+		LOS: 4,
+	},
+	494: {
+		name: 'Toku Daihatsu Landing Craft + Chi-Ha',
+		nameJP: '特大発動艇+チハ',
+		added: '2023-03-18',
+		type: LANDINGCRAFT,
+	},
+	495: {
+		name: 'Toku Daihatsu Landing Craft + Chi-Ha Kai',
+		nameJP: '特大発動艇+チハ改',
+		added: '2023-03-18',
+		type: LANDINGCRAFT,
+		FP: 1,
+	},
+	496: {
+		name: 'Army Infantry Corps',
+		nameJP: '陸軍歩兵部隊',
+		added: '2023-03-18',
+		type: ARMYUNIT,
+	},
+	497: {
+		name: 'Type 97 Medium Tank (Chi-Ha)',
+		nameJP: '九七式中戦車(チハ)',
+		added: '2023-03-18',
+		type: ARMYUNIT,
+	},
+	498: {
+		name: 'Type 97 Medium Tank New Turret (Chi-Ha Kai)',
+		nameJP: '九七式中戦車 新砲塔(チハ改)',
+		added: '2023-03-18',
+		type: ARMYUNIT,
+	},
+	499: {
+		name: 'Army Infantry Corps + Chi-Ha Kai',
+		nameJP: '陸軍歩兵部隊+チハ改',
+		added: '2023-03-18',
+		type: ARMYUNIT,
+	},
+	500: {
+		name: 'Smoke Generator (Smoke Screen)',
+		nameJP: '発煙装置(煙幕)',
+		added: '2023-04-23',
+		type: SMOKESCREEN,
+		EV: 1,
+	},
 	501: {
+		name: 'Smoke Generator Kai (Smoke Screen)',
+		nameJP: '発煙装置改(煙幕)',
+		added: '2023-04-23',
+		type: SMOKESCREEN,
+		EV: 3,
+	},
+	502: {
+		name: '35.6cm Twin Gun Mount Kai 3 (Dazzle Camouflage)',
+		nameJP: '35.6cm連装砲改三(ダズル迷彩仕様)',
+		added: '2023-04-30',
+		type: MAINGUNL,
+		FP: 20,
+		AA: 6,
+		AR: 2,
+		ACC: 4,
+		EV: 3,
+		RNG: 3,
+	},
+	503: {
+		name: '35.6cm Twin Gun Mount Kai 4',
+		nameJP: '35.6cm連装砲改四',
+		added: '2023-05-01',
+		type: MAINGUNL,
+		FP: 22,
+		AA: 5,
+		AR: 2,
+		ACC: 4,
+		EV: 1,
+		RNG: 3,
+	},
+	504: {
+		name: 'Ginga (Skilled)',
+		nameJP: '銀河(熟練)',
+		added: '2023-05-28',
+		type: LANDBOMBER,
+		aaResistShip: .6,
+		DIVEBOMB: 15,
+		TP: 14,
+		AA: 3,
+		ACC: 2,
+		ASW: 3,
+		LOS: 3,
+	},
+	505: {
+		name: '25mm Anti-Aircraft Autocannon Expansion',
+		nameJP: '25mm対空機銃増備',
+		added: '2023-06-14',
+		type: AAGUN,
+		AA: 7,
+		EV: 2,
+	},
+	506: {
+		name: 'Radar Equipment Mast (Type 13 Kai + Type 22 Radar Kai 4)',
+		nameJP: '電探装備マスト(13号改+22号電探改四)',
+		added: '2023-06-14',
+		type: RADARS,
+		AA: 4,
+		ACC: 6,
+		EV: 2,
+		ASW: 2,
+		LOS: 5,
+	},
+	507: {
+		name: '14inch/45 Twin Gun Mount',
+		nameJP: '14inch/45 連装砲',
+		added: '2023-06-30',
+		type: MAINGUNL,
+		FP: 16,
+		AR: 1,
+		EV: 1,
+		RNG: 3,
+	},
+	508: {
+		name: '14inch/45 Triple Gun Mount',
+		nameJP: '14inch/45 三連装砲',
+		added: '2023-06-30',
+		type: MAINGUNL,
+		FP: 19,
+		AR: 1,
+		RNG: 3,
+	},
+	1501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',
 		type: MAINGUNS,
 		FP: 1,
 		RNG: 1,
 	},
-	502: {
+	1502: {
 		name: '5inch Twin Cannon',
 		nameJP: '5inch連装砲',
 		type: MAINGUNS,
 		FP: 2,
 		RNG: 1,
 	},
-	503: {
+	1503: {
 		name: '3inch Single High-Angle Mount',
 		nameJP: '3inch単装高角砲',
 		type: MAINGUNS, image: 16,
@@ -5850,7 +6118,7 @@ var EQDATA = {
 		AA: 1,
 		RNG: 1,
 	},
-	504: {
+	1504: {
 		name: '5inch Single AA Cannon',
 		nameJP: '5inch単装高射砲',
 		type: MAINGUNM,
@@ -5858,7 +6126,7 @@ var EQDATA = {
 		AA: 2,
 		RNG: 2,
 	},
-	505: {
+	1505: {
 		name: '8inch Triple Cannon',
 		nameJP: '8inch三連装砲',
 		type: MAINGUNM,
@@ -5866,7 +6134,7 @@ var EQDATA = {
 		AA: 2,
 		RNG: 2,
 	},
-	506: {
+	1506: {
 		name: '6inch Twin Rapid-fire Cannon',
 		nameJP: '6inch連装速射砲',
 		type: MAINGUNM,
@@ -5874,7 +6142,7 @@ var EQDATA = {
 		AA: 3,
 		RNG: 2,
 	},
-	507: {
+	1507: {
 		name: '14inch Twin Cannon',
 		nameJP: '14inch連装砲',
 		type: MAINGUNL,
@@ -5882,7 +6150,7 @@ var EQDATA = {
 		AA: 4,
 		RNG: 3,
 	},
-	508: {
+	1508: {
 		name: '16inch Twin Cannon',
 		nameJP: '16inch連装砲',
 		type: MAINGUNL,
@@ -5890,7 +6158,7 @@ var EQDATA = {
 		AA: 4,
 		RNG: 3,
 	},
-	509: {
+	1509: {
 		name: '16inch Triple Cannon',
 		nameJP: '16inch三連装砲',
 		type: MAINGUNL,
@@ -5898,7 +6166,7 @@ var EQDATA = {
 		AA: 5,
 		RNG: 3,
 	},
-	510: {
+	1510: {
 		name: '5inch High-Angle Mount (Secondary)',
 		nameJP: '5inch単装高射砲',
 		type: SECGUN, image: 16,
@@ -5906,14 +6174,14 @@ var EQDATA = {
 		AA: 2,
 		RNG: 1,
 	},
-	511: {
+	1511: {
 		name: '6inch Single Cannon',
 		nameJP: '6inch単装砲',
 		type: SECGUN,
 		FP: 1,
 		RNG: 2,
 	},
-	512: {
+	1512: {
 		name: '12.5inch Twin Secondary Cannon',
 		nameJP: '12.5inch連装副砲',
 		type: SECGUN,
@@ -5921,28 +6189,28 @@ var EQDATA = {
 		AA: 3,
 		RNG: 2,
 	},
-	513: {
+	1513: {
 		name: '21inch Torpedo Mk.I',
 		nameJP: '21inch魚雷前期型',
 		type: TORPEDO,
 		TP: 2,
 		RNG: 1,
 	},
-	514: {
+	1514: {
 		name: '21inch Torpedo Mk.II',
 		nameJP: '21inch魚雷後期型',
 		type: TORPEDO,
 		TP: 5,
 		RNG: 1,
 	},
-	515: {
+	1515: {
 		name: 'High-speed Abyssal Torpedo',
 		nameJP: '高速深海魚雷',
 		type: TORPEDO,
 		TP: 10,
 		RNG: 1,
 	},
-	516: {
+	1516: {
 		name: 'Abyssal Torpedo Bomber Mk.I',
 		nameJP: '深海棲艦攻',
 		b_image: 3,
@@ -5951,7 +6219,7 @@ var EQDATA = {
 		ASW: 2,
 		LOS: 5,
 	},
-	517: {
+	1517: {
 		name: 'Abyssal Torpedo Bomber Mk.II',
 		nameJP: '深海棲艦攻 Mark.II',
 		b_image: 4,
@@ -5960,7 +6228,7 @@ var EQDATA = {
 		ASW: 4,
 		LOS: 5,
 	},
-	518: {
+	1518: {
 		name: 'Abyssal Torpedo Bomber Mk.III',
 		nameJP: '深海棲艦攻 Mark.III',
 		b_image: 5,
@@ -5970,35 +6238,35 @@ var EQDATA = {
 		ASW: 7,
 		LOS: 5,
 	},
-	519: {
+	1519: {
 		name: 'Abyssal Fighter',
 		nameJP: '深海棲艦戦',
 		b_image: 3,
 		type: FIGHTER,
 		AA: 2,
 	},
-	520: {
+	1520: {
 		name: 'Abyssal Fighter Mk.II',
 		nameJP: '深海棲艦戦 Mark.II',
 		b_image: 4,
 		type: FIGHTER,
 		AA: 5,
 	},
-	521: {
+	1521: {
 		name: 'Abyssal Fighter Mk.III',
 		nameJP: '深海棲艦戦 Mark.III',
 		b_image: 5,
 		type: FIGHTER,
 		AA: 9,
 	},
-	522: {
+	1522: {
 		name: 'Flying-fish Fighter',
 		nameJP: '飛び魚艦戦',
 		b_image: 5,
 		type: FIGHTER,
 		AA: 13,
 	},
-	523: {
+	1523: {
 		name: 'Abyssal Dive Bomber Mk.I',
 		nameJP: '深海棲艦爆',
 		b_image: 3,
@@ -6006,7 +6274,7 @@ var EQDATA = {
 		DIVEBOMB: 3,
 		ASW: 1,
 	},
-	524: {
+	1524: {
 		name: 'Abyssal Dive Bomber Mk.II',
 		nameJP: '深海棲艦爆 Mark.II',
 		b_image: 4,
@@ -6014,7 +6282,7 @@ var EQDATA = {
 		DIVEBOMB: 6,
 		ASW: 2,
 	},
-	525: {
+	1525: {
 		name: 'Abyssal Recon Plane',
 		nameJP: '深海棲艦偵察機',
 		type: SEAPLANE,
@@ -6023,7 +6291,7 @@ var EQDATA = {
 		ASW: 1,
 		LOS: 5,
 	},
-	526: {
+	1526: {
 		name: 'Flying-fish Recon Plane',
 		nameJP: '飛び魚偵察機',
 		type: SEAPLANE,
@@ -6032,7 +6300,7 @@ var EQDATA = {
 		ASW: 2,
 		LOS: 10,
 	},
-	527: {
+	1527: {
 		name: 'Air Radar Mark.I',
 		nameJP: '対空レーダ― Mark.I',
 		type: RADARS,
@@ -6040,21 +6308,21 @@ var EQDATA = {
 		LOS: 5,
 		ACC: 5,
 	},
-	528: {
+	1528: {
 		name: 'Surface Radar Mark.I',
 		nameJP: '水上レーダ― Mark.I',
 		type: RADARS,
 		LOS: 5,
 		ACC: 10,
 	},
-	529: {
+	1529: {
 		name: 'Surface Radar Mark.II',
 		nameJP: '水上レーダ― Mark.II',
 		type: RADARS,
 		LOS: 10,
 		ACC: 15,
 	},
-	530: {
+	1530: {
 		name: 'Air Radar Mark.II',
 		nameJP: '対空レーダ― Mark.II',
 		type: RADARL,
@@ -6062,7 +6330,7 @@ var EQDATA = {
 		LOS: 10,
 		ACC: 5,
 	},
-	531: {
+	1531: {
 		name: 'Abyssal Surface Radar',
 		nameJP: '深海水上レーダー',
 		type: RADARL,
@@ -6072,7 +6340,7 @@ var EQDATA = {
 		LOS: 16,
 		ACC: 24,
 	},
-	532: {
+	1532: {
 		name: 'Abyssal Air Radar',
 		nameJP: '深海対空レーダ―',
 		type: RADARL,
@@ -6082,57 +6350,57 @@ var EQDATA = {
 		LOS: 12,
 		ACC: 16,
 	},
-	533: {
+	1533: {
 		name: 'Improved Abyssal Turbine',
 		nameJP: '改良型深海タービン',
 		type: ENGINE,
 		EV: 10,
 	},
-	534: {
+	1534: {
 		name: 'Enhanced Abyssal Engine',
 		nameJP: '強化型深海缶',
 		type: ENGINE,
 		EV: 15,
 	},
-	535: {
+	1535: {
 		name: 'Abyssal AA Dispersal Shell',
 		nameJP: '対空散弾',
 		type: TYPE3SHELL,
 		AA: 10,
 	},
-	536: {
+	1536: {
 		name: 'Depleted AP Shell',
 		nameJP: '劣化徹甲弾',
 		type: APSHELL,
 		FP: 15,
 		ACC: 5,
 	},
-	537: {
+	1537: {
 		name: '12.7mm Abyssal Gun',
 		nameJP: '12.7mm機銃',
 		type: AAGUN,
 		AA: 2,
 	},
-	538: {
+	1538: {
 		name: '20mm Abyssal Gun',
 		nameJP: '20mm機銃',
 		type: AAGUN,
 		AA: 4,
 	},
-	539: {
+	1539: {
 		name: '40mm Abyssal Twin Autocannon',
 		nameJP: '40mm二連装機関砲',
 		type: AAGUN,
 		AA: 8,
 	},
-	540: {
+	1540: {
 		name: '40mm Abyssal Quad Autocannon',
 		nameJP: '40mm四連装機関砲',
 		type: AAGUN,
 		isconcentrated: true,
 		AA: 12,
 	},
-	541: {
+	1541: {
 		name: 'Abyssal Cuttlefish Torpedo',
 		nameJP: '深海烏賊魚雷',
 		type: MIDGETSUB,
@@ -6140,31 +6408,31 @@ var EQDATA = {
 		ACC: 5,
 		RNG: 1,
 	},
-	542: {
+	1542: {
 		name: 'Abyssal Depth Charge Projector',
 		nameJP: '深海爆雷投射機',
 		type: DEPTHCHARGE,
 		ASW: 7,
 	},
-	543: {
+	1543: {
 		name: 'Abyssal Sonar',
 		nameJP: '深海ソナー',
 		type: SONARS,
 		ASW: 9,
 	},
-	544: {
+	1544: {
 		name: 'Abyssal Depth Charge Projector Mk.II',
 		nameJP: '深海爆雷投射機 Mk.II',
 		type: DEPTHCHARGE,
 		ASW: 13,
 	},
-	545: {
+	1545: {
 		name: 'Abyssal Sonar Mk.II',
 		nameJP: '深海ソナー Mk.II',
 		type: SONARS,
 		ASW: 16,
 	},
-	546: {
+	1546: {
 		name: 'Flying-fish Dive Bomber',
 		nameJP: '飛び魚艦爆',
 		b_image: 5,
@@ -6173,7 +6441,7 @@ var EQDATA = {
 		AA: 8,
 		ASW: 7,
 	},
-	547: {
+	1547: {
 		name: 'Abyssal Cat Fighter',
 		nameJP: '深海猫艦戦',
 		b_image: 6,
@@ -6181,7 +6449,7 @@ var EQDATA = {
 		AA: 10,
 		ACC: 1,
 	},
-	548: {
+	1548: {
 		name: 'Abyssal Hell Diver',
 		nameJP: '深海地獄艦爆',
 		b_image: 7,
@@ -6191,7 +6459,7 @@ var EQDATA = {
 		LOS: 3,
 		ACC: 3,
 	},
-	549: {
+	1549: {
 		name: 'Avenger Torpedo Bomber',
 		nameJP: '深海復讐艦攻',
 		b_image: 8,
@@ -6202,7 +6470,7 @@ var EQDATA = {
 		LOS: 5,
 		ACC: 2,
 	},
-	550: {
+	1550: {
 		name: '5inch Twin Dual-Purpose Cannon',
 		nameJP: '5inch連装両用莢砲',
 		type: MAINGUNS, image: 16,
@@ -6211,7 +6479,7 @@ var EQDATA = {
 		RNG: 2,
 		ACC: 3,
 	},
-	551: {
+	1551: {
 		name: '20inch Twin Cannon',
 		nameJP: '20inch連装砲',
 		type: MAINGUNL,
@@ -6220,7 +6488,7 @@ var EQDATA = {
 		RNG: 3,
 		ACC: 3,
 	},
-	552: {
+	1552: {
 		name: '15inch Fortress Gun',
 		nameJP: '15inch要塞砲',
 		type: MAINGUNL,
@@ -6229,7 +6497,7 @@ var EQDATA = {
 		RNG: 3,
 		ACC: 4,
 	},
-	553: {
+	1553: {
 		name: '4inch Dual-Purpose+CIC',
 		nameJP: '4inch連装両用砲+CIC',
 		type: MAINGUNS, image: 16,
@@ -6238,7 +6506,7 @@ var EQDATA = {
 		RNG: 2,
 		ACC: 5,
 	},
-	554: {
+	1554: {
 		name: 'Abyssal Attack Seaplane',
 		nameJP: '深海水上攻撃機',
 		b_image: 7,
@@ -6249,7 +6517,7 @@ var EQDATA = {
 		LOS: 6,
 		ACC: 1,
 	},
-	555: {
+	1555: {
 		name: 'Abyssal Attack Seaplane Kai',
 		nameJP: '深海水上攻撃機改',
 		b_image: 7,
@@ -6260,7 +6528,7 @@ var EQDATA = {
 		LOS: 7,
 		ACC: 3,
 	},
-	556: {
+	1556: {
 		name: 'Abyssal Cat Fighter Kai',
 		nameJP: '深海猫艦戦改',
 		b_image: 6,
@@ -6269,7 +6537,7 @@ var EQDATA = {
 		EV: 2,
 		ACC: 2,
 	},
-	557: {
+	1557: {
 		name: 'Abyssal Hell Diver Kai',
 		nameJP: '深海地獄艦爆改',
 		b_image: 7,
@@ -6279,7 +6547,7 @@ var EQDATA = {
 		LOS: 5,
 		ACC: 4,
 	},
-	558: {
+	1558: {
 		name: 'Avenger Torpedo Bomber Kai',
 		nameJP: '深海復讐艦攻改',
 		b_image: 8,
@@ -6290,7 +6558,7 @@ var EQDATA = {
 		LOS: 6,
 		ACC: 3,
 	},
-	559: {
+	1559: {
 		name: 'Abyssal FCS + CIC',
 		nameJP: '深海FCS+CIC',
 		type: SONARS,
@@ -6301,14 +6569,14 @@ var EQDATA = {
 		LOS: 3,
 		ACC: 5
 	},
-	560: {
+	1560: {
 		name: 'Abyssal Searchlight',
 		nameJP: '深海探照灯',
 		type: SEARCHLIGHTS,
 		FP: 2,
 		LOS: 2
 	},
-	561: {
+	1561: {
 		name: 'Abyssal Liberation Land-based Dive Bomber',
 		nameJP: '深海解放陸爆',
 		b_image: 9,
@@ -6319,7 +6587,7 @@ var EQDATA = {
 		ACC: 1,
 		LOS: 3
 	},
-	562: {
+	1562: {
 		name: 'Abyssal Liberation Land-based Dive Bomber Ace',
 		nameJP: '深海解放陸爆Ace',
 		b_image: 10,
@@ -6330,7 +6598,7 @@ var EQDATA = {
 		ACC: 2,
 		LOS: 4
 	},
-	563: {
+	1563: {
 		name: '8inch Long Range Twin Gun Mount',
 		nameJP: '8inch長射程連装砲',
 		type: MAINGUNM,
@@ -6339,7 +6607,7 @@ var EQDATA = {
 		ACC: -1,
 		RNG: 3
 	},
-	564: {
+	1564: {
 		name: 'Abyssal Reconnaissance Observation Seaplane',
 		nameJP: '深海水上偵察観測機',
 		type: SEAPLANE,
@@ -6348,7 +6616,7 @@ var EQDATA = {
 		ACC: 5,
 		LOS: 5
 	},
-	565: {
+	1565: {
 		name: '5inch Coastal Gun',
 		nameJP: '5inch沿岸設置砲',
 		type: MAINGUNS,
@@ -6357,7 +6625,7 @@ var EQDATA = {
 		ACC: 3,
 		RNG: 2
 	},
-	566: {
+	1566: {
 		name: 'Abyssal Cat Fighter (Bombing)',
 		nameJP: '深海猫艦戦(爆装)',
 		b_image: 6,
@@ -6367,7 +6635,7 @@ var EQDATA = {
 		ASW: 2,
 		ACC: 2
 	},
-	567: {
+	1567: {
 		name: 'Coastal Radar',
 		nameJP: '沿岸設置レーダー',
 		type: RADARL,
@@ -6375,7 +6643,7 @@ var EQDATA = {
 		ACC: 16,
 		LOS: 8
 	},
-	568: {
+	1568: {
 		name: '16inch Triple Gun Mount (Abyssal)',
 		nameJP: '16inch三連装砲',
 		type: MAINGUNL,
@@ -6385,7 +6653,7 @@ var EQDATA = {
 		ACC: 4,
 		RNG: 3
 	},
-	569: {
+	1569: {
 		name: 'Abyssal Reconnaissance Flying Boat',
 		nameJP: '深海偵察飛行艇',
 		type: SEAPLANE,
@@ -6395,7 +6663,7 @@ var EQDATA = {
 		ACC: 8,
 		LOS: 9
 	},
-	570: {
+	1570: {
 		name: 'High-speed Abyssal Torpedo mod. 2',
 		nameJP: '高速深海魚雷 mod.2',
 		type: MIDGETSUB,
@@ -6404,7 +6672,7 @@ var EQDATA = {
 		ACC: 3,
 		RNG: 1,
 	},
-	571: {
+	1571: {
 		name: 'Abyssal Seaplane Tender Imp Aircraft',
 		nameJP: '深海水母小鬼機',
 		b_image: 'e009',
@@ -6418,7 +6686,7 @@ var EQDATA = {
 		LOS: 8,
 		RNG: 4,
 	},
-	572: {
+	1572: {
 		name: 'Abyssal Bearcat Fighter',
 		nameJP: '深海熊猫艦戦',
 		b_image: 'e010',
@@ -6429,7 +6697,7 @@ var EQDATA = {
 		ACC: 8,
 		EV: 8,
 	},
-	573: {
+	1573: {
 		name: 'Abyssal Submarine Floatplane',
 		nameJP: '深海潜水下駄履き',
 		b_image: 'e011',
@@ -6444,7 +6712,7 @@ var EQDATA = {
 		LOS: 3,
 		RNG: 5,
 	},
-	574: {
+	1574: {
 		name: 'Abyssal Patrolling Attack Hawk',
 		nameJP: '深海攻撃哨戒鷹',
 		added: '2017-05-02',
@@ -6460,7 +6728,7 @@ var EQDATA = {
 		LOS: 3,
 		RNG: 4,
 	},
-	575: {
+	1575: {
 		name: 'Abyssal Patrolling Attack Hawk Kai',
 		nameJP: '深海攻撃哨戒鷹改',
 		added: '2017-05-02',
@@ -6476,7 +6744,7 @@ var EQDATA = {
 		LOS: 3,
 		RNG: 4,
 	},
-	576: {
+	1576: {
 		name: 'Abyssal 12inch Triple Gun Mount',
 		nameJP: '深海12inch三連装砲',
 		added: '2017-05-02',
@@ -6488,7 +6756,7 @@ var EQDATA = {
 		EV: 2,
 		RNG: 3,
 	},
-	577: {
+	1577: {
 		name: 'Abyssal 15inch Quadruple Gun Mount',
 		nameJP: '深海15inch四連装砲',
 		added: '2017-08-12',
@@ -6500,7 +6768,7 @@ var EQDATA = {
 		EV: 1,
 		RNG: 3,
 	},
-	578: {
+	1578: {
 		name: 'Abyssal 15inch Late Model Twin Gun Mount',
 		nameJP: '深海15inch連装砲後期型',
 		added: '2017-08-12',
@@ -6514,7 +6782,7 @@ var EQDATA = {
 		EV: 2,
 		RNG: 3,
 	},
-	579: {
+	1579: {
 		name: 'Abyssal 14inch Straight Twin Gun Mount',
 		nameJP: '深海14inch海峡連装砲',
 		added: '2017-11-19',
@@ -6526,7 +6794,7 @@ var EQDATA = {
 		EV: 3,
 		RNG: 3,
 	},
-	580: {
+	1580: {
 		name: 'Abyssal Ambush Torpedo',
 		nameJP: '深海待伏魚雷',
 		added: '2017-11-19',
@@ -6536,7 +6804,7 @@ var EQDATA = {
 		ACC: 9,
 		RNG: 1,
 	},
-	581: {
+	1581: {
 		name: 'Abyssal Night Cat Fighter',
 		nameJP: '夜猫深海艦戦',
 		added: '2018-02-16',
@@ -6551,7 +6819,7 @@ var EQDATA = {
 		LOS: 2,
 		RNG: 1,
 	},
-	582: {
+	1582: {
 		name: 'Abyssal Night Dive Bomber',
 		nameJP: '夜深海艦爆',
 		added: '2018-02-16',
@@ -6568,7 +6836,7 @@ var EQDATA = {
 		LOS: 6,
 		RNG: 2,
 	},
-	583: {
+	1583: {
 		name: 'Abyssal Night Revenge Torpedo Bomber',
 		nameJP: '夜復讐深海艦攻',
 		added: '2018-02-16',
@@ -6586,7 +6854,7 @@ var EQDATA = {
 		LOS: 7,
 		RNG: 2,
 	},
-	584: {
+	1584: {
 		name: 'Abyssal 14inch Twin Gun Mount Kai',
 		nameJP: '深海14inch連装砲改',
 		added: '2018-02-22',
@@ -6598,7 +6866,7 @@ var EQDATA = {
 		EV: 4,
 		RNG: 3,
 	},
-	585: {
+	1585: {
 		name: 'Abyssal 16inch Triple Gun Mount Kai',
 		nameJP: '深海16inch三連装砲改',
 		added: '2018-02-22',
@@ -6609,7 +6877,7 @@ var EQDATA = {
 		ACC: 20,
 		RNG: 4,
 	},
-	586: {
+	1586: {
 		name: 'Abyssal Patrolling Attack Hawk Kai Ni',
 		nameJP: '深海攻撃哨戒鷹改二',
 		added: '2018-09-08',
@@ -6625,7 +6893,7 @@ var EQDATA = {
 		LOS: 5,
 		RNG: 4,
 	},
-	587: {
+	1587: {
 		name: 'Abyssal 16inch Triple Gun Mount Kai Ni',
 		nameJP: '深海16inch三連装砲改二',
 		added: '2018-09-12',
@@ -6637,7 +6905,7 @@ var EQDATA = {
 		EV: 3,
 		RNG: 4,
 	},
-	588: {
+	1588: {
 		name: 'Abyssal 5inch Twin Gun Mount Model C',
 		nameJP: '深海5inch連装砲C型',
 		added: '2018-12-27',
@@ -6649,7 +6917,7 @@ var EQDATA = {
 		ASW: 6,
 		RNG: 1,
 	},
-	589: {
+	1589: {
 		name: 'Abyssal 5.5inch Twin Gun Mount Kai',
 		nameJP: '深海5.5inch連装砲改',
 		added: '2018-12-27',
@@ -6662,7 +6930,7 @@ var EQDATA = {
 		ASW: 6,
 		RNG: 2,
 	},
-	590: {
+	1590: {
 		name: 'Abyssal Target',
 		nameJP: '深海標的',
 		added: '2018-12-27',
@@ -6674,7 +6942,7 @@ var EQDATA = {
 		EV: 4,
 		RNG: 4,
 	},
-	591: {
+	1591: {
 		name: 'Abyssal 5inch Single Gun Mount Mk.30',
 		nameJP: '深海5inch単装砲 Mk.30',
 		added: '2018-12-27',
@@ -6686,7 +6954,7 @@ var EQDATA = {
 		ASW: 7,
 		RNG: 2,
 	},
-	592: {
+	1592: {
 		name: 'Abyssal 16inch Mk.VIII Twin Gun Mount Kai',
 		nameJP: '深海16inch Mk.VIII連装砲改',
 		added: '2019-05-25',
@@ -6697,7 +6965,7 @@ var EQDATA = {
 		ACC: 22,
 		RNG: 3,
 	},
-	593: {
+	1593: {
 		name: 'High-speed Abyssal Torpedo mod. 3',
 		nameJP: '高速深海魚雷 mod.3',
 		added: '2019-05-25',
@@ -6707,9 +6975,9 @@ var EQDATA = {
 		EV: 3,
 		RNG: 1,
 	},
-	594: {
+	1594: {
 		name: 'Abyssal Sky Fortress (Reconnaissance Model)',
-		nameJP: '深海空要塞',
+		nameJP: '深海空要塞(偵察型)',
 		added: '2019-09-04',
 		type: DIVEBOMBER,
 		b_image: 19,
@@ -6721,9 +6989,9 @@ var EQDATA = {
 		LOS: 7,
 		RNG: 4,
 	},
-	595: {
+	1595: {
 		name: 'Abyssal Sky Fortress Ace (Reconnaissance Model)',
-		nameJP: '深海空要塞Ace',
+		nameJP: '深海空要塞Ace(偵察型)',
 		added: '2019-09-04',
 		type: DIVEBOMBER,
 		b_image: 19,
@@ -6735,7 +7003,7 @@ var EQDATA = {
 		LOS: 9,
 		RNG: 4,
 	},
-	596: {
+	1596: {
 		name: 'Abyssal 6inch Triple New Rapid Fire Gun Mount',
 		nameJP: '深海6inch三連装新型速射砲',
 		added: '2019-08-30',
@@ -6745,7 +7013,7 @@ var EQDATA = {
 		ACC: 9,
 		RNG: 2,
 	},
-	597: {
+	1597: {
 		name: 'Abyssal Sky Fortress (Heavy Bomber Model)',
 		nameJP: '深海空要塞(重爆型)',
 		added: '2019-09-04',
@@ -6759,7 +7027,7 @@ var EQDATA = {
 		LOS: 5,
 		RNG: 4,
 	},
-	598: {
+	1598: {
 		name: 'Abyssal Sky Fortress Ace (Heavy Bomber Model)',
 		nameJP: '深海空要塞Ace(重爆型)',
 		added: '2019-09-04',
@@ -6773,7 +7041,7 @@ var EQDATA = {
 		LOS: 7,
 		RNG: 4,
 	},
-	599: {
+	1599: {
 		name: 'Abyssal 4.7inch Gun Mk.XII',
 		nameJP: '深海4.7inch砲 Mk.XII',
 		added: '2019-09-04',
@@ -6785,7 +7053,7 @@ var EQDATA = {
 		ASW: 12,
 		RNG: 1,
 	},
-	600: {
+	1600: {
 		name: 'Abyssal 8inch Twin Rapid Fire Gun Mount',
 		nameJP: '深海8inch連装速射砲',
 		added: '2019-11-29',
@@ -6795,7 +7063,7 @@ var EQDATA = {
 		ACC: 8,
 		RNG: 2,
 	},
-	601: {
+	1601: {
 		name: 'Abyssal 8inch Triple Gun Mount Mk.9',
 		nameJP: '深海8inch三連装砲 Mk.9',
 		added: '2019-11-29',
@@ -6805,7 +7073,7 @@ var EQDATA = {
 		ACC: 9,
 		RNG: 2,
 	},
-	602: {
+	1602: {
 		name: 'Abyssal 5inch Twin Dual-purpose Gun Mount (Concentrated Deployment)',
 		nameJP: '深海5inch連装両用砲(集中配備)',
 		added: '2019-12-07',
@@ -6816,7 +7084,7 @@ var EQDATA = {
 		EV: 3,
 		RNG: 2,
 	},
-	603: {
+	1603: {
 		name: 'Abyssal Air Radar Mark.III + FCS',
 		nameJP: '深海対空レーダーMark.III+FCS',
 		added: '2019-12-07',
@@ -6827,7 +7095,7 @@ var EQDATA = {
 		ASW: 11,
 		LOS: 13,
 	},
-	604: {
+	1604: {
 		name: 'Abyssal 5inch Twin Gun Mount Model A',
 		nameJP: '深海5inch連装砲A型',
 		added: '2020-06-26',
@@ -6840,7 +7108,7 @@ var EQDATA = {
 		ASW: 4,
 		RNG: 1,
 	},
-	605: {
+	1605: {
 		name: 'Abyssal Submarine Electronic Armament',
 		nameJP: '深海潜水艦搭載電子兵装',
 		added: '2020-06-26',
@@ -6851,7 +7119,7 @@ var EQDATA = {
 		LOS: 6,
 		RNG: 1,
 	},
-	606: {
+	1606: {
 		name: 'Abyssal 5inch Single High-angle Gun Mount Kai Ni',
 		nameJP: '深海5inch単装高角砲改二',
 		added: '2020-06-26',
@@ -6863,7 +7131,7 @@ var EQDATA = {
 		ASW: 2,
 		RNG: 1,
 	},
-	607: {
+	1607: {
 		name: 'Abyssal 5inch Twin High-angle Gun Mount Kai Ni',
 		nameJP: '深海5inch連装高角砲改二',
 		added: '2020-06-26',
@@ -6875,7 +7143,7 @@ var EQDATA = {
 		ASW: 2,
 		RNG: 1,
 	},
-	608: {
+	1608: {
 		name: 'Abyssal Night Operation Aviation Equipment',
 		nameJP: '深海夜間航空作戦装備',
 		added: '2020-07-11',
@@ -6884,7 +7152,7 @@ var EQDATA = {
 		ACC: 3,
 		RNG: 4,
 	},
-	609: {
+	1609: {
 		name: 'Abyssal 16inch Triple Gun Mount Mk.6',
 		nameJP: '深海16inch三連装砲 Mk6',
 		added: '2020-07-11',
@@ -6896,7 +7164,7 @@ var EQDATA = {
 		EV: 4,
 		RNG: 3,
 	},
-	610: {
+	1610: {
 		name: 'Abyssal Seagull Reconnaissance Seaplane',
 		nameJP: '深海カモメ水偵',
 		added: '2021-05-08',
@@ -6906,7 +7174,7 @@ var EQDATA = {
 		ASW: 4,
 		LOS: 6,
 	},
-	611: {
+	1611: {
 		name: 'Abyssal Seamew Reconnaissance Seaplane',
 		nameJP: '深海海猫水偵',
 		added: '2021-05-21',
@@ -6918,7 +7186,7 @@ var EQDATA = {
 		ASW: 6,
 		LOS: 7,
 	},
-	612: {
+	1612: {
 		name: 'Abyssal 6inch Triple Main Gun Mount Mk.16',
 		nameJP: '深海6inch三連装主砲 Mk.16',
 		added: '2021-05-21',
@@ -6929,7 +7197,7 @@ var EQDATA = {
 		ASW: 3,
 		RNG: 2,
 	},
-	613: {
+	1613: {
 		name: 'Mediterranean 12inch/46 Twin Gun Mount',
 		nameJP: '地中海12inch/46 連装砲',
 		added: '2021-08-21',
@@ -6940,7 +7208,7 @@ var EQDATA = {
 		EV: 4,
 		RNG: 3,
 	},
-	614: {
+	1614: {
 		name: 'Mediterranean 12inch/46 Triple Gun Mount',
 		nameJP: '地中海12inch/46 三連装砲',
 		added: '2021-08-21',
@@ -6951,7 +7219,7 @@ var EQDATA = {
 		EV: 3,
 		RNG: 3,
 	},
-	615: {
+	1615: {
 		name: 'Mediterranean 12.6inch/44 Twin Gun Mount',
 		nameJP: '地中海12.6inch/44 連装砲',
 		added: '2021-08-21',
@@ -6963,7 +7231,7 @@ var EQDATA = {
 		EV: 5,
 		RNG: 3,
 	},
-	616: {
+	1616: {
 		name: 'Mediterranean 12.6inch/44 Triple Gun Mount',
 		nameJP: '地中海12.6inch/44 三連装砲',
 		added: '2021-08-21',
@@ -6975,11 +7243,11 @@ var EQDATA = {
 		EV: 4,
 		RNG: 3,
 	},
-	617: {
+	1617: {
 		name: 'Abyssal Night Cat Fighter II',
 		nameJP: '夜猫深海艦戦II',
 		added: '2021-08-31',
-		b_image: 3,
+		b_image: 16,
 		type: FIGHTER, image: 45,
 		btype: B_NIGHTFIGHTER,
 		FP: 3,
@@ -6989,11 +7257,11 @@ var EQDATA = {
 		LOS: 2,
 		RNG: 1,
 	},
-	618: {
+	1618: {
 		name: 'Abyssal Night Dive Bomber II',
 		nameJP: '夜深海艦爆II',
 		added: '2021-08-31',
-		b_image: 3,
+		b_image: 17,
 		type: DIVEBOMBER,
 		btype: B_NIGHTBOMBER2,
 		FP: 4,
@@ -7004,11 +7272,11 @@ var EQDATA = {
 		LOS: 6,
 		RNG: 2,
 	},
-	619: {
+	1619: {
 		name: 'Abyssal Night Revenge Torpedo Bomber II',
 		nameJP: '夜復讐深海艦攻II',
 		added: '2021-08-31',
-		b_image: 3,
+		b_image: 18,
 		type: TORPBOMBER, image: 46,
 		btype: B_NIGHTBOMBER,
 		FP: 5,
@@ -7019,7 +7287,7 @@ var EQDATA = {
 		LOS: 7,
 		RNG: 2,
 	},
-	620: {
+	1620: {
 		name: 'Abyssal Two-seat Fighter-bomber Hawk',
 		nameJP: '深海戦爆複座鷹',
 		added: '2021-12-28',
@@ -7037,7 +7305,7 @@ var EQDATA = {
 		LOS: 3,
 		RNG: 4,
 	},
-	621: {
+	1621: {
 		name: 'Abyssal Two-seat Fighter-bomber Hawk Kai',
 		nameJP: '深海戦爆複座鷹改',
 		added: '2021-12-28',
@@ -7055,7 +7323,7 @@ var EQDATA = {
 		LOS: 3,
 		RNG: 4,
 	},
-	622: {
+	1622: {
 		name: 'Abyssal Quadruple (Oxygen) Torpedo Mount Late Model',
 		nameJP: '深海四連装(酸素)魚雷後期型',
 		added: '2022-02-22',
@@ -7066,7 +7334,7 @@ var EQDATA = {
 		EV: 2,
 		RNG: 1,
 	},
-	623: {
+	1623: {
 		name: 'Abyssal 5inch Twin Gun Mount Model D',
 		nameJP: '深海5inch連装砲D型',
 		added: '2022-03-05',
@@ -7079,7 +7347,7 @@ var EQDATA = {
 		ASW: 6,
 		RNG: 1,
 	},
-	624: {
+	1624: {
 		name: 'Abyssal Quintuple (Oxygen) Torpedo Mount Late Model',
 		nameJP: '深海五連装(酸素)魚雷後期型',
 		added: '2022-03-05',
@@ -7090,12 +7358,13 @@ var EQDATA = {
 		EV: 2,
 		RNG: 1,
 	},
-	625: {
+	1625: {
 		name: 'Abyssal Twin-engine Land-based Dive Bomber',
 		nameJP: '深海双発陸爆',
 		added: '2022-05-28',
 		b_image: 9,
 		type: DIVEBOMBER,
+		isSkipBomber: true,
 		DIVEBOMB: 12,
 		TP: 6,
 		AA: 3,
@@ -7103,12 +7372,13 @@ var EQDATA = {
 		ASW: 5,
 		LOS: 3,
 	},
-	626: {
+	1626: {
 		name: 'Abyssal Twin-engine Land-based Dive Bomber Ace',
 		nameJP: '深海双発陸爆Ace',
 		added: '2022-05-28',
 		b_image: 10,
 		type: DIVEBOMBER,
+		isSkipBomber: true,
 		DIVEBOMB: 17,
 		TP: 7,
 		AA: 5,
@@ -7116,7 +7386,7 @@ var EQDATA = {
 		ASW: 7,
 		LOS: 4,
 	},
-	627: {
+	1627: {
 		name: 'Abyssal 5inch Twin Gun Mount Model C',
 		nameJP: '深海5inch連装砲C型',
 		added: '2022-05-28',
@@ -7129,7 +7399,7 @@ var EQDATA = {
 		ASW: 5,
 		RNG: 1,
 	},
-	630: {
+	1630: {
 		name: 'Abyssal Sky Super Fortress',
 		nameJP: '深海空超要塞',
 		added: '2022-03-05',
@@ -7142,7 +7412,7 @@ var EQDATA = {
 		LOS: 4,
 		RNG: 5,
 	},
-	631: {
+	1631: {
 		name: 'Abyssal Sky Super Fortress Kai',
 		nameJP: '深海空超要塞改',
 		added: '2022-03-05',
@@ -7154,6 +7424,94 @@ var EQDATA = {
 		ACC: 9,
 		LOS: 6,
 		RNG: 5,
+	},
+	1632: {
+		name: 'Abyssal Aviation Maintenance Bugs',
+		nameJP: '深海航空整備蟲',
+		added: '2023-03-03',
+		type: SCAMP,
+		FP: 16,
+		DIVEBOMB: 12,
+		TP: 12,
+		AA: 8,
+		ACC: 8,
+		ASW: 32,
+		RNG: 5,
+	},
+	1633: {
+		name: 'Abyssal Aviation Maintenance Bugs Pro',
+		nameJP: '深海航空整備蟲pro',
+		added: '2023-03-03',
+		type: SCAMP,
+		FP: 24,
+		DIVEBOMB: 16,
+		TP: 16,
+		AA: 8,
+		ACC: 16,
+		ASW: 48,
+		RNG: 5,
+	},
+	1634: {
+		name: 'Abyssal Rigging Assault General Seaplane',
+		nameJP: '深海艤装水上汎用襲撃機',
+		added: '2023-03-18',
+		b_image: 'e011',
+		type: SEAPLANEBOMBER,
+		isSkipBomber: true,
+		FP: 7,
+		DIVEBOMB: 17,
+		TP: 14,
+		AA: 7,
+		ACC: 9,
+		EV: 6,
+		RNG: 5,
+	},
+	1635: {
+		name: 'Abyssal Assault Torpedo Bomber',
+		nameJP: '深海突破襲撃機',
+		added: '2023-03-18',
+		b_image: 9,
+		type: TORPBOMBER,
+		isSkipBomber: true,
+		FP: 6,
+		DIVEBOMB: 11,
+		TP: 11,
+		AA: 4,
+		ACC: 4,
+		RNG: 5,
+	},
+	1636: {
+		name: 'Abyssal Assault Torpedo Bomber Ace',
+		nameJP: '深海突破襲撃機Ace',
+		added: '2023-03-18',
+		b_image: 10,
+		type: TORPBOMBER,
+		isSkipBomber: true,
+		FP: 9,
+		DIVEBOMB: 16,
+		TP: 13,
+		AA: 6,
+		ACC: 6,
+		RNG: 5,
+	},
+	1637: {
+		name: 'Coastal Ambush Semi-Submersible Torpedo Boat',
+		nameJP: '沿岸突撃半水中魚雷艇',
+		added: '2023-03-18',
+		type: MIDGETSUB,
+		TP: 18,
+		ACC: 9,
+		RNG: 1,
+	},
+	1638: {
+		name: 'Abyssal 3inch Single High-angle Gun Mount + Deck Machine Gun',
+		nameJP: '深海3inch単装高角砲+甲板機銃',
+		added: '2023-03-18',
+		type: MAINGUNS,
+		FP: 5,
+		AA: 7,
+		ACC: 3,
+		RNG: 1,
 	},
 };
 
@@ -7180,6 +7538,8 @@ var LBASDATA = {
 	61: { distance: 5, cost: 6 },
 	62: { distance: 4, cost: 10 },
 	64: { distance: 4, cost: 6 },
+	69: { distance: 1, cost: 2 },
+	70: { distance: 2, cost: 3 },
 	79: { distance: 5, cost: 6 },
 	80: { distance: 5, cost: 7 },
 	81: { distance: 5, cost: 7 },
@@ -7276,6 +7636,8 @@ var LBASDATA = {
 	256: { distance: 6, cost: 10 },
 	257: { distance: 6, cost: 11 },
 	263: { distance: 4, cost: 6 },
+	264: { distance: 4, cost: 6 },
+	265: { distance: 4, cost: 6 },
 	269: { distance: 8, cost: 9 },
 	270: { distance: 8, cost: 9 },
 	271: { distance: 4, cost: 7 },
@@ -7294,6 +7656,10 @@ var LBASDATA = {
 	320: { distance: 5, cost: 6 },
 	322: { distance: 5, cost: 8 },
 	323: { distance: 5, cost: 8 },
+	324: { distance: 1, cost: 3 },
+	325: { distance: 1, cost: 4 },
+	326: { distance: 2, cost: 5 },
+	327: { distance: 2, cost: 5 },
 	333: { distance: 4, cost: 9 },
 	334: { distance: 4, cost: 9 },
 	335: { distance: 4, cost: 10 },
@@ -7352,11 +7718,11 @@ var LBASDATA = {
 	445: { distance: 3, cost: 8 },
 	446: { distance: 3, cost: 9 },
 	447: { distance: 4, cost: 5 },
+	451: { distance: 2, cost: 4 },
 	452: { distance: 3, cost: 10 },
 	453: { distance: 4, cost: 9 },
 	454: { distance: 3, cost: 12 },
 	459: { distance: 7, cost: 13 },
-	264: { distance: 4, cost: 6 },
 	466: { distance: 6, cost: 9 },
 	469: { distance: 7, cost: 5 },
 	471: { distance: 3, cost: 9 },
@@ -7364,9 +7730,19 @@ var LBASDATA = {
 	474: { distance: 6, cost: 9 },
 	475: { distance: 6, cost: 10 },
 	476: { distance: 6, cost: 11 },
+	479: { distance: 7, cost: 14 },
 	480: { distance: 9, cost: 13 },
 	481: { distance: 7, cost: 14 },
 	484: { distance: 5, cost: 15 },
+	485: { distance: 3, cost: 6 },
+	486: { distance: 5, cost: 6 },
+	487: { distance: 5, cost: 6 },
+	489: { distance: 4, cost: 4 },
+	490: { distance: 4, cost: 8 },
+	491: { distance: 4, cost: 4 },
+	492: { distance: 6, cost: 5 },
+	493: { distance: 9, cost: 5 },
+	504: { distance: 6, cost: 13 },
 };
 
 var EXPANSIONSLOTDATA = {
@@ -7381,14 +7757,14 @@ var EXPANSIONSLOTDATA = {
 	},
 	'2017-04-05': {
 		specialS: {
-			66: [137, 138, 139, 140, 154, 182, 184, 187, 305, 306, 307, 314, 343, 356, 465, 488, 501, 503, 504, 506, 508, 509, 662, 663, 668, 883, 888],
-			220: [137, 138, 139, 140, 154, 182, 184, 187, 305, 306, 307, 314, 343, 356, 465, 488, 501, 503, 504, 506, 508, 509, 662, 663, 668, 883, 888],
+			66: [137, 138, 139, 140, 154, 182, 184, 187, 305, 306, 307, 314, 343, 356, 465, 488, 501, 503, 504, 506, 508, 509, 662, 663, 668, 883, 888, 894, 899],
+			220: [137, 138, 139, 140, 154, 182, 184, 187, 305, 306, 307, 314, 343, 356, 465, 488, 501, 503, 504, 506, 508, 509, 662, 663, 668, 883, 888, 894, 899],
 		}
 	},
 	'2018-04-06': {
 		specialS: {
-			71: [136, 148, 153, 156, 183, 321, 546],
-			275: [136, 148, 153, 156, 183, 321, 546],
+			71: [136, 148, 153, 156, 183, 321, 546, 894, 899, 911, 916],
+			275: [136, 148, 153, 156, 183, 321, 546, 894, 899, 911, 916],
 		}
 	},
 	'2020-03-27': {
@@ -7404,16 +7780,57 @@ var EXPANSIONSLOTDATA = {
 	},
 	'2021-05-08': {
 		specialS: {
-			413: [21, 22, 23, 24, 25, 53, 54, 55, 56, 57, 58, 99, 100, 101, 113, 114, 118, 119, 137, 138, 139, 140, 141, 146, 158, 159, 160, 183, 200, 215, 216, 217, 218, 219, 220, 221, 222, 223, 224, 289, 290, 305, 306, 307, 314, 321, 330, 346, 357, 421, 422, 423, 487, 488, 532, 537, 542, 543, 547, 649, 652, 657, 662, 663, 668],
+			413: [21, 22, 23, 24, 25, 53, 54, 55, 56, 57, 58, 99, 100, 101, 113, 114, 118, 119, 137, 138, 139, 140, 141, 146, 158, 159, 160, 183, 200, 215, 216, 217, 218, 219, 220, 221, 222, 223, 224, 289, 290, 305, 306, 307, 314, 321, 330, 346, 357, 421, 422, 423, 487, 488, 532, 533, 537, 538, 542, 543, 547, 649, 652, 657, 662, 663, 668],
 		}
 	},
-	'2022-05-27': { //2022-05-31
+	'2021-11-19': {
+		special: [442,443],
+	},
+	'2022-05-31': {
 		specialS: {
+			10: [546,911,916],
 			12: [546,911,916],
+			130: [546,911,916],
 			142: [546,911,916],
 			234: [546,911,916],
 			460: [546,911,916],
+			463: [546,911,916],
+			464: [546,911,916],
 		}
+	},
+	'2022-08-27': {
+		specialSType: {
+			477: ['CVL','CV','CVB'],
+			478: ['CVL','CV','CVB'],
+		},
+	},
+	'2022-05-01': {
+		specialS: {
+			10: [593,954],
+			28: [591,592,593,954],
+			71: [593,954],
+			88: [591,592,593,954],
+			130: [593,954],
+			240: [591,592,593,954],
+			275: [593,954],
+			410: [593,954],
+			411: [593,954],
+			464: [593,954],
+		},
+	},
+	'2023-06-14': {
+		specialS: {
+			27: [133,134,135,229,302,303,304,324,325,330,344,345,346,349,357,359,373,409,410,421,422,423,424,425,452,453,484,485,527,528,532,533,537,538,542,543,563,564,569,578,625,641,642,643,644,649,671,674,675,680,686,688,695,702,706,708,709,710,716,718,961],
+			28: [17,18,19,20,122,132,133,134,135,167,168,169,170,181,186,190,225,226,227,228,229,294,300,301,302,303,304,312,313,316,317,320,322,324,325,329,344,345,349,354,355,359,362,373,409,410,415,424,425,452,453,454,455,456,484,485,527,528,542,543,556,557,558,559,563,564,566,567,568,569,578,625,641,642,643,644,648,649,651,656,670,671,674,675,680,686,688,695,702,706,708,709,710,716,718,720,886,915,961],
+			88: [17,18,19,20,122,132,133,134,135,167,168,169,170,181,186,190,225,226,227,228,229,294,300,301,302,303,304,312,313,316,317,320,322,324,325,329,344,345,349,354,355,359,362,373,409,410,415,424,425,452,453,454,455,456,484,485,527,528,542,543,556,557,558,559,563,564,566,567,568,569,578,625,641,642,643,644,648,649,651,656,670,671,674,675,680,686,688,695,702,706,708,709,710,716,718,720,886,915,961],
+			106: [133,134,135,229,302,303,304,324,325,330,344,345,346,349,357,359,373,409,410,421,422,423,424,425,452,453,484,485,527,528,532,533,537,538,542,543,563,564,569,578,625,641,642,643,644,649,671,674,675,680,686,688,695,702,706,708,709,710,716,718,961],
+			227: [145,376,377,378,379,383,384,385,386,517,518,524,525,531,540,551,552,565,570,584,585,611,612,616,617,637,638,678,679,684,685,701,712,714,895,904,905,909,910,921,926,961],
+			228: [145,376,377,378,379,383,384,385,386,517,518,524,525,531,540,551,552,565,570,584,585,611,612,616,617,637,638,678,679,684,685,701,712,714,895,904,905,909,910,921,926,961],
+			240: [17,18,19,20,122,132,133,134,135,167,168,169,170,181,186,190,225,226,227,228,229,294,300,301,302,303,304,312,313,316,317,320,322,324,325,329,344,345,349,354,355,359,362,373,409,410,415,424,425,452,453,454,455,456,484,485,527,528,542,543,556,557,558,559,563,564,566,567,568,569,578,625,641,642,643,644,648,649,651,656,670,671,674,675,680,686,688,695,702,706,708,709,710,716,718,720,886,915,961],
+			450: [133,134,135,229,302,303,304,324,325,330,344,345,346,349,357,359,373,409,410,421,422,423,424,425,452,453,484,485,527,528,532,533,537,538,542,543,563,564,569,578,625,641,642,643,644,649,671,674,675,680,686,688,695,702,706,708,709,710,716,718,961],
+			488: [145,376,377,378,379,383,384,385,386,517,518,524,525,531,540,551,552,565,570,584,585,611,612,616,617,637,638,678,679,684,685,701,712,714,895,904,905,909,910,921,926,961],
+			506: [147,235,407,419,464,470,537,538,557,558,578,656,961],
+		},
 	},
 };
 
@@ -7459,7 +7876,7 @@ function getBonusStats(mid,eqids,improves) {
 	let bonusTotal = { houg: 0, raig: 0, tyku: 0, souk: 0, kaih: 0, tais: 0, saku: 0, houm: 0, leng: 0, baku: 0 };
 	let sdata = SHIPDATA[mid];
 	let eqCounts = {}, eqCountsType = {}, eqImproves = {};
-	let hasSR = false, hasAR = false;
+	let hasSR = false, hasAR = false, hasAccR = false;
 	for (let i=0; i<eqids.length; i++) {
 		let eqid = eqids[i];
 		if (!eqid || eqid < 0) continue;
@@ -7472,6 +7889,7 @@ function getBonusStats(mid,eqids,improves) {
 		if (EQTDATA[eqdata.type].btype == B_RADAR) {
 			if (eqdata.LOS >= 5) hasSR = true;
 			if (eqdata.AA >= 2) hasAR = true;
+			if (eqdata.ACC >= 8) hasAccR = true;
 		}
 	}
 	for (let bonusItem of EQUIPBONUSDATA.bonuses) {
@@ -7498,6 +7916,7 @@ function getBonusStats(mid,eqids,improves) {
 		for (let bonusData of bonusItem.bonuses) {
 			if (bonusData.requiresSR && !hasSR) continue
 			if (bonusData.requiresAR && !hasAR) continue;
+			if (bonusData.requiresAccR && !hasAccR) continue;
 			if (bonusData.shipClass && bonusData.shipClass.indexOf(sdata.sclass) == -1) continue;
 			if (bonusData.shipCountry && bonusData.shipCountry.indexOf(EQUIPBONUSDATA.ctypeToCountry[sdata.sclass]) == -1) continue;
 			if (bonusData.shipId && bonusData.shipId.indexOf(mid) == -1) continue;
@@ -7505,7 +7924,13 @@ function getBonusStats(mid,eqids,improves) {
 			if (bonusData.shipType && bonusData.shipType.indexOf(mapShipTypeId[sdata.type]) == -1) continue;
 			if (bonusData.requiresId) {
 				let count = 0, reqNum = bonusData.requiresIdNum || 1;
-				for (let id of bonusData.requiresId) count += eqCounts[id] || 0;
+				for (let id of bonusData.requiresId) {
+					if (bonusData.requiresIdLevel) {
+						if (eqImproves[id]) count += eqImproves[id].filter(n => n >= bonusData.requiresIdLevel);
+					} else {
+						count += eqCounts[id] || 0;
+					}
+				}
 				if (count < reqNum) continue;
 			}
 			if (bonusData.requiresType) {
@@ -7609,8 +8034,11 @@ var EQDATAHISTORY = {
 		420: { canShellInstall: 0 },
 		421: { canShellInstall: 0 },
 		439: { canASWPenetrate: 0 },
-		582: { aaResistShip: 0, aaResistFleet: 0 },
-		583: { aaResistShip: 0, aaResistFleet: 0 },
+		1582: { aaResistShip: 0, aaResistFleet: 0 },
+		1583: { aaResistShip: 0, aaResistFleet: 0 },
+		1617: { b_image: 3 },
+		1618: { b_image: 3 },
+		1619: { b_image: 3 },
 	},
 	'2013-09-18': {
 		6: { CANBbonus: 10 },
@@ -7716,8 +8144,8 @@ var EQDATAHISTORY = {
 		224: { aaResistShip: .6 },
 		343: { aaResistShip: .6 },
 		358: { AA: 6 },
-		582: { aaResistShip: .6, aaResistFleet: .7 },
-		583: { aaResistShip: .6, aaResistFleet: .7 },
+		1582: { aaResistShip: .6, aaResistFleet: .7 },
+		1583: { aaResistShip: .6, aaResistFleet: .7 },
 	},
 	'2021-01-13': {
 		224: { DIVEBOMB: 9, ACC: 4, aaResistFleet: .7 },
@@ -7738,9 +8166,9 @@ var EQDATAHISTORY = {
 		421: { canShellInstall: true },
 	},
 	'2021-09-19': {
-		617: { b_image: 16 },
-		618: { b_image: 17 },
-		619: { b_image: 18 },
+		1617: { b_image: 16 },
+		1618: { b_image: 17 },
+		1619: { b_image: 18 },
 	},
 	'2021-10-29': {
 		287: { isDCProjector: true },
@@ -7818,6 +8246,14 @@ var EQTDATAHISTORY = {
 		13: { canequipS: [419] },
 		24: { canequipS: [419] },
 		34: { canequipS: [419] },
+	},
+	'2022-12-27': {
+		24: { canequipS: [559] },
+		27: { canequipS: [556,559] },
+		46: { canequipS: [556] },
+	},
+	'2022-12-31': {
+		15: { canequipS: [411,412] },
 	},
 };
 

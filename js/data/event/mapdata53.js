@@ -1926,7 +1926,7 @@ MAPDATA[53] =
 								1: { 40: 'L', 34: 'K' },
 								4: { 30: 'L', 24: 'K' },
 							}[getDiff()];
-							let los = getELoS33(1,2) + getELoS33(1,2);
+							let los = getELoS33(1,2) + getELoS33(2,2);
 							return checkELoS33(los,vals);
 						}
 					},
@@ -2198,7 +2198,7 @@ MAPDATA[53] =
 								1: { 63: 'Z', 55: 'Y' },
 								4: { 47: 'Z', 39: 'Y' },
 							}[getDiff()];
-							let los = getELoS33(1,2) + getELoS33(1,2);
+							let los = getELoS33(1,2) + getELoS33(2,2);
 							return checkELoS33(los,vals);
 						}
 					},
@@ -2242,7 +2242,7 @@ MAPDATA[53] =
 								1: { 63: 'Z', 55: 'Y' },
 								4: { 47: 'Z', 39: 'Y' },
 							}[getDiff()];
-							let los = getELoS33(1,2) + getELoS33(1,2);
+							let los = getELoS33(1,2) + getELoS33(2,2);
 							return checkELoS33(los,vals);
 						}
 					},
@@ -2273,7 +2273,7 @@ MAPDATA[53] =
 								1: { 63: 'Z', 55: 'W' },
 								4: { 47: 'Z', 39: 'W' },
 							}[getDiff()];
-							let los = getELoS33(1,2) + getELoS33(1,2);
+							let los = getELoS33(1,2) + getELoS33(2,2);
 							return checkELoS33(los,vals);
 						}
 					},
@@ -3403,7 +3403,7 @@ MAPDATA[53] =
 				bgmNB: 200,
 				bossnode: ['G','N','Y'],
 				giveLock: ['53_7','53_4','53_8'],
-				checkLock: ['53_1','53_2','53_3','53_5','53_6'],
+				checkLockHard: ['53_1','53_2','53_3','53_5','53_6'],
 				lockSpecial: true,
 				lbas: 3,
 				lbX: 698,
@@ -3873,7 +3873,8 @@ MAPDATA[53] =
 							4: {'Casual 1':30,'Casual 3':70},
 						},
 						routeC: function(ships) {
-							if (ships.c.aBB + ships.c.aCV >= 6 && ships.c.aCV >= 4) return 'J2';
+							if (ships.c.aBB + ships.c.aCV >= 7) return 'J2';
+							if (ships.speed <= 5 && ships.c.aBB + ships.c.aCV >= 6 && ships.c.aCV >= 4) return 'J2';
 							if (ships.c.aBB + ships.c.CV + ships.c.CVB >= 6) return 'J2';
 							if (ships.c.CL + ships.c.DD >= 4) return 'K';
 							return 'J2';
@@ -3964,7 +3965,7 @@ MAPDATA[53] =
 							4: {'Casual 3':100},
 						},
 						routeC: function(ships) {
-							if (ships.c.aBB + ships.c.aCV >= 6) return 'M1';
+							if (ships.c.aBB + ships.c.CV + ships.c.CVB >= 5) return 'M1';
 							if (ships.speed >= 10) return 'M';
 							if (ships.c.aBB + ships.c.aCV <= 3 && ships.c.CL >= 2) return 'M';
 							return 'M1';
@@ -3988,7 +3989,7 @@ MAPDATA[53] =
 								1: { 65: 'N', 60: 'M2' },
 								4: { 60: 'N', 55: 'M2' },
 							}[getDiff()];
-							let los = getELoS33(1,2) + getELoS33(1,2);
+							let los = getELoS33(1,2) + getELoS33(2,2);
 							return checkELoS33(los,vals);
 						}
 					},
@@ -4344,7 +4345,7 @@ MAPDATA[53] =
 								1: { 64: 'Y', 59: 'X' },
 								4: { 54: 'Y', 49: 'X' },
 							}[getDiff()];
-							let los = getELoS33(1,2) + getELoS33(1,2);
+							let los = getELoS33(1,2) + getELoS33(2,2);
 							return checkELoS33(los,vals);
 						}
 					},

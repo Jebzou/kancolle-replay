@@ -435,13 +435,13 @@ var MAPDATA = {
 		noForceFlagRetreat: true,
 		subTargetSpecial: 2,
 		overrideStats: {
-			1522: { EQUIPS: [505,506,525] },
-			1524: { EQUIPS: [509,509,512] },
-			1527: { EQUIPS: [505,506,515] },
-			1529: { EQUIPS: [509,509,509] },
-			1541: { EQUIPS: [508,508,512] },
-			1542: { EQUIPS: [509,508,512] },
-			1543: { EQUIPS: [509,509,512] },
+			1522: { EQUIPS: [1505,1506,1525] },
+			1524: { EQUIPS: [1509,1509,1512] },
+			1527: { EQUIPS: [1505,1506,1515] },
+			1529: { EQUIPS: [1509,1509,1509] },
+			1541: { EQUIPS: [1508,1508,1512] },
+			1542: { EQUIPS: [1509,1508,1512] },
+			1543: { EQUIPS: [1509,1509,1512] },
 		},
 		disableMore: { ships: [126,124,131] },
 		maps: {
@@ -908,11 +908,11 @@ var MAPDATA = {
 		noForceFlagRetreat: true,
 		subTargetSpecial: 2,
 		overrideStats: {
-			1522: { EQUIPS: [505,506,525] },
-			1527: { EQUIPS: [505,506,515] },
-			1529: { EQUIPS: [509,509,509,528] },
-			1541: { EQUIPS: [508,508,512] },
-			1543: { EQUIPS: [509,509,512,529] },
+			1522: { EQUIPS: [1505,1506,1525] },
+			1527: { EQUIPS: [1505,1506,1515] },
+			1529: { EQUIPS: [1509,1509,1509,1528] },
+			1541: { EQUIPS: [1508,1508,1512] },
+			1543: { EQUIPS: [1509,1509,1512,1529] },
 		},
 		disableMore: { ships: [191,138,128,143] },
 		maps: {
@@ -1605,11 +1605,11 @@ var MAPDATA = {
 		bannerImg: 'http://i.imgur.com/WGhBfSf.jpg',
 		bannerImgAlt: 'http://i.imgur.com/HGuOC0q.jpg',
 		overrideStats: {
-			1522: { EQUIPS: [505,506,525] },
-			1527: { EQUIPS: [505,506,515] },
-			1529: { EQUIPS: [509,509,509,528] },
-			1541: { EQUIPS: [508,508,512] },
-			1543: { EQUIPS: [509,509,512,529] },
+			1522: { EQUIPS: [1505,1506,1525] },
+			1527: { EQUIPS: [1505,1506,1515] },
+			1529: { EQUIPS: [1509,1509,1509,1528] },
+			1541: { EQUIPS: [1508,1508,1512] },
+			1543: { EQUIPS: [1509,1509,1512,1529] },
 		},
 		initReward: {
 			'ships': [9001],
@@ -27916,8 +27916,8 @@ var MAPDATA = {
 		bannerImgAlt: 'assets/maps/43/banner2.jpg',
 		transportCalc: transportCalcStandard,
 		overrideStats: {
-			1546: { HP: 210, AR: 118, EQUIPS: [509, 505, 520, 531] },
-			1548: { HP: 380, AR: 188, EQUIPS: [509, 509, 520, 531] },
+			1546: { HP: 210, AR: 118, EQUIPS: [1509, 1505, 1520, 1531] },
+			1548: { HP: 380, AR: 188, EQUIPS: [1509, 1509, 1520, 1531] },
 		},
 		historical: {
 			blackett: [44,583],
@@ -33142,8 +33142,18 @@ function chApplyBonus(bonuses) {
 			if (bonus.idsBaseExclude && bonus.idsBaseExclude.includes(midBase)) continue;
 			if (bonus.idsExactExclude && bonus.idsExactExclude.includes(ship.mid)) continue;
 			
-			if (bonus.reqEquipTypes && (bonus.reqEquipTypes.reduce((c,type) => (ship.equiptypes[type] || 0) + c, 0) < (bonus.reqEquipTypesNum || 1))) continue;
-			if (bonus.reqEquipIds && (bonus.reqEquipIds.reduce((c,id) => ship.equips.filter(eq => eq.mid == id).length + c, 0) < (bonus.reqEquipIdsNum || 1))) continue;
+			let slots = [];
+			if (bonus.reqEquipTypes) {
+				for (let i=0; i<ship.equips.length; i++) {
+					if (bonus.reqEquipTypes.includes(ship.equips[i].type)) slots.push(i);
+				}
+				if (slots.length < (bonus.reqEquipTypesNum || 1)) continue;
+			} else if (bonus.reqEquipIds) {
+				for (let i=0; i<ship.equips.length; i++) {
+					if (bonus.reqEquipIds.includes(ship.equips[i].mid)) slots.push(i);
+				}
+				if (slots.length < (bonus.reqEquipIdsNum || 1)) continue;
+			}
 			
 			for (let keys of [['dmg','bonusSpecial'],['acc','bonusSpecialAcc'],['ev','bonusSpecialEv']]) {
 				let keyBonus = keys[0], keyShip = keys[1];
@@ -33153,9 +33163,13 @@ function chApplyBonus(bonuses) {
 						continue;
 					}
 					if (!ship[keyShip]) ship[keyShip] = [];
-					let obj = { mod: bonus[keyBonus] };
-					if (bonus.on) obj.on = bonus.on;
-					ship[keyShip].push(obj);
+					let n = bonus.multiple ? (slots.length || 1) : 1;
+					for (let i=0; i<n; i++) {
+						let obj = { mod: bonus[keyBonus] };
+						if (bonus.on) obj.on = bonus.on;
+						if (bonus.reqSlot && i < slots.length) obj.requireSlot = slots[i];
+						ship[keyShip].push(obj);
+					}
 				}
 			}
 		}
@@ -33166,4 +33180,42 @@ function chResetBonus() {
 	for (let ship of getAllShips(true)) {
 		ship.bonusSpecial = ship.bonusSpecialAcc = ship.bonusSpecialEv = null;
 	}
+}
+
+function chCheckLockSpStandard(errors,lock,messageByLock,hardOnly) {
+	if (getDiff() == 1 || getDiff() == 4 || (hardOnly && getDiff() == 2) || CHDATA.config.disablelock) return;
+	let allSame = true, lockCheck = lock;
+	let num = CHDATA.fleets.combined ? 2 : 1;
+	for (let n=1; n<=num; n++) {
+		for (let sid of CHDATA.fleets[n]) {
+			if (sid && CHDATA.ships[sid].lock) {
+				if (!lockCheck) lockCheck = CHDATA.ships[sid].lock;
+				if (lockCheck != CHDATA.ships[sid].lock) { allSame = false; break; }
+			}
+		}
+	}
+	if (!allSame) {
+		errors.push(messageByLock[lock]);
+	}
+}
+
+function chCheckLocks(locks,hardOnly,ignoreException) {
+	if (!ignoreException && (getDiff() == 1 || getDiff() == 4 || (hardOnly && getDiff() == 2) || CHDATA.config.disablelock)) return true;
+	let allSame = true;
+	let num = CHDATA.fleets.combined ? 2 : 1;
+	for (let n=1; n<=num; n++) {
+		for (let sid of CHDATA.fleets[n]) {
+			if (sid && CHDATA.ships[sid].lock) {
+				if (!locks.includes(CHDATA.ships[sid].lock)) { return false; }
+			}
+		}
+	}
+	return true;
+}
+
+function chCheckLoSStandard(valsByDiff,mod) {
+	let vals = valsByDiff[getDiff()];
+	mod = mod || (CHDATA.fleets.combined ? 2 : 4);
+	let los = getELoS33(1,mod) + (CHDATA.fleets.combined ? getELoS33(2,mod) : 0);
+	return checkELoS33(los,vals);
 }

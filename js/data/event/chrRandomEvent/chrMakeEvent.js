@@ -334,9 +334,9 @@ ChrMakeEvent.GimmicksEditor = class extends ChrMakeEvent.Editor {
         let gimmickInfos = $(`
             <div>
                 ${gimmicks.mapPartNumber ? `Part ${gimmicks.mapPartNumber} required <br>` : ''}
-                ${gimmicks.additionnalParameters.lastDanceOnly ? 'Last dance only<br>': ''}
-                Number of steps required : ${gimmicks.additionnalParameters.numberOfStepRequired ? gimmicks.additionnalParameters.numberOfStepRequired : gimmicks.gimmicks.length} / ${gimmicks.gimmicks.length}<br>
-                ${gimmicks.additionnalParameters.routeUnlockRequired ? 'Unlock '+ gimmicks.additionnalParameters.routeUnlockRequired + ' must be done before<br>': ''}
+                ${gimmicks.additionalParameters.lastDanceOnly ? 'Last dance only<br>': ''}
+                Number of steps required : ${gimmicks.additionalParameters.numberOfStepRequired ? gimmicks.additionalParameters.numberOfStepRequired : gimmicks.gimmicks.length} / ${gimmicks.gimmicks.length}<br>
+                ${gimmicks.additionalParameters.routeUnlockRequired ? 'Unlock '+ gimmicks.additionalParameters.routeUnlockRequired + ' must be done before<br>': ''}
             </div>
         `);
 

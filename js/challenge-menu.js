@@ -380,7 +380,7 @@ function chAddReward(data,forceNew) {
 			}
 			if (!SHIPDATA[mid]) continue;
 			for (var j=0; j<100; j++) {
-				var sid = 'x'+(90000+j);
+				var sid = 'x'+(900000+j);
 				if (CHDATA.ships[sid]) continue;
 				var sdata = SHIPDATA[mid];
 
@@ -413,8 +413,7 @@ function chAddReward(data,forceNew) {
 	if (data.items) {
 		for (var i=0; i<data.items.length; i++) {
 			var mid = typeof data.items[i] === 'object' ? data.items[i].id : data.items[i];
-			var level = typeof data.items[i] === 'object' ? data.items[i].level : data.items[i];
-
+			var stars = typeof data.items[i] === 'object' ? (data.items[i].stars || 0) : 0;
 			if (!forceNew) {
 				let gearExisting = null;
 				for (let eqid in CHDATA.gears) {
@@ -436,7 +435,7 @@ function chAddReward(data,forceNew) {
 					itemId: eqid,
 					masterId: mid,
 					lock: 1,
-					stars: level,
+					stars: stars,
 					ace: ((EQTDATA[EQDATA[mid].type].isPlane)? 7 : -1)
 				};
 				CHDATA.gears[eqid] = newequip;
@@ -454,8 +453,9 @@ function chShowReward(data,tracker) {
 	if (numShips + numItems) {
 		$('#dialogreward').dialog('open');
 		$('#rewardshine').css('animation','spin 5s linear infinite');
+		$('#rewardship').css('margin-left','90px');
 		$('#rewardship').css('margin-top','105px');
-		$('#rewardtext').hide();
+		$('#rewardtext').text('');
 		if (tracker < numShips) {
 			const id = typeof(data.ships[tracker]) == 'object' ? data.ships[tracker].mid : data.ships[tracker];
 			$('#rewardship').attr('src', chGetShipImagePath(id));
@@ -496,9 +496,10 @@ function chShowReward(data,tracker) {
 				$('#rewardship').css('margin-top','70px');
 				$('#rewardship').attr('src', data.items[ind].image);
 			} else {
-				$('#rewardship').attr('src','assets/items/'+EQTDATA[EQDATA[id].type].image+'.png');
+				$('#rewardship').css('margin-left','155px');
+				$('#rewardship').css('margin-top','110px');
+				$('#rewardship').attr('src','assets/items/'+(EQDATA[id].image || EQTDATA[EQDATA[id].type].image)+'.png');
 				$('#rewardtext').text(EQDATA[id].name);
-				$('#rewardtext').show();
 			}
 		}
 		$('#rewardship').css('animation','appear 1s linear 1');

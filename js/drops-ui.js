@@ -528,7 +528,7 @@ function poiLoadData(map,cellId,diff) {
 	$('#spanHL').hide();
 	$('#spanGroup').hide();
 	$('#linkExport').hide();
-	if (window.location.hostname == 'fourinone41.github.io') url = 'https://salty-brushlands-75370.herokuapp.com/' + url;
+	if (window.location.hostname == 'fourinone41.github.io') url = 'https://cors.piro.moe/' + url;
 	$.getJSON(url,function(data) {
 		if (!POIDATA[map][cellId]) {
 			POIDATA[map][cellId] = { 'orig': data, 'counts': {} };
@@ -600,6 +600,7 @@ var NOTES_SPECIAL = {
 	'51-2_normal': 'Note: Replacements unclear',
 	'51-2_boss': 'Note: Nelson/Kongou slots are limited to 1 dupe Nelson? Nelson/Naka slots are limited to 0 dupe Nelsons?',
 	'53-2_boss': 'Note: On LD comps S-rank (and A/B clears?) only, applies -6 to offset. (Effect: Lowest 6 slots cannot be rolled, "replaced" by 6 higher slots normally outside the window.)',
+	'56-5_boss': 'WIP',
 };
 
 // })();

@@ -51,7 +51,10 @@ var MECHANICDATES = {
 	coloradoSpecialFix: '2021-10-15',
 	kongouSpecialBuff2: '2022-06-08',
 	coloradoSpecialBuff2: '2022-06-18',
-	eqBonusAA: '2022-08-04',
+	// eqBonusAA: '2022-08-04',
+	aswPlaneAir: '2023-02-14',
+	kongouSpecialBuff3: '2023-05-01',
+	aaciMultiRoll: '2023-05-26',
 };
 
 var MECHANICDATESOTHER = {
@@ -65,6 +68,7 @@ var MECHANICDATESOTHER = {
 	cfNoSSFlag: '2015-04-28',
 	cfAnchorageRepair: '2019-08-30',
 	cfWarspiteSpeedReq: '2021-08-20', //2021-08-31
+	marriage180: '2023-05-26',
 };
 
 SHIPDATA[5001] = {
@@ -176,8 +180,8 @@ function chCreateFleetTableLBAS(root,num) {
 		if (i == 4) {
 			table.append($('<tr><td colspan="2"><div class="t2stat"><img src="assets/stats/divebomb.png"/> Total Active Intercept Air Power</div></td></tr>'));
 			table.append($('<tr><td>Normal:</td><td><div class="t2stat"><span id="fleetlbabN'+num+'"></span></div></td></tr>'));
-			table.append($('<tr><td>HA:</td><td><div class="t2stat"><span id="fleetlbabHA'+num+'"></span></div></td></tr>'));
-			table.append($('<tr><td>Heavy:</td><td><div class="t2stat"><span id="fleetlbabSH'+num+'"></span></div></td></tr>'));
+			table.append($('<tr><td>High Altitude:</td><td><div class="t2stat"><span id="fleetlbabHA'+num+'"></span></div></td></tr>'));
+			table.append($('<tr><td>Super Heavy:</td><td><div class="t2stat"><span id="fleetlbabSH'+num+'"></span></div></td></tr>'));
 		}
 		if (i >= 4) { divWrap.append(table); continue; }
 		table.append($('<tr class="t2show"><td colspan="4"><div style="text-align:center"><div class="t2name" id="fleetname'+num+i+'">Base '+i+'</div></div></td></tr>'));
@@ -641,6 +645,7 @@ function chDialogShowItems(shipmid,types) {
 				if (EXPANSIONSLOTDATA[date].types && EXPANSIONSLOTDATA[date].types.indexOf(equip.type) != -1) { found = true; break; }
 				if (EXPANSIONSLOTDATA[date].special && EXPANSIONSLOTDATA[date].special.indexOf(eqid) != -1) { found = true; break; }
 				if (EXPANSIONSLOTDATA[date].specialS && EXPANSIONSLOTDATA[date].specialS[eqid] && EXPANSIONSLOTDATA[date].specialS[eqid].indexOf(shipmid) != -1) { found = true; break; }
+				if (EXPANSIONSLOTDATA[date].specialSType && EXPANSIONSLOTDATA[date].specialSType[eqid] && EXPANSIONSLOTDATA[date].specialSType[eqid].indexOf(SHIPDATA[shipmid].type) != -1) { found = true; break; }
 			}
 			if (!found) include = false;
 		}
@@ -650,6 +655,15 @@ function chDialogShowItems(shipmid,types) {
 		}
 		if (include && SHIPDATA[shipmid].onlyEquip && SHIPDATA[shipmid].onlyEquip[DIALOGITEMSEL]) {
 			if (SHIPDATA[shipmid].onlyEquip[DIALOGITEMSEL].indexOf(type) == -1) include = false;
+		}
+		if (include && [392,724].includes(shipmid) && equip.type == SEAPLANEBOMBER) {
+			if (eqid != 194) include = false;
+		}
+		if (include && [166].includes(shipmid) && equip.type == SCAMP) {
+			if (eqid != 402) include = false;
+		}
+		if (include && DIALOGFLEETSEL == 5 && !CHDATA.config.mechanics.aswPlaneAir) {
+			if (equip.type == AUTOGYRO || equip.type == ASWPLANE) include = false;
 		}
 		
 		if (include) {
@@ -758,30 +772,31 @@ function chDialogItem(fleet,eqnum,slot) {
 	chDialogItemFilter(defcat);
 }
 
+var DIALOG_ITEM_TYPES = {
+	1: [MAINGUNS,MAINGUNSAA],
+	13: [MAINGUNM],
+	14: [MAINGUNL,MAINGUNXL],
+	2: [SECGUN,SECGUNAA],
+	3: [TORPEDO,TORPEDOSS,MIDGETSUB],
+	4: [SEAPLANE,SEAPLANEBOMBER,SEAPLANEFIGHTER,FLYINGBOAT],
+	5: [FIGHTER,INTERCEPTOR],
+	6: [DIVEBOMBER,LANDBOMBER,LANDBOMBERL],
+	7: [TORPBOMBER],
+	8: [CARRIERSCOUT,AUTOGYRO,ASWPLANE,JETBOMBER,JETSCOUT,CARRIERSCOUT2,LANDSCOUT],
+	9: [RADARS,RADARL,RADARXL],
+	10: [DEPTHCHARGE,SONARS,SONARL],
+	11: [APSHELL,TYPE3SHELL],
+	15: [AAGUN],
+	16: [ENGINE],
+	17: [SEARCHLIGHTS,SEARCHLIGHTL,STARSHELL,PICKET],
+	12: [BULGEM,BULGEL,AAFD,LANDINGCRAFT,LANDINGTANK,WG42,SRF,FCF,DRUM,SCAMP,REPAIR,SUBRADAR,TRANSPORTITEM,RATION,OILDRUM,ARMYUNIT,SMOKESCREEN],
+};
+
 function chDialogItemFilter(category) {
 	var mid = CHDATA.ships[CHDATA.fleets[DIALOGFLEETSEL][DIALOGSLOTSEL-1]].masterId;
 	mid = parseInt(mid);
 	DIALOGITEMCATEGORY = category;
-	var types;
-	switch (category) {
-		default: case 1: types=[MAINGUNS,MAINGUNSAA]; break;
-		case 13: types=[MAINGUNM]; break;
-		case 14: types=[MAINGUNL,MAINGUNXL]; break;
-		case 2: types=[SECGUN,SECGUNAA]; break;
-		case 3: types=[TORPEDO,TORPEDOSS,MIDGETSUB]; break;
-		case 4: types=[SEAPLANE,SEAPLANEBOMBER,SEAPLANEFIGHTER,FLYINGBOAT]; break;
-		case 5: types=[FIGHTER,INTERCEPTOR]; break;
-		case 6: types=[DIVEBOMBER,LANDBOMBER,LANDBOMBERL]; break;
-		case 7: types=[TORPBOMBER]; break;
-		case 8: types=[CARRIERSCOUT,AUTOGYRO,ASWPLANE,JETBOMBER,JETSCOUT,CARRIERSCOUT2,LANDSCOUT]; break;
-		case 9: types=[RADARS,RADARL,RADARXL]; break;
-		case 10: types=[DEPTHCHARGE,SONARS,SONARL]; break;
-		case 11: types=[APSHELL,TYPE3SHELL]; break;
-		case 15: types=[AAGUN]; break;
-		case 16: types=[ENGINE]; break;
-		case 17: types=[SEARCHLIGHTS,SEARCHLIGHTL,STARSHELL,PICKET]; break;
-		case 12: types=[BULGEM,BULGEL,AAFD,LANDINGCRAFT,LANDINGTANK,WG42,SRF,FCF,DRUM,SCAMP,REPAIR,SUBRADAR,TRANSPORTITEM,RATION,OILDRUM]; break;
-	}
+	var types = DIALOG_ITEM_TYPES[category] || DIALOG_ITEM_TYPES[1];
 	chDialogShowItems(mid,types);
 	
 	$('.itemfilter').each(function() { $(this).css('background-color',''); });
@@ -791,6 +806,7 @@ function chDialogItemFilter(category) {
 function chFilterDialogItemSearch() {
 	let search = $("#inputEquipSearch").val().toUpperCase();
 
+	let idUnfiltered = null, numVisible = 0;
 	$('#equipselecttable > tbody > tr').each(function() {
 		var gearId = $(this).attr('id');
 
@@ -798,7 +814,20 @@ function chFilterDialogItemSearch() {
 
 		if (name.includes(search)) $(this).removeClass("filteredBySearch");
 		else $(this).addClass("filteredBySearch");
+		
+		if ($(this).css('display') != 'none') numVisible++;
+		if (!idUnfiltered && !$(this).hasClass('filteredBySearch')) idUnfiltered = gearId;
 	});
+	
+	if (numVisible <= 0 && idUnfiltered) {
+		let type = EQDATA[CHDATA.gears[idUnfiltered].masterId].type;
+		for (let category in DIALOG_ITEM_TYPES) {
+			if (DIALOG_ITEM_TYPES[category].includes(type)) {
+				chDialogItemFilter(category);
+				break;
+			}
+		}
+	}
 }
 
 function chSetEquip(itemid) {
@@ -1259,6 +1288,8 @@ function chProcessKC3File2() {
 			if (shipN.LVL > 155) shipN.LVL = 155;
 		} else if (dataDate < MECHANICDATESOTHER.marriage175) {
 			if (shipN.LVL > 165) shipN.LVL = 165;
+		} else if (dataDate < MECHANICDATESOTHER.marriage180) {
+			if (shipN.LVL > 175) shipN.LVL = 175;
 		}
 		if (dataDate >= MECHANICDATESOTHER.hpMod && shipO.mod[5]) {
 			hp += shipO.mod[5];
@@ -1341,6 +1372,7 @@ function chProcessKC3File2() {
 		}
 	}
 	
+	let replaceSpecial = { 469: { masterId: 102, stars: 10 } };
 	for (var eqid in CHDATA.gears) {
 		// if (!CHDATA.config.mechanics.improvement) CHDATA.gears[eqid].stars = 0;
 		// if (!CHDATA.config.mechanics.proficiency) CHDATA.gears[eqid].ace = -1;
@@ -1359,6 +1391,13 @@ function chProcessKC3File2() {
 			if (item.heldBy) {
 				var slot = CHDATA.ships[item.heldBy].items.indexOf(parseInt(eqid.substr(1)));
 				chShipEquipItem(item.heldBy,-1,slot);
+			}
+			let itemNew;
+			if ((itemNew = replaceSpecial[item.masterId]) && EQDATA[itemNew.masterId].added <= MAPDATA[CHDATA.event.world].date) {
+				delete item.disabled;
+				item.masterId = itemNew.masterId;
+				if (itemNew.stars) item.stars = itemNew.stars;
+				if (itemNew.ace) item.ace = itemNew.ace;
 			}
 		}
 		
@@ -1766,13 +1805,15 @@ function chStart() {
 	MECHANICS.anchorageTorpNerf = MAPDATA[WORLD].date >= MAPDATA[51].date;
 	MECHANICS.aaci8Up = MECHANICS.installRevamp;
 	MECHANICS.ffReroll = MAPDATA[WORLD].date >= MAPDATA[50].date;
-	MECHANICS.yamatoSpecial = false;//MAPDATA[WORLD].date >= MAPDATA[54].date;
+	MECHANICS.yamatoSpecial = MECHANICS.kongouSpecialBuff2;
+	MECHANICS.antiSubRaid = MAPDATA[WORLD].date >= MAPDATA[54].date;
 	SIMCONSTS.shellDmgCap = 150;
 	SIMCONSTS.aswDmgCap = 100;
 	SIMCONSTS.torpedoDmgCap = 150;
 	SIMCONSTS.nightDmgCap = 300;
 	SIMCONSTS.airDmgCap = 150;
 	SIMCONSTS.supportDmgCap = 150;
+	SIMCONSTS.lbasDmgCap = 150;
 	if (CHDATA.config.mechanics.shellingSoftCap) {
 		SIMCONSTS.shellDmgCap = 180;
 	}
@@ -1786,13 +1827,18 @@ function chStart() {
 		SIMCONSTS.nightDmgCap = 360;
 		SIMCONSTS.airDmgCap = 170;
 		SIMCONSTS.supportDmgCap = 170;
+		SIMCONSTS.lbasDmgCap = 220;
 	}
 	SIMCONSTS.enableModSummerBB = WORLD >= 51;
 	SIMCONSTS.enableModSummerCA = WORLD >= 51;
 	SIMCONSTS.enableModFrenchBB = WORLD >= 51;
 	SIMCONSTS.enableModDock = WORLD >= 55;
+	SIMCONSTS.enableAirstrikeSpecialBonus = WORLD >= 42;
+	SIMCONSTS.nbOnlyCFAccBase = WORLD >= 48 ? 69 : 90;
 	toggleEchelon(CHDATA.config.mechanics.echelonBuff);
 	toggleDDCIBuff(MECHANICS.subFleetAttack);
+	toggleASWPlaneAir(CHDATA.config.mechanics.aswPlaneAir);
+	toggleAACIRework(CHDATA.config.mechanics.aaciMultiRoll);
 
 	if (MAPDATA[WORLD].maps[MAPNUM].lockInfos) {
 		chApplyLocksBeforeSortie();
@@ -2628,6 +2674,10 @@ function chLoadSortieInfo(mapnum) {
 		}
 	}
 	
+	if (CHDATA.event.maps[mapnum].lbPart && mapdata.lbParts[CHDATA.event.maps[mapnum].lbPart].lbas) {
+		mapdata.lbas = mapdata.lbParts[CHDATA.event.maps[mapnum].lbPart].lbas;
+		mapdata.lbasSortie = mapdata.lbParts[CHDATA.event.maps[mapnum].lbPart].lbasSortie;
+	}
 	var numLB = mapdata.lbas || 0;
 	for (var i=1; i<=3; i++) {
 		if (i <= numLB) {
@@ -2747,6 +2797,7 @@ function chSortieChangeDiff(diff) {
 		delete CHDATA.event.maps[CHDATA.event.mapnum].debuff;
 		delete CHDATA.event.maps[CHDATA.event.mapnum].debuffed;
 		delete CHDATA.event.maps[CHDATA.event.mapnum].routes;
+		delete CHDATA.event.maps[CHDATA.event.mapnum].lbPart;
 	}
 }
 
@@ -3110,12 +3161,19 @@ function chSparkleAll() {
 	else if (!+$('#tabsupportB').attr('value')) fleetnum = 4;
 	else return;
 	let n = fleetnum == 1 && CHDATA.fleets.sf ? 7 : 6;
+	let ids = CHDATA.fleets[fleetnum];
+	if (fleetnum == 1 && CHDATA.fleets.combined) ids = ids.concat(CHDATA.fleets[2]);
+	let hasUnsparkled = !!ids.find(id => id && CHDATA.ships[id].morale <= 52);
 	for (let i=0; i<n; i++) {
-		if (CHDATA.fleets[fleetnum][i]) chClickMorale(fleetnum,i+1);
+		if (!CHDATA.fleets[fleetnum][i]) continue;
+		if (hasUnsparkled && CHDATA.ships[CHDATA.fleets[fleetnum][i]].morale > 52) continue;
+		chClickMorale(fleetnum,i+1);
 	}
 	if (fleetnum == 1 && CHDATA.fleets.combined) {
 		for (let i=0; i<6; i++) {
-			if (CHDATA.fleets[2][i]) chClickMorale(2,i+1);
+			if (!CHDATA.fleets[2][i]) continue;
+			if (hasUnsparkled && CHDATA.ships[CHDATA.fleets[2][i]].morale > 52) continue;
+			chClickMorale(2,i+1);
 		}
 	}
 }

@@ -287,13 +287,13 @@ MAPDATA[97].loadUnlockFromChData = function (map) {
              */
             const gimmicks = map.hiddenRoutes[unlockKey].unlockRules;
 
-            map.hiddenRoutes[unlockKey].unlockRules = new ChGimmickList(gimmicks.type, gimmicks.mapPartNumber, gimmicks.mapNum, gimmicks.gimmicks, gimmicks.additionnalParameters);
+            map.hiddenRoutes[unlockKey].unlockRules = new ChGimmickList(gimmicks.type, gimmicks.mapPartNumber, gimmicks.mapNum, gimmicks.gimmicks, gimmicks.additionalParameters);
         }
     }
 
 
     const debuff = map.debuffRules;
-    if (debuff && debuff.type) map.debuffRules = new ChGimmickList(debuff.type, debuff.mapPartNumber, debuff.mapNum, debuff.gimmicks, debuff.additionnalParameters);
+    if (debuff && debuff.type) map.debuffRules = new ChGimmickList(debuff.type, debuff.mapPartNumber, debuff.mapNum, debuff.gimmicks, debuff.additionalParameters);
     else delete map.debuffRules;
 }
 

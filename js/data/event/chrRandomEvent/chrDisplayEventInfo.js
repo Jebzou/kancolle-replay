@@ -875,7 +875,7 @@ class ChrDisplayEventInfo {
     DisplayDebuffInfos(rules, map, event) {
 
         let diffs = event.allowDiffs ? event.allowDiffs : [4,1,2,3];
-        if (rules.additionnalParameters.difficultiesAllowed) diffs = rules.additionnalParameters.difficultiesAllowed;
+        if (rules.additionalParameters.difficultiesAllowed) diffs = rules.additionalParameters.difficultiesAllowed;
         
         let nodeList = [];
 
@@ -893,7 +893,7 @@ class ChrDisplayEventInfo {
         let checkStepsDone = () => {
             for (const value of ruleAndTdList) {
                 
-                if (value.rule.gimmickDone()) {
+                if (value.rule.check()) {
                     value.element.addClass('debuff-step-done');
                 }
                 else {
@@ -910,14 +910,14 @@ class ChrDisplayEventInfo {
         
         if (rules.type == 'mapPart') {
             for (const node in map.nodes) {
-                if (map.nodes[node].hidden && map.nodes[node].hidden == rules.additionnalParameters.partToUnlock) nodeList.push(node);
+                if (map.nodes[node].hidden && map.nodes[node].hidden == rules.additionalParameters.partToUnlock) nodeList.push(node);
             }
 
-            debuffInfoRoot.append($(`<div class="mapInfoTitle foldable-element-title">Unlock ${rules.additionnalParameters.partToUnlock} - ${getUnlockTitle(false)}</div>`));
+            debuffInfoRoot.append($(`<div class="mapInfoTitle foldable-element-title">Unlock ${rules.additionalParameters.partToUnlock} - ${getUnlockTitle(false)}</div>`));
         }
         
         if (rules.type == 'custom') {
-            debuffInfoRoot.append($(`<div class="mapInfoTitle foldable-element-title">${rules.additionnalParameters.title}</div>`));
+            debuffInfoRoot.append($(`<div class="mapInfoTitle foldable-element-title">${rules.additionalParameters.title}</div>`));
         }
 
         let debuffInfoContent = $("<div>").addClass("mapInfoContent");
@@ -932,11 +932,11 @@ class ChrDisplayEventInfo {
         }
 
         if (rules.type == 'custom') {
-            debuffInfoContent.append(rules.additionnalParameters.description);
+            debuffInfoContent.append(rules.additionalParameters.description);
         }
 
-        if (rules.additionnalParameters && rules.additionnalParameters.numberOfStepRequired) {
-            debuffInfoContent.append(`${rules.additionnalParameters.numberOfStepRequired} of the following steps :`);
+        if (rules.additionalParameters && rules.additionalParameters.numberOfStepRequired) {
+            debuffInfoContent.append(`${rules.additionalParameters.numberOfStepRequired} of the following steps :`);
         } else if (rules.type != 'custom') {
             debuffInfoContent.append("the following steps :");
         }
@@ -970,7 +970,7 @@ class ChrDisplayEventInfo {
             debuffInfoTable.append(debuffLine);
         }
 
-        if (rules.additionnalParameters.lastDanceOnly) {
+        if (rules.additionalParameters.lastDanceOnly) {
             let debuffLine = $("<tr>");
 
             let descTd = $('<td>').attr('colspan', 6);
@@ -991,15 +991,15 @@ class ChrDisplayEventInfo {
             debuffInfoTable.append(debuffLine);
         }
 
-        if (rules.additionnalParameters.routeUnlockRequired) {
+        if (rules.additionalParameters.routeUnlockRequired) {
             let debuffLine = $("<tr>");
 
             let descTd = $('<td>').attr('colspan', 6);
 
-            descTd.append(`Unlock ${rules.additionnalParameters.routeUnlockRequired} done`);
+            descTd.append(`Unlock ${rules.additionalParameters.routeUnlockRequired} done`);
             debuffLine.append(descTd);
 
-            if (ChGimmick.IsUnlockDone(rules.additionnalParameters.routeUnlockRequired)) {
+            if (ChGimmick.IsUnlockDone(rules.additionalParameters.routeUnlockRequired)) {
                 descTd.addClass('debuff-step-done');
             }
             

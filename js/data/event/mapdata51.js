@@ -665,7 +665,7 @@ MAPDATA[51] =
 				},
 				additionalChecks: function(ships,errors) {
 					if (CHDATA.fleets.sf) {
-						if (!MAPDATA[51].maps[1].debuffRules.gimmickDone()) {
+						if (!MAPDATA[51].maps[1].debuffRules.check()) {
 							errors.push('Unlock Striking Force:<br>- A rank E-1 node F<br>- A rank E-1 node L<br>- A rank E-1 node O');
 							return;
 						}
@@ -1409,7 +1409,7 @@ MAPDATA[51] =
 				additionalChecks: function(ships,errors) {
 					// --- SF unlock removed from rando cause you need E1
 					/*if (CHDATA.fleets.sf) {
-						if (!MAPDATA[51].maps[1].debuffRules.gimmickDone()) {
+						if (!MAPDATA[51].maps[1].debuffRules.check()) {
 							errors.push('Unlock Striking Force:<br>- A rank E-1 node F<br>- A rank E-1 node L<br>- A rank E-1 node O');
 							return;
 						}
@@ -2375,7 +2375,7 @@ MAPDATA[51] =
 					'Z2': { bgmDB: 185, bgmNB: 185 },
 				},
 				giveLock: ['51_4','51_5','51_6','51_7'],
-				checkLock: ['51_1','51_2','51_3'],
+				checkLockHard: ['51_1','51_2','51_3'],
 				lockSpecial: true,
 				lbas: 3,
 				parts: {
@@ -2550,7 +2550,14 @@ MAPDATA[51] =
 					return { lock: lock, start: start };
 				},
 				additionalChecks: function(ships,errors) {
-					if (getDiff() == 1 || getDiff() == 4 || CHDATA.config.disablelock) return;
+					if (CHDATA.fleets.sf) {
+						let debuff = CHDATA.event.maps[1].debuff;
+						if (!(debuff && debuff.F_A && debuff.L && debuff.O)) {
+							errors.push('Unlock Striking Force:<br>- A rank E-1 node F<br>- A rank E-1 node L<br>- A rank E-1 node O');
+							return;
+						}
+					}
+					if (getDiff() != 3 || CHDATA.config.disablelock) return;
 					let lock = this.getLock(ships).lock;
 					
 					let allSame = true;

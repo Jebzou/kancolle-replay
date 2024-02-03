@@ -30,7 +30,7 @@ const DebuffEditorComponent = {
             <button @click="enableDebuff()">Enable debuff</button>
             <button @click="disableDebuff()">Disable debuff</button>
 
-            <div v-if="mapData.debuffRules && mapData.debuffRules.additionnalParameters">
+            <div v-if="mapData.debuffRules && mapData.debuffRules.additionalParameters">
 
                 <vgimmicklist :gimmick-list="mapData.debuffRules" :map-data="mapData" />
 

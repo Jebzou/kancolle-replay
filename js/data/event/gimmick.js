@@ -11,516 +11,123 @@
  * difficultiesAllowed: number[]
  * specialSoundOnCompletion: String
  * routeUnlockRequired: number
- * }} additionnalParameters Additionnal parameters to handle special cases
+ * }} additionalParameters Additionnal parameters to handle special cases
  */
-function ChGimmickList(type, mapPartNumber, mapNum, gimmickData, additionnalParameters) {
-
-    if (!additionnalParameters) additionnalParameters = {};
-
-    /**
-     * @type {'debuff' | 'mapPart'}
-     */
-    this.type = type;
-	// --- Map part by default
-	if (type == "route") this.type = type = 'mapPart';
-
-    this.mapPartNumber = mapPartNumber;
-
-    this.mapNum = mapNum;
-    this.mapIdForChdata = mapNum ?? 'multimap';
-
-    /**
-     * @type {{
-    *   numberOfStepRequired: number
-     *  partToUnlock: number
-     *  description: string
-     *  title: string
-     * lastDanceOnly: boolean
-     * difficultiesAllowed: number[]
-     * specialSoundOnCompletion: string
-     * routeUnlockRequired: number
-     * }}
-     */
-    this.additionnalParameters = additionnalParameters;
-
-    /**
-     * Set this to true to play sound on every step done
-     */
-    this.playSoundOnStepDone = () => {
-        return WORLD >= 45;
-    };
-
-    /**
-     * @type {ChGimmick[]}
-     */
-    this.gimmicks = [];
-    this.gimmickData = gimmickData;
-
-    for (const gimmick of gimmickData) {
-        if (mapNum) gimmick.mapnum = mapNum;
-
-        gimmick.mapPartNumber = mapPartNumber;
-
-        let gimmickObject = new ChGimmick(gimmick);
-
-        if (!mapNum) gimmickObject.mapIdForChdata = this.mapIdForChdata;
-
-        if (type == 'debuff') {
-            gimmickObject.id += '-D';
-        }
-
-        if (type == 'mapPart') {
-            // --- To finish
-            gimmickObject.id += '-U' + additionnalParameters.partToUnlock;
-        }
-
-        if (type == 'quest') {
-            gimmickObject.id += '-Q';
-        }
-
-        if (gimmick.fleetType) {
-            gimmickObject.id += `-FT${gimmick.fleetType.join('_')}`;
-        }
-
-        this.gimmicks.push(gimmickObject);
-    }
-
-    /**
-     * 
-     * @returns Returns true if gimmick is done
-     */
-    this.gimmickDone = () => {
-        if (additionnalParameters.difficultiesAllowed && !additionnalParameters.difficultiesAllowed.includes(getDiff())) return false;
-        if (this.mapPartNumber && this.mapNum && this.mapPartNumber > CHDATA.event.maps[this.mapNum].part) return false;
-
-        // --- Only X steps required instead of all of them (Summer 16 E4)
-        if (additionnalParameters && additionnalParameters.numberOfStepRequired) {
-            let count = 0;
-
-            for (const gimmick of this.gimmicks) {
-                if (gimmick.gimmickDone()) count++;
-            }
-
-            return count >= additionnalParameters.numberOfStepRequired;
-        }
-
-        for (const gimmick of this.gimmicks) {
-            if (!gimmick.gimmickDone()) return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Check if gimmick steps have progressed
-     */
-    this.checkGimmickSteps = (node, checkGimmickParameters) => {
-        if (!CHDATA.event.maps[this.mapIdForChdata]) {
-            CHDATA.event.maps[this.mapIdForChdata] = {};
-        }
-
-        if (!CHDATA.event.maps[this.mapIdForChdata].debuff) {
-            CHDATA.event.maps[this.mapIdForChdata].debuff = {};
-        }
-
-        if (additionnalParameters.lastDanceOnly) {
-            if (!chGetLastDance()) return;
-        }
-
-        if (additionnalParameters.routeUnlockRequired) {
-            if (!CHDATA.event.maps[MAPNUM].routes) return;
-            if (!CHDATA.event.maps[MAPNUM].routes.length) return;
-
-            if (CHDATA.event.maps[MAPNUM].routes.indexOf(parseInt(additionnalParameters.routeUnlockRequired)) == -1) return;
-        }
-
-        if (mapPartNumber) {
-            if (mapPartNumber > CHDATA.event.maps[mapNum].part) {
-                return;
-            }
-        }
-
-        for (const gimmick of this.gimmicks) {
-
-            let isGimmickForThisNode = gimmick.node == node || gimmick.node == 'MapWide';
-            if (!isGimmickForThisNode) continue;
-
-            let isGimmickForThisMap = gimmick.mapnum == MAPNUM;
-            if (!isGimmickForThisMap) continue;
-
-            if (gimmick.mapPartNumber && gimmick.mapPartNumber > CHDATA.event.maps[gimmick.mapnum].part) continue;
-
-            let shouldCountBeIncreased = gimmick.shouldCountBeIncreased(checkGimmickParameters);
-
-            if (shouldCountBeIncreased) {
-                if (!CHDATA.event.maps[this.mapIdForChdata].debuff[gimmick.id]) CHDATA.event.maps[this.mapIdForChdata].debuff[gimmick.id] = 0;
-                
-                CHDATA.event.maps[this.mapIdForChdata].debuff[gimmick.id] += shouldCountBeIncreased;
-
-                if (this.playSoundOnStepDone() && gimmick.gimmickDone()) {
-                    playSoundAfterSortie = true;
-                }
-            }
-        }
-    }
-
-    /**
-     * Check if the debuff is done. 
-     * If it is, plays sound
-     */
-    this.checkIfDebuffed = () => {
-        if (!this.gimmickDone()) return;
-
-        let playSound = () => {
-
-            if (this.additionnalParameters.specialSoundOnCompletion) {
-                SM.playNew(this.additionnalParameters.specialSoundOnCompletion);
-            } else if (!this.playSoundOnStepDone()) {
-                SM.play('done');
-                alert('DEBUFF');
-            }
-
-        }
-
-        if (!mapNum) {
-            let atleastOne = false;
-
-            for (const gimmick of this.gimmicks) {
-                if (CHDATA.event.maps[gimmick.mapnum].debuffed) continue;
-
-                CHDATA.event.maps[gimmick.mapnum].debuffed = true;
-
-                atleastOne = true;
-            }
-
-            if (atleastOne) {
-                playSound();
-            }
-
-            return;
-        }
-
-        if (CHDATA.event.maps[mapNum].debuffed) return;
-        
-        CHDATA.event.maps[mapNum].debuffed = true;
-
-        playSound();
-    }
+function ChGimmickList(type, mapPartNumber, mapNum, gimmickData, additionalParameters) {
+	this.type = type;
+	this.mapPartNumber = mapPartNumber;
+	this.mapNum = mapNum;
+	this.additionalParameters = additionalParameters || {};
+	this.gimmicks = gimmickData.map(data => new ChGimmick(data));
+	for (let gimmick of this.gimmicks) {
+		if (!gimmick.mapNum) gimmick.mapNum = this.mapNum;
+	}
+	
+	this.check = function() {
+		if (this.mapPartNumber && CHDATA.event.maps[this.mapNum].part < this.mapPartNumber) return false;
+		if (this.type == 'lbRelocate' && this.additionalParameters.routeUnlockRequired && !(CHDATA.event.maps[this.mapNum].routes || []).includes(this.additionalParameters.routeUnlockRequired)) return false;
+		return this.gimmicks.filter(gimmick => gimmick.check()).length >= (this.additionalParameters.numberOfStepRequired || this.gimmicks.length);
+	}
+	this.update = function(args) {
+		if (this.additionalParameters.partRequired && (CHDATA.event.maps[this.mapNum].part || 0) < this.additionalParameters.partRequired) return false;
+		if (this.additionalParameters.routeUnlockRequired && !(CHDATA.event.maps[this.mapNum].routes || []).includes(this.additionalParameters.routeUnlockRequired)) return false;
+		if (this.additionalParameters.lastDanceOnly && !this.checkLastDance()) return false;
+		
+		let progressed = false;
+		for (let gimmick of this.gimmicks) {
+			let donePrev = gimmick.check();
+			gimmick.update(args);
+			if (gimmick.check() && !donePrev) progressed = true;
+			console.log(gimmick.key + ' ' + gimmick.mapNum + ' ' + gimmick.check() + ' '+ donePrev + ' ' + progressed)
+		}
+		return progressed;
+	}
+	this.checkLastDance = function() {
+		if (!CHDATA.event.maps[this.mapNum].hp) return false;
+		if (!CHDATA.event.maps[this.mapNum].diff) return false;
+		if ((CHDATA.event.maps[this.mapNum].part || 0) < this.mapPartNumber) return false; //mapPartNumber prevents update for LD gimmick, unlike "additional gimmick" for normal
+		let finalhp = MAPDATA[WORLD].maps[this.mapNum].parts ? MAPDATA[WORLD].maps[this.mapNum].parts[this.mapPartNumber].finalhp : MAPDATA[WORLD].maps[this.mapNum].finalhp;
+		if (!finalhp) return false;
+		return CHDATA.event.maps[this.mapNum].hp <= finalhp[CHDATA.event.maps[this.mapNum].diff];
+	}
+}
+ChGimmickList.updateAll = function(args) {
+	let progressed = false;
+	if (MAPDATA[WORLD].maps[MAPNUM].hiddenRoutes) {
+		for (let route in MAPDATA[WORLD].maps[MAPNUM].hiddenRoutes) {
+			if (MAPDATA[WORLD].maps[MAPNUM].hiddenRoutes[route].unlockRules) {
+				progressed = MAPDATA[WORLD].maps[MAPNUM].hiddenRoutes[route].unlockRules.update(args) || progressed;
+			}
+		}
+	}
+	if (MAPDATA[WORLD].maps[MAPNUM].debuffRules) {
+		progressed = MAPDATA[WORLD].maps[MAPNUM].debuffRules.update(args) || progressed;
+	}
+	if (MAPDATA[WORLD].maps[MAPNUM].lbParts) {
+		for (let part in MAPDATA[WORLD].maps[MAPNUM].lbParts) {
+			if (MAPDATA[WORLD].maps[MAPNUM].lbParts[part].unlockRules) {
+				progressed = MAPDATA[WORLD].maps[MAPNUM].lbParts[part].unlockRules.update(args) || progressed;
+			}
+		}
+	}
+	
+	if (!ChGimmickList._gimmickExtra[WORLD] || !ChGimmickList._gimmickExtra[WORLD][MAPNUM]) ChGimmickList._getGimmickExtra(MAPNUM);
+	for (let gimmickList of ChGimmickList._gimmickExtra[WORLD][MAPNUM]) {
+		progressed = gimmickList.update(args) || progressed;
+	}
+	
+	if (progressed && CHDATA.sortie) CHDATA.sortie.gimmickProgressed = true;
+	return progressed;
+}
+ChGimmickList._gimmickExtra = {};
+ChGimmickList._getGimmickExtra = function(mapnum) {
+	if (!ChGimmickList._gimmickExtra[WORLD]) ChGimmickList._gimmickExtra[WORLD] = {};
+	ChGimmickList._gimmickExtra[WORLD][mapnum] = [];
+	for (let m in MAPDATA[WORLD].maps) {
+		if (m == mapnum) continue;
+		if (!MAPDATA[WORLD].maps[m].debuffRules) continue;
+		if (MAPDATA[WORLD].maps[m].debuffRules.gimmicks.find(gimmick => gimmick.mapNum == mapnum)) {
+			ChGimmickList._gimmickExtra[WORLD][mapnum].push(MAPDATA[WORLD].maps[m].debuffRules);
+		}
+	}
 }
 
-let ChGimmickParameters = {
-    node: '',
-    /**
-     * @type {'battle' | 'NoHPLoss' | 'AirState' | 'ReachNode' | 'MapHP' | 'PartClear' | 'RandomChance'}
-     */
-    type: 'battle',
-    timesRequiredPerDiff: {
-        4: 0,
-        1: 0,
-        2: 0,
-        3: 0,
-    },
-    ranksRequiredPerDiff: {
-        4: 'D',
-        1: 'D',
-        2: 'D',
-        3: 'D',
-    },
-    mapnum: 0,
-    mapPartNumber: 0,
-    /**
-     * Allows to implement custom logic on debuff count increase
-     */
-    shouldCountBeIncreased: (parameters) => { return false; },
-    /**
-     * Allows to implement description for the rule
-     */
-    getDescription: (difficulty) => { return ''; },
-    /**
-     * You can specify if a certain route unlock must be done before
-     */
-    routeUnlockRequired: 0,
+function ChGimmick(data) {
+	for (let key in data) this[key] = data[key];
+	this.key = data.key || data.node;
+	this.timesMax = 0;
+	for (let diff in this.timesRequiredPerDiff) {
+		if (this.timesRequiredPerDiff[diff] > this.timesMax) this.timesMax = this.timesRequiredPerDiff[diff];
+	}
 
-    /**
-     * Only give debuff if fleet is of type
-     * @type {null | number[]]
-     */
-    fleetType: null,
-
-    /**
-     * If true, the lbas needs to be sent to this node to validate the gimmick
-     */
-    needLBAS: false,
-
-    /**
-     * @type {number} Part to clear to check gimmick of PartClear type
-     */
-    partToClear: null,
-
-	/**
-	 *  @type {string} Forced node id (used for standard maps)
-	 */
-	key: '',
-
-	/**
-	 * @type {string} Rank to acheive, use ranksRequiredPerDiff if you need to set rank per diff
-	 */
-	rank: ''
-}
-
-
-/**
- * @param {ChGimmickParameters} parameters 
- */
-function ChGimmick(parameters) {
-
-    /**
-     * Node 
-     */
-    this.node = parameters.node;
-
-    this.mapnum = parameters.mapnum;
-
-    this.mapIdForChdata = this.mapnum;
-
-    this.mapPartNumber = parameters.mapPartNumber;
-
-    this.id = `E${this.mapnum}-${this.node}-${parameters.type}`;
-	if (parameters.key) this.id += `-${parameters.key}`;
-
-    this.timesRequiredPerDiff = parameters.timesRequiredPerDiff;
-
-    this.ranksRequiredPerDiff = parameters.ranksRequiredPerDiff;
-	if (parameters.rank) this.ranksRequiredPerDiff = parameters.ranksRequiredPerDiff = { 4: parameters.rank, 1: parameters.rank, 2: parameters.rank, 3: parameters.rank };
-	if (parameters.airState) this.ranksRequiredPerDiff = parameters.ranksRequiredPerDiff = { 4: parameters.airState, 1: parameters.airState, 2: parameters.airState, 3: parameters.airState };
-
-    this.routeUnlockRequired = parameters.routeUnlockRequired;
-
-    this.fleetType = parameters.fleetType;
-
-    this.needLBAS = parameters.needLBAS;
-
-    this.type = parameters.type;
-
-    this.partToClear = parameters.partToClear;
-
-    /**
-     * Returns true if this part of the gimmick is done
-     */
-    this.gimmickDone = () => {
-        if (!CHDATA.event.maps[this.mapIdForChdata].debuff) return false;
-
-        if (this.node == 'AB' && CHDATA.config.disableRaidReq) return true;
-
-        let count = this.getGimmickProgress();
-        let requiredCount = this.getTimesRequired();
-
-        if (!requiredCount) return true;
-        if (!count) return false;
-
-        return count >= requiredCount;
-    }
-
-    this.getTimesRequired = () => {
-        return this.timesRequiredPerDiff[getDiff()];
-    }
-
-    this.getGimmickProgress = () => {
-        if (typeof(CHDATA) === "undefined") return 0;
-        if (!CHDATA.event) return 0;
-        if (!CHDATA.event.maps) return 0;
-        if (!CHDATA.event.maps[this.mapIdForChdata]) return 0;
-        if (!CHDATA.event.maps[this.mapIdForChdata].debuff) return 0;
-        if (!CHDATA.event.maps[this.mapIdForChdata].debuff[this.id]) return 0;
-
-        return CHDATA.event.maps[this.mapIdForChdata].debuff[this.id];
-    }
-
-    switch (parameters.type) {
-        case 'NoHPLoss': {
-            parameters.shouldCountBeIncreased = (checkGimmickParameters) => {
-                return checkGimmickParameters.totalHPLost <= 0;
-            }
-
-            parameters.getDescription = (diff) => {
-                if (!this.timesRequiredPerDiff[diff]) return '-';
-                return 'Take no damage' + (this.timesRequiredPerDiff[diff] > 1 ? (' x' + this.timesRequiredPerDiff[diff]) : '');
-            }
-            
-            parameters.getLongDescription = (diff) => {        
-                return `Take no damage on node ${this.node}`;
-            }    
-
-            break;
-        }
-
-        case 'ReachNode': {
-            parameters.shouldCountBeIncreased = (checkGimmickParameters) => {
-                return true;
-            }
-
-            parameters.getDescription = (diff) => {
-                if (!this.timesRequiredPerDiff[diff]) return '-';
-                return 'Reach' + (this.timesRequiredPerDiff[diff] > 1 ? (' x' + this.timesRequiredPerDiff[diff]) : '');
-            }
-
-            parameters.getLongDescription = (diff) => {        
-                return `Reach node ${this.node}`;
-            }            
-            
-            break;
-        }
-        
-        case 'AirState': {
-            parameters.shouldCountBeIncreased = (checkGimmickParameters) => {
-                
-                let requiredRank = this.ranksRequiredPerDiff[getDiff()];
-                let aquiredRank = ChGimmick.ConvertAirStateNumberToString(FLEETS1[0].AS);
-                
-                if (checkGimmickParameters && checkGimmickParameters.airstate) {
-                    aquiredRank = ChGimmick.ConvertAirStateNumberToString(checkGimmickParameters.airstate);
-                }
-
-                let ranks = ['AS+', 'AS', 'AP'];
-        
-                for (const rank of ranks) {
-                    if (rank == requiredRank) return aquiredRank == rank;
-                    
-                    if (rank == aquiredRank) return 1;
-                }
-        
-                return 0;
-            }
-
-            parameters.getLongDescription = (diff) => {
-                let rank = this.ranksRequiredPerDiff[diff];
-        
-                return `Achieve ${ChGimmick.ConvertAirStateNumberToString(rank)} on node ${this.node}`;
-            }
-            
-            break;
-        }
-
-        case 'MapHP': {
-            parameters.shouldCountBeIncreased = (checkGimmickParameters) => {
-                
-                let requiredHP = this.ranksRequiredPerDiff[getDiff()];
-                let mapHP = CHDATA.event.maps[this.mapnum].hp;
-                
-                if (requiredHP > mapHP) return 1;
-        
-                return 0;
-            }
-            
-            parameters.getLongDescription = parameters.getDescription = (diff) => {
-                if (!this.ranksRequiredPerDiff[diff]) return '-';
-                return 'Map HP <= ' + this.ranksRequiredPerDiff[diff];
-            }
-            
-            break;
-        }
-
-        case 'PartClear': {
-            parameters.shouldCountBeIncreased = (checkGimmickParameters) => {
-                
-                if (parameters.partToClear >= CHDATA.event.maps[this.mapnum].part) return 0;
-        
-                return 1;
-            }
-            
-            parameters.getLongDescription = parameters.getDescription = (diff) => {
-                return 'Clear part '+ parameters.partToClear + '        ';
-            }
-            
-            break;
-        }
-
-        case 'battle': {
-            parameters.getLongDescription = (diff) => {
-                let rank = this.ranksRequiredPerDiff[diff];
-
-                return `Achieve ${rank} rank on node ${this.node}`;
-            }
-
-            break;
-        }
-
-        case 'RandomChance': {
-
-            parameters.shouldCountBeIncreased = (checkGimmickParameters) => {
-                return (Math.random() * 100) > this.ranksRequiredPerDiff[getDiff()];
-            }
-            
-            parameters.getLongDescription = parameters.getDescription = (diff) => {
-                return `Random chance (${this.ranksRequiredPerDiff[diff]}%) on node ${this.node}`;
-            }
-
-            break;
-        }
-    }
-
-    /**
-     * If count should be increased returns 1
-     * If you want to increase count multiple time at once you can return the number you want
-     */
-    this.shouldCountBeIncreased = (checkGimmickParameters) => {
-        if (this.gimmickDone()) return 0;
-
-        if (this.routeUnlockRequired) {
-            if (!CHDATA.event.maps[MAPNUM].routes) return 0;
-            if (!CHDATA.event.maps[MAPNUM].routes.length) return 0;
-
-            if (CHDATA.event.maps[MAPNUM].routes.indexOf(parseInt(this.routeUnlockRequired)) == -1) return 0;
-        }
-
-        if (parameters.fleetType) {
-            let fleetType = CHDATA.fleets.combined;
-            if (!fleetType) fleetType = CHDATA.fleets.sf ? 7 : 0;
-            
-            if (!parameters.fleetType.includes(fleetType)) return;
-        }
-
-        if (parameters.needLBAS) {
-            if (!CHDATA.sortie.lbasNodes) return false;
-            if (!CHDATA.sortie.lbasNodes[this.node]) return false;
-        }
-
-        if (parameters.shouldCountBeIncreased) {
-            return parameters.shouldCountBeIncreased(checkGimmickParameters);
-        }
-
-        let requiredRank = this.ranksRequiredPerDiff[getDiff()];
-        let aquiredRank = CHDATA.temp.rank;
-
-        let ranks = ['S','A','B','C','D'];
-
-        for (const rank of ranks) {
-            if (rank == requiredRank) return aquiredRank == rank;
-            
-            if (rank == aquiredRank) return 1;
-        }
-
-        return 0;
-    }
-
-    this.getDescription = (diff) => {
-        if (parameters.getDescription) {
-            return parameters.getDescription(diff);
-        }
-
-        if (!this.timesRequiredPerDiff[diff]) return '-';
-
-        return this.ranksRequiredPerDiff[diff] + (this.timesRequiredPerDiff[diff] > 1 ? (' x' + this.timesRequiredPerDiff[diff]) : '');
-    }
-
-    this.getLongDescription = (diff) => {
-        
-        if (parameters.getLongDescription) {
-            return parameters.getLongDescription(diff);
-        }
-
-        return '';
-    }
+	this.check = function() {
+		if (this.node == 'AB' && CHDATA.config.disableRaidReq) return true;
+		let debuff = CHDATA.event.maps[this.mapNum].debuff, diff = CHDATA.event.maps[this.mapNum].diff;
+		if (!diff) return false;
+		if (!this.timesRequiredPerDiff[diff]) return true;
+		if (!debuff) return false;
+		return (debuff[this.key] || 0) >= (this.timesRequiredPerDiff[diff] || 0);
+	}
+	this.update = function(args) {
+		let c = this.getCount(args);
+		if (c) {
+			if (!CHDATA.event.maps[this.mapNum].debuff) CHDATA.event.maps[this.mapNum].debuff = {};
+			CHDATA.event.maps[this.mapNum].debuff[this.key] = Math.min(this.timesMax, CHDATA.event.maps[this.mapNum].debuff[this.key] + c || c);
+		}
+	}
+	this.getCount = function(args) {
+		if (this.mapNum && this.mapNum != MAPNUM) return 0;
+		if (this.node && this.node != args.node) return 0;
+		if (this.type == 'ReachNode') {
+			return 1;
+		}
+		if (this.type == 'battle') {
+			return +(ChGimmick.rankToNum(args.rank) >= ChGimmick.rankToNum(this.rank));
+		}
+		if (this.type == 'AirState') {
+			return +(args.airState >= ChGimmick.airStateToNum(this.airState));
+		}
+	}
 }
 
 /*ChGimmick.ConvertBattleRankNumberToString = (rank) => {

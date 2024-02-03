@@ -39,13 +39,13 @@ const GimmickListComponent = {
 
             <tr>
                 <td>Number of step required (0/nothing = all required)</td>
-                <td><input v-model="gimmickList.additionnalParameters.numberOfStepRequired" min="0" type="number"></td>
+                <td><input v-model="gimmickList.additionalParameters.numberOfStepRequired" min="0" type="number"></td>
             </tr>
 
 
             <tr>
                 <td>Last dance only ?</td>
-                <td><input v-model="gimmickList.additionnalParameters.lastDanceOnly" type="checkbox"></td>
+                <td><input v-model="gimmickList.additionalParameters.lastDanceOnly" type="checkbox"></td>
             </tr>
 
             <tr>
@@ -55,7 +55,7 @@ const GimmickListComponent = {
             
             <tr>
                 <td>Route unlock required</td>
-                <td><vcomboboxeditor :data-source="gimmickList.additionnalParameters" :item-list="routeUnlockItemList" data-field="routeUnlockRequired" :can-be-null="true"/></td>
+                <td><vcomboboxeditor :data-source="gimmickList.additionalParameters" :item-list="routeUnlockItemList" data-field="routeUnlockRequired" :can-be-null="true"/></td>
             </tr>
 
             <tr>

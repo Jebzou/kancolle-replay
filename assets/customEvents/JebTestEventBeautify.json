@@ -290,7 +290,7 @@
               "mapPartNumber": "2",
               "mapNum": "1",
               "mapIdForChdata": "1",
-              "additionnalParameters": {
+              "additionalParameters": {
                 "partToUnlock": 1
               },
               "gimmicks": [
@@ -2055,7 +2055,7 @@
               "mapPartNumber": "2",
               "mapNum": "2",
               "mapIdForChdata": "2",
-              "additionnalParameters": {
+              "additionalParameters": {
                 "partToUnlock": 1
               },
               "gimmicks": [
@@ -2118,7 +2118,7 @@
               "mapPartNumber": "2",
               "mapNum": "2",
               "mapIdForChdata": "2",
-              "additionnalParameters": {
+              "additionalParameters": {
                 "partToUnlock": 2,
                 "numberOfStepRequired": ""
               },
@@ -4829,7 +4829,7 @@
               "mapPartNumber": "2",
               "mapNum": "3",
               "mapIdForChdata": "3",
-              "additionnalParameters": {
+              "additionalParameters": {
                 "partToUnlock": 1,
                 "numberOfStepRequired": ""
               },
@@ -4893,7 +4893,7 @@
               "mapPartNumber": "3",
               "mapNum": "3",
               "mapIdForChdata": "3",
-              "additionnalParameters": {
+              "additionalParameters": {
                 "partToUnlock": 2
               },
               "gimmicks": [],
@@ -4914,7 +4914,7 @@
               "mapPartNumber": "3",
               "mapNum": "3",
               "mapIdForChdata": "3",
-              "additionnalParameters": {
+              "additionalParameters": {
                 "partToUnlock": 3,
                 "routeUnlockRequired": null
               },
@@ -8362,7 +8362,7 @@
               "mapPartNumber": "2",
               "mapNum": "4",
               "mapIdForChdata": "4",
-              "additionnalParameters": {
+              "additionalParameters": {
                 "partToUnlock": 1
               },
               "gimmicks": [],
@@ -8383,7 +8383,7 @@
               "mapPartNumber": "3",
               "mapNum": "4",
               "mapIdForChdata": "4",
-              "additionnalParameters": {
+              "additionalParameters": {
                 "partToUnlock": 2
               },
               "gimmicks": [],
@@ -11512,7 +11512,7 @@
               "mapPartNumber": null,
               "mapNum": "5",
               "mapIdForChdata": "5",
-              "additionnalParameters": {
+              "additionalParameters": {
                 "partToUnlock": 1
               },
               "gimmicks": [
@@ -11608,7 +11608,7 @@
               "mapPartNumber": "2",
               "mapNum": "5",
               "mapIdForChdata": "5",
-              "additionnalParameters": {
+              "additionalParameters": {
                 "partToUnlock": 2,
                 "routeUnlockRequired": null
               },
@@ -11623,7 +11623,7 @@
               "mapPartNumber": "2",
               "mapNum": "5",
               "mapIdForChdata": "5",
-              "additionnalParameters": {
+              "additionalParameters": {
                 "partToUnlock": 3,
                 "routeUnlockRequired": null
               },
@@ -15742,7 +15742,7 @@
           "mapPartNumber": "2",
           "mapNum": "5",
           "mapIdForChdata": "5",
-          "additionnalParameters": {
+          "additionalParameters": {
             "lastDanceOnly": true
           },
           "gimmicks": [
@@ -16135,7 +16135,7 @@
               "mapPartNumber": "2",
               "mapNum": "6",
               "mapIdForChdata": "6",
-              "additionnalParameters": {
+              "additionalParameters": {
                 "partToUnlock": 1
               },
               "gimmicks": [
@@ -16191,7 +16191,7 @@
               "mapPartNumber": "3",
               "mapNum": "6",
               "mapIdForChdata": "6",
-              "additionnalParameters": {
+              "additionalParameters": {
                 "partToUnlock": 2
               },
               "gimmicks": [
@@ -16247,7 +16247,7 @@
               "mapPartNumber": "4",
               "mapNum": "6",
               "mapIdForChdata": "6",
-              "additionnalParameters": {
+              "additionalParameters": {
                 "partToUnlock": 3
               },
               "gimmicks": [],
@@ -16261,7 +16261,7 @@
               "mapPartNumber": "5",
               "mapNum": "6",
               "mapIdForChdata": "6",
-              "additionnalParameters": {
+              "additionalParameters": {
                 "partToUnlock": 4
               },
               "gimmicks": [
@@ -16317,7 +16317,7 @@
               "mapPartNumber": "5",
               "mapNum": "6",
               "mapIdForChdata": "6",
-              "additionnalParameters": {
+              "additionalParameters": {
                 "partToUnlock": 5,
                 "routeUnlockRequired": "4"
               },
@@ -20491,7 +20491,7 @@
           "mapPartNumber": "5",
           "mapNum": "6",
           "mapIdForChdata": "6",
-          "additionnalParameters": {
+          "additionalParameters": {
             "lastDanceOnly": true
           },
           "gimmicks": [
