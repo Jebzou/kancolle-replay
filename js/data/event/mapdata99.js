@@ -197,6 +197,9 @@ const DISABLE_RANDO = false;
 function chRandomizeCompsFromMapList(mapList) {
     let comps = {};
 
+    // reset 
+    Object.assign(ENEMYCOMPS, ENEMYCOMPS_BACKUP);
+
     for (let map in mapList) {
 
         let eventNodes = {};
@@ -310,8 +313,14 @@ function chRandomizeComp(compData, mapData, nodeLetter) {
             hasRealBoss = true;
 
             compMain.push(parseInt(shipID));
-        } 
-        else {
+
+        } else if (isBoss && strongEnemiesIds.indexOf(ship_id)) {
+            const obj_keys = Object.keys(strongEnemiesIds);
+            const shipID = obj_keys[Math.floor(Math.random() *obj_keys.length)];
+            compMain.push(parseInt(shipID));
+
+            hasRealBoss = true;
+        } else {
             var obj_keys = Object.keys(ennemies);
             var shipID = obj_keys[Math.floor(Math.random() *obj_keys.length)];
 

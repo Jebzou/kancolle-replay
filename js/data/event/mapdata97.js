@@ -1154,3 +1154,67 @@ MAPDATA[97].ConvertSimulatorFormatToMapEditorFormat = function (eventData) {
     
     return eventData;
 }
+
+
+/* Gimmick overrides */ 
+
+ChGimmick.prototype.getLongDescription = function (diff) {
+    switch (this.type) {
+        case 'NoHPLoss': {
+            return `Take no damage on node ${this.node}`;
+        }
+
+        case 'ReachNode': {
+            return `Reach node ${this.node}`;
+        }
+
+        case 'AirState': {
+            let rank = this.ranksRequiredPerDiff[diff];
+            return `Achieve ${ChGimmick.ConvertAirStateNumberToString(rank)} on node ${this.node}`;
+        }
+
+        case 'MapHP': {
+            if (!this.ranksRequiredPerDiff[diff]) return '-';
+            return 'Map HP <= ' + this.ranksRequiredPerDiff[diff];
+        }
+
+        case 'PartClear': {
+            return 'Clear part '+ this.partToClear + '        ';
+        }
+
+        case 'battle': {
+            let rank = this.ranksRequiredPerDiff[diff];
+
+            return `Achieve ${rank} rank on node ${this.node}`;
+        }
+
+        case 'RandomChance': {
+            return `Random chance (${this.ranksRequiredPerDiff[diff]}%) on node ${this.node}`;
+        }
+
+        default: {
+            if (!this.timesRequiredPerDiff[diff]) return '-';
+
+            return this.ranksRequiredPerDiff[diff] + (this.timesRequiredPerDiff[diff] > 1 ? (' x' + this.timesRequiredPerDiff[diff]) : '');
+        }
+    }
+}
+
+ChGimmick.prototype.getDescription = function (diff) {
+    switch (this.type) {
+        case 'NoHPLoss': {
+            if (!this.timesRequiredPerDiff[diff]) return '-';
+            return 'Take no damage' + (this.timesRequiredPerDiff[diff] > 1 ? (' x' + this.timesRequiredPerDiff[diff]) : '');
+        }
+
+        case 'ReachNode': {
+            return 'Reach' + (this.timesRequiredPerDiff[diff] > 1 ? (' x' + this.timesRequiredPerDiff[diff]) : '');
+        }
+
+        default: {
+            if (!this.timesRequiredPerDiff[diff]) return '-';
+
+            return this.ranksRequiredPerDiff[diff] + (this.timesRequiredPerDiff[diff] > 1 ? (' x' + this.timesRequiredPerDiff[diff]) : '');
+        }
+    }
+}
