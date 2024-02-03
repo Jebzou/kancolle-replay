@@ -910,12 +910,16 @@ class ChrDisplayEventInfo {
             debuffInfoRoot.append($(`<div class="mapInfoTitle foldable-element-title">Debuff</div>`));
         }
         
-        if (rules.type == 'mapPart') {
-            for (const node in map.nodes) {
-                if (map.nodes[node].hidden && map.nodes[node].hidden == rules.additionalParameters.partToUnlock) nodeList.push(node);
+        if (rules.type == 'mapPart' || rules.type == 'route') {
+            if (!rules.additionalParameters.partToUnlock) {
+                debuffInfoRoot.append($(`<div class="mapInfoTitle foldable-element-title">Unlock a new path !</div>`));
+            } else {
+                for (const node in map.nodes) {
+                    if (map.nodes[node].hidden && map.nodes[node].hidden == rules.additionalParameters.partToUnlock) nodeList.push(node);
+                }
+    
+                debuffInfoRoot.append($(`<div class="mapInfoTitle foldable-element-title">Unlock ${rules.additionalParameters.partToUnlock} - ${getUnlockTitle(false)}</div>`));
             }
-
-            debuffInfoRoot.append($(`<div class="mapInfoTitle foldable-element-title">Unlock ${rules.additionalParameters.partToUnlock} - ${getUnlockTitle(false)}</div>`));
         }
         
         if (rules.type == 'custom') {
@@ -928,7 +932,7 @@ class ChrDisplayEventInfo {
             debuffInfoContent.append(`This map can be debuffed after completing `);
         }
 
-        if (rules.type == 'mapPart') {
+        if (rules.type == 'mapPart' || rules.type == 'route') {
 
             debuffInfoContent.append(`You can unlock ${getUnlockTitle(true)} after completing `);
         }
