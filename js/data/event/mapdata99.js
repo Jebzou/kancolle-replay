@@ -710,7 +710,7 @@ const bossIds = [
 
     // --- Airfield Princess
     2047, 2048,                             // --- Base
-    2094, 2096, 2096,                       // --- Base
+    2094, 2095, 2096,                 // --- Base
     2091, 2092, 2093,                       // --- Patrol Aircraft Deployment
     2077, 2078, 2079,                       // --- Super Heavy Bombing
 
