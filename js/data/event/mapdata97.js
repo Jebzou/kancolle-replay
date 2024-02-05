@@ -1221,7 +1221,7 @@ ChGimmick.prototype.getDescription = function (diff) {
     }
 }
 
-ChGimmick.prototype.getCount2 = function (checkGimmickParameters) {
+ChGimmick.prototype.getCustomCount = function (checkGimmickParameters) {
     switch (this.type) {
         case 'NoHPLoss': {
             return +(checkGimmickParameters.totalHPLost <= 0);
@@ -1246,4 +1246,121 @@ ChGimmick.prototype.getCount2 = function (checkGimmickParameters) {
             return +((Math.random() * 100) > this.ranksRequiredPerDiff[getDiff()]);
         }
     }
+}
+
+/**
+ * 
+ * @param {ChGimmickList} gimmickList 
+ * @returns 
+ */
+ChGimmick.prototype.updateKey = function(gimmickList) {
+    if (this.realKey) return;
+
+    var key = `E${this.mapNum}-${this.node}-${this.type}`;
+	if (this.key) key += `-${this.key}`;
+
+    if (gimmickList.type == 'debuff') {
+        key += '-D';
+    }
+
+    if (gimmickList.type == 'mapPart' || gimmickList.type == 'route') {
+        // --- To finish
+        key += '-U' + gimmickList.additionalParameters.partToUnlock;
+    }
+
+    if (gimmickList.type == 'quest') {
+        key += '-Q';
+    }
+
+    if (this.fleetType) {
+        key += `-FT${this.fleetType.join('_')}`;
+    }
+
+    this.realKey = key;
+    this.key = key;
+}
+
+ChGimmickList.updateAllCustom = function(args) {
+    // Update stuff to work with the randomizer
+    const rules = ChGimmickList.getAllRules();
+
+    for (const rule of rules) {
+        if (!rule.rule.isInitialized) {
+            rule.rule.updateKey(rule.list);
+
+            rule.rule.getNormalCount = rule.rule.getCount;
+
+            rule.rule.getCount = (argsCount) => {
+                const count = rule.rule.getNormalCount(argsCount);
+                
+                return count ? count : rule.rule.getCustomCount(argsCount);
+            }
+
+            rule.rule.isInitialized = true;
+        }
+    }
+
+    ChGimmickList.updateAll(args);
+
+    args.node = "MapWide";
+
+    ChGimmickList.updateAll(args);
+}
+
+/**
+ * 
+ * @returns {{rule: ChGimmick, list: ChGimmickList}[]}
+ */
+ChGimmickList.getAllRules = function() {
+    let allRules = [];
+
+	if (MAPDATA[WORLD].maps[MAPNUM].hiddenRoutes) {
+		for (let route in MAPDATA[WORLD].maps[MAPNUM].hiddenRoutes) {
+			if (MAPDATA[WORLD].maps[MAPNUM].hiddenRoutes[route].unlockRules) {
+                for (const rule of MAPDATA[WORLD].maps[MAPNUM].hiddenRoutes[route].unlockRules.gimmicks) {
+                    allRules.push({
+                        rule: rule,
+                        list: MAPDATA[WORLD].maps[MAPNUM].hiddenRoutes[route].unlockRules
+                    });
+                }
+			}
+		}
+	}
+
+	if (MAPDATA[WORLD].maps[MAPNUM].debuffRules) {
+        for (const rule of MAPDATA[WORLD].maps[MAPNUM].debuffRules.gimmicks) {
+            allRules.push({
+                rule: rule,
+                list: MAPDATA[WORLD].maps[MAPNUM].debuffRules
+            });
+        }
+	}
+	if (MAPDATA[WORLD].maps[MAPNUM].lbParts) {
+		for (let part in MAPDATA[WORLD].maps[MAPNUM].lbParts) {
+			if (MAPDATA[WORLD].maps[MAPNUM].lbParts[part].unlockRules) {
+                for (const rule of MAPDATA[WORLD].maps[MAPNUM].lbParts[part].unlockRules.gimmicks) {
+                    allRules.push({
+                        rule: rule,
+                        list: MAPDATA[WORLD].maps[MAPNUM].lbParts[part].unlockRules
+                    });
+                }
+			}
+		}
+	}
+	
+	if (!ChGimmickList._gimmickExtra[WORLD] || !ChGimmickList._gimmickExtra[WORLD][MAPNUM]) ChGimmickList._getGimmickExtra(MAPNUM);
+	for (let gimmickList of ChGimmickList._gimmickExtra[WORLD][MAPNUM]) {        
+		for (let part in MAPDATA[WORLD].maps[MAPNUM].lbParts) {
+			if (MAPDATA[WORLD].maps[MAPNUM].lbParts[part].unlockRules) {
+                for (const rule of gimmickList.gimmicks) {
+                    allRules.push({
+                        rule: rule,
+                        list: gimmickList
+                    });
+                }
+			}
+		}
+	}
+	
+	return allRules;
 }

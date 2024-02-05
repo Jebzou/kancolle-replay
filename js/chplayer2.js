@@ -1396,8 +1396,7 @@ function mapPhase(first) {
 				if (!CHDATA.event.maps[MAPNUM].debuff) CHDATA.event.maps[MAPNUM].debuff = {};
 				curnode.debuffGive();
 			}
-			ChGimmickList.updateAll({ node: curletter });
-			ChGimmickList.updateAll({ node: "MapWide" });
+			ChGimmickList.updateAllCustom({ node: curletter });
 		}
 		if (curnode.dropoff) {
 			if (!MAPDATA[WORLD].maps[MAPNUM].currentBoss || MAPDATA[WORLD].maps[MAPNUM].currentBoss == curletter) {
@@ -2849,8 +2848,7 @@ function shuttersPostbattle(noshutters) {
 	}
 
 	CHDATA.quests.checkProgress(curletter);
-	ChGimmickList.updateAll({ node: curletter, rank: CHDATA.temp.rank, airState: FLEETS1[0].AS });
-	ChGimmickList.updateAll({ node: "MapWide", rank: CHDATA.temp.rank, airState: FLEETS1[0].AS });
+	ChGimmickList.updateAllCustom({ node: curletter, rank: CHDATA.temp.rank, airState: FLEETS1[0].AS });
 
 	FLEETS1[0].resetBattle();
 	if (CHDATA.fleets.combined) FLEETS1[1].resetBattle();
@@ -4022,8 +4020,7 @@ function doSimEnemyRaid(numLB,compd,forceHA,isSuperHeavy) {
 		totalHPLost: totalHPLost
 	});
 	
-	ChGimmickList.updateAll({ node: 'AB', airState: airState, totalHPLost: totalHPLost });
-	ChGimmickList.updateAll({ node: 'MapWide', airState: airState, totalHPLost: totalHPLost });
+	ChGimmickList.updateAllCustom({ node: 'AB', airState: airState, totalHPLost: totalHPLost });
 
 	CHAPI.battles.push(BAPI);
 	CHAPI.fleet1 = [];

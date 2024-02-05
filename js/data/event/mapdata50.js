@@ -702,6 +702,9 @@ MAPDATA[50] =
 							1: {'Easy 1':10,'Easy 2':10,'Easy 3':15,'Easy 4':15,'Easy 5':15,'Easy 6':15,'Easy 7':10,'Easy 8':10},
 							4: {'Casual 1':30,'Casual 2':30,'Casual 3':20,'Casual 4':20},
 						},
+						endRules: [
+							ChIsRouteNotUnlockedRule(3, true),
+						],
 						rules: [
 							ChShipTypeRoutingRule(['CA', 'CAV'], '>', 0, 'D'),
 							ChShipTypeRoutingRule(['CL', 'CT', 'CLT'], '>=', 3, 'D'),
