@@ -33005,6 +33005,8 @@ function mapChangePart(worldnum,mapnum,part) {
 	for (var key in MAPDATA[worldnum].maps[mapnum].parts[part]) {
 		MAPDATA[worldnum].maps[mapnum][key] = MAPDATA[worldnum].maps[mapnum].parts[part][key];
 	}
+	
+	ChGimmickList.updateAllCustom({ node: "MapWide" });
 }
 
 function transportCalcStandard(ships,rank) {

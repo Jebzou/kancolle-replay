@@ -1300,7 +1300,9 @@ ChGimmickList.updateAllCustom = function(args) {
         }
     }
 
-    ChGimmickList.updateAll(args);
+    if (args.node != 'MapWide') {
+        ChGimmickList.updateAll(args);
+    }
 
     args.node = "MapWide";
 

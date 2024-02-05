@@ -1373,20 +1373,6 @@ function mapPhase(first) {
 	}
 
 	if (curnode.type == 3 || curnode.type == 2) {
-		if (MAPDATA[WORLD].maps[MAPNUM].debuffRules) {
-			MAPDATA[WORLD].maps[MAPNUM].debuffRules.check(curletter);
-		}
-
-		if (MAPDATA[WORLD].maps[MAPNUM].hiddenRoutes) {
-			let hiddenRoutes = MAPDATA[WORLD].maps[MAPNUM].hiddenRoutes;
-	
-			for (var key in hiddenRoutes) {
-				key = parseInt(key);
-		
-				hiddenRoutes[key].unlockRules.check(curletter);
-			}
-		}
-
 		CHDATA.quests.checkProgress(curletter);
 	}
 
@@ -2615,25 +2601,7 @@ function endMap() {
 			chAddReward(rewardsToGive);
 			chShowReward(rewardsToGive);
 		}
-		
-		for (var mapnum in MAPDATA[WORLD].maps) {
-			if (mapnum < MAPNUM) continue;
-			if (mapnum > CHDATA.event.unlocked) continue;
-			
-			if (MAPDATA[WORLD].maps[mapnum].debuffRules) {
-				MAPDATA[WORLD].maps[mapnum].debuffRules.checkIfDebuffed();
-			}
-
-			if (MAPDATA[WORLD].maps[mapnum].debuffCheck && !CHDATA.event.maps[mapnum].debuffed) {
-				if (!CHDATA.event.maps[mapnum].debuff) CHDATA.event.maps[mapnum].debuff = {};
-				if (MAPDATA[WORLD].maps[mapnum].debuffCheck(CHDATA.event.maps[mapnum].debuff)) {
-					CHDATA.event.maps[mapnum].debuffed = true;
-					SM.play('done');
-					alert('DEBUFF');
-				}
-			}
-		}
-		
+				
 		if (CHDATA.sortie.gimmickProgressed) {
 			SM.play('done');
 		}
@@ -2824,29 +2792,6 @@ function shuttersPostbattle(noshutters) {
 		MAPDATA[WORLD].maps[MAPNUM].nodes[curletter].debuffGive(FLEETS2,FLEETS1);
 	}
 	
-	if (MAPDATA[WORLD].maps[MAPNUM].debuffRules) {
-		MAPDATA[WORLD].maps[MAPNUM].debuffRules.check(curletter);
-	}
-
-	if (MAPDATA[WORLD].maps[MAPNUM].hiddenRoutes) {
-		let hiddenRoutes = MAPDATA[WORLD].maps[MAPNUM].hiddenRoutes;
-
-		for (var key in hiddenRoutes) {
-			key = parseInt(key);
-	
-			hiddenRoutes[key].unlockRules.check(curletter);
-		}
-	}
-
-	for (const map in MAPDATA[WORLD].maps) {
-		if (map == MAPNUM) continue;
-		if (!MAPDATA[WORLD].maps[map].debuffRules) continue;
-		if (MAPDATA[WORLD].maps[map].debuffRules.mapNum) continue;
-
-		// --- Gimmick rules without map number = multi map debuff (eg : Spring 16 E5 E6)
-		MAPDATA[WORLD].maps[map].debuffRules.check(curletter);
-	}
-
 	CHDATA.quests.checkProgress(curletter);
 	ChGimmickList.updateAllCustom({ node: curletter, rank: CHDATA.temp.rank, airState: FLEETS1[0].AS });
 
@@ -3841,7 +3786,6 @@ function testGetLoSOld(fleetnum,includeCombined) {
 	return los;
 }
 
-
 function checkRouteUnlocks(hiddenRoutes,peekOnly) {
 	if (!CHDATA.event.maps[MAPNUM].routes) CHDATA.event.maps[MAPNUM].routes = [];
 	for (var key in hiddenRoutes) {
@@ -3851,11 +3795,6 @@ function checkRouteUnlocks(hiddenRoutes,peekOnly) {
 			if (!peekOnly) CHDATA.event.maps[MAPNUM].routes.push(key);
 			return key;
 		}
-
-		if (hiddenRoutes[key].unlockRules) {
-			// --- Do a mapwide check (for part clear)
-			hiddenRoutes[key].unlockRules.check();
-		} 
 		
 		if (hiddenRoutes[key].unlockRules && hiddenRoutes[key].unlockRules.check()) {
 			if (!peekOnly) CHDATA.event.maps[MAPNUM].routes.push(key);
@@ -3983,38 +3922,6 @@ function doSimEnemyRaid(numLB,compd,forceHA,isSuperHeavy) {
 		MAPDATA[WORLD].maps[MAPNUM].enemyRaid.debuffGive(airState,totalHPLost);
 	}
 	
-	if (MAPDATA[WORLD].maps[MAPNUM].debuffRules) {
-		MAPDATA[WORLD].maps[MAPNUM].debuffRules.check('AB', {
-			airstate: airState,
-			totalHPLost: totalHPLost
-		});
-	}
-
-	if (MAPDATA[WORLD].maps[MAPNUM].hiddenRoutes) {
-		let hiddenRoutes = MAPDATA[WORLD].maps[MAPNUM].hiddenRoutes;
-
-		for (var key in hiddenRoutes) {
-			key = parseInt(key);
-	
-			hiddenRoutes[key].unlockRules.check('AB', {
-				airstate: airState,
-				totalHPLost: totalHPLost
-			});
-		}
-	}
-
-	for (const map in MAPDATA[WORLD].maps) {
-		if (map == MAPNUM) continue;
-		if (!MAPDATA[WORLD].maps[map].debuffRules) continue;
-		if (MAPDATA[WORLD].maps[map].debuffRules.mapNum) continue;
-
-		// --- Gimmick rules without map number = multi map debuff (eg : Spring 16 E5 E6)
-		MAPDATA[WORLD].maps[map].debuffRules.check('AB', {
-			airstate: airState,
-			totalHPLost: totalHPLost
-		});
-	}
-
 	CHDATA.quests.checkProgress('AB', {
 		airstate: airState,
 		totalHPLost: totalHPLost
