@@ -1220,3 +1220,30 @@ ChGimmick.prototype.getDescription = function (diff) {
         }
     }
 }
+
+ChGimmick.prototype.getCount2 = function (checkGimmickParameters) {
+    switch (this.type) {
+        case 'NoHPLoss': {
+            return +(checkGimmickParameters.totalHPLost <= 0);
+        }
+        
+        case 'MapHP': {
+            let requiredHP = this.ranksRequiredPerDiff[getDiff()];
+            let mapHP = CHDATA.event.maps[this.mapNum].hp;
+            
+            if (requiredHP > mapHP) return 1;
+    
+            return 0;
+        }
+
+        case 'PartClear': {
+            if (this.partToClear >= CHDATA.event.maps[this.mapNum].part) return 0;
+    
+            return 1;
+        }
+
+        case 'RandomChance': {
+            return +((Math.random() * 100) > this.ranksRequiredPerDiff[getDiff()]);
+        }
+    }
+}

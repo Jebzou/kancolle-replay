@@ -127,6 +127,8 @@ function ChGimmick(data) {
 		if (this.type == 'AirState') {
 			return +(args.airState >= ChGimmick.airStateToNum(this.airState));
 		}
+
+		return this.getCount2(args);
 	}
 }
 

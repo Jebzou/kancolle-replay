@@ -1396,6 +1396,8 @@ function mapPhase(first) {
 				if (!CHDATA.event.maps[MAPNUM].debuff) CHDATA.event.maps[MAPNUM].debuff = {};
 				curnode.debuffGive();
 			}
+			ChGimmickList.updateAll({ node: curletter });
+			ChGimmickList.updateAll({ node: "MapWide" });
 		}
 		if (curnode.dropoff) {
 			if (!MAPDATA[WORLD].maps[MAPNUM].currentBoss || MAPDATA[WORLD].maps[MAPNUM].currentBoss == curletter) {
@@ -2847,6 +2849,8 @@ function shuttersPostbattle(noshutters) {
 	}
 
 	CHDATA.quests.checkProgress(curletter);
+	ChGimmickList.updateAll({ node: curletter, rank: CHDATA.temp.rank, airState: FLEETS1[0].AS });
+	ChGimmickList.updateAll({ node: "MapWide", rank: CHDATA.temp.rank, airState: FLEETS1[0].AS });
 
 	FLEETS1[0].resetBattle();
 	if (CHDATA.fleets.combined) FLEETS1[1].resetBattle();
@@ -3840,7 +3844,7 @@ function testGetLoSOld(fleetnum,includeCombined) {
 }
 
 
-function checkRouteUnlocks(hiddenRoutes,peekOnly, mapWideCheck) {
+function checkRouteUnlocks(hiddenRoutes,peekOnly) {
 	if (!CHDATA.event.maps[MAPNUM].routes) CHDATA.event.maps[MAPNUM].routes = [];
 	for (var key in hiddenRoutes) {
 		key = parseInt(key);
@@ -3850,7 +3854,7 @@ function checkRouteUnlocks(hiddenRoutes,peekOnly, mapWideCheck) {
 			return key;
 		}
 
-		if (hiddenRoutes[key].unlockRules && mapWideCheck) {
+		if (hiddenRoutes[key].unlockRules) {
 			// --- Do a mapwide check (for part clear)
 			hiddenRoutes[key].unlockRules.check();
 		} 
@@ -4018,6 +4022,9 @@ function doSimEnemyRaid(numLB,compd,forceHA,isSuperHeavy) {
 		totalHPLost: totalHPLost
 	});
 	
+	ChGimmickList.updateAll({ node: 'AB', airState: airState, totalHPLost: totalHPLost });
+	ChGimmickList.updateAll({ node: 'MapWide', airState: airState, totalHPLost: totalHPLost });
+
 	CHAPI.battles.push(BAPI);
 	CHAPI.fleet1 = [];
 	for (var i=0; i<numLB; i++) {
