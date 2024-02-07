@@ -2186,17 +2186,9 @@ function prepBattle(letter) {
 	chrApplySpecial();
 	
 	if (mapdata.debuffAmount) {
-
 		let debuffed = false;
-
-		if (MAPDATA[WORLD].maps[MAPNUM].debuffRules) {
-			debuffed = MAPDATA[WORLD].maps[MAPNUM].debuffRules.check();
-		}
-		else {
-			var debuffCheck = MAPDATA[WORLD].maps[MAPNUM].debuffCheck;
-			debuffed = debuffCheck && debuffCheck(CHDATA.event.maps[MAPNUM].debuff);
-		}
-
+		if (MAPDATA[WORLD].maps[MAPNUM].debuffCheck) debuffed = MAPDATA[WORLD].maps[MAPNUM].debuffCheck(CHDATA.event.maps[MAPNUM].debuff);
+		if (MAPDATA[WORLD].maps[MAPNUM].debuffRules) debuffed = MAPDATA[WORLD].maps[MAPNUM].debuffRules.check();
 		if (debuffed) {
 			if (typeof mapdata.debuffAmount === 'object') {
 				for (var i=0; i<FLEETS2[0].ships.length; i++) {

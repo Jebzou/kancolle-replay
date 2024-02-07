@@ -5,12 +5,9 @@
  * @param {{
  *  numberOfStepRequired: number
  *  partToUnlock: number
- * lastDanceOnly: boolean
+ *  lastDanceOnly: boolean
  *  description: string
  *  title: string
- * difficultiesAllowed: number[]
- * specialSoundOnCompletion: String
- * routeUnlockRequired: number
  * }} additionalParameters Additionnal parameters to handle special cases
  */
 function ChGimmickList(type, mapPartNumber, mapNum, gimmickData, additionalParameters) {
@@ -130,34 +127,9 @@ function ChGimmick(data) {
 	}
 }
 
-/*ChGimmick.ConvertBattleRankNumberToString = (rank) => {
-
-    rank = parseInt(rank);
-
-    switch (rank) {
-        case 1: return 'S';
-        case 2: return 'A';
-        case 3: return 'B';
-        case 4: return 'C';
-        case 5: return 'D';
-    }
-
-    return '???';
-}*/
-
-ChGimmick.ConvertAirStateNumberToString = (airState) => {
-    switch (airState) {
-        case 0: return 'AP';
-        case 1: return 'AS';
-        case 2: return 'AS+';
-    }
-
-    return '???';
+ChGimmick.airStateToNum = function(airState) {
+	return ['AI','AD','AP','AS','AS+'].indexOf(airState) - 2;
 }
-
-ChGimmick.IsUnlockDone = (routeUnlock) => {
-    if (!CHDATA.event.maps[MAPNUM].routes) return false;
-    if (!CHDATA.event.maps[MAPNUM].routes.length) return false;
-
-    return CHDATA.event.maps[MAPNUM].routes.indexOf(parseInt(routeUnlock)) != -1;
+ChGimmick.rankToNum = function(rank) {
+	return ['E','D','C','B','A','S'].indexOf(rank);
 }

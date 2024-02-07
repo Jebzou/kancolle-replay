@@ -1222,6 +1222,9 @@ ChGimmick.prototype.getDescription = function (diff) {
 }
 
 ChGimmick.prototype.getCustomCount = function (checkGimmickParameters) {
+    if (this.mapNum && this.mapNum != MAPNUM) return 0;
+    if (this.node && this.node != checkGimmickParameters.node) return 0;
+
     switch (this.type) {
         case 'NoHPLoss': {
             return +(checkGimmickParameters.totalHPLost <= 0);
@@ -1244,6 +1247,22 @@ ChGimmick.prototype.getCustomCount = function (checkGimmickParameters) {
 
         case 'RandomChance': {
             return +((Math.random() * 100) > this.ranksRequiredPerDiff[getDiff()]);
+        }
+
+        case 'ReachNode': {
+            return 1;
+        }
+        
+        case 'AirState': {
+            let requiredRank = this.ranksRequiredPerDiff[getDiff()];
+            
+            return +(checkGimmickParameters.airState >= ChGimmick.airStateToNum(requiredRank));
+        }
+
+        case 'battle': {
+            let requiredRank = this.ranksRequiredPerDiff[getDiff()];
+    
+			return +(ChGimmick.rankToNum(checkGimmickParameters.rank) >= ChGimmick.rankToNum(requiredRank));
         }
     }
 }
@@ -1288,12 +1307,8 @@ ChGimmickList.updateAllCustom = function(args) {
         if (!rule.rule.isInitialized) {
             rule.rule.updateKey(rule.list);
 
-            rule.rule.getNormalCount = rule.rule.getCount;
-
             rule.rule.getCount = (argsCount) => {
-                const count = rule.rule.getNormalCount(argsCount);
-                
-                return count ? count : rule.rule.getCustomCount(argsCount);
+                return rule.rule.getCustomCount(argsCount);
             }
 
             rule.rule.isInitialized = true;
@@ -1365,4 +1380,21 @@ ChGimmickList.getAllRules = function() {
 	}
 	
 	return allRules;
+}
+
+ChGimmick.ConvertAirStateNumberToString = (airState) => {
+    switch (airState) {
+        case 0: return 'AP';
+        case 1: return 'AS';
+        case 2: return 'AS+';
+    }
+
+    return '???';
+}
+
+ChGimmick.IsUnlockDone = (routeUnlock) => {
+    if (!CHDATA.event.maps[MAPNUM].routes) return false;
+    if (!CHDATA.event.maps[MAPNUM].routes.length) return false;
+
+    return CHDATA.event.maps[MAPNUM].routes.indexOf(parseInt(routeUnlock)) != -1;
 }
