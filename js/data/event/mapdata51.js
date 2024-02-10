@@ -2550,13 +2550,13 @@ MAPDATA[51] =
 					return { lock: lock, start: start };
 				},
 				additionalChecks: function(ships,errors) {
-					if (CHDATA.fleets.sf) {
+					/*if (CHDATA.fleets.sf) {
 						let debuff = CHDATA.event.maps[1].debuff;
 						if (!(debuff && debuff.F_A && debuff.L && debuff.O)) {
 							errors.push('Unlock Striking Force:<br>- A rank E-1 node F<br>- A rank E-1 node L<br>- A rank E-1 node O');
 							return;
 						}
-					}
+					}*/
 					if (getDiff() != 3 || CHDATA.config.disablelock) return;
 					let lock = this.getLock(ships).lock;
 					

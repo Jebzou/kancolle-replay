@@ -621,8 +621,8 @@ function ChRule () {
             }
             
             case 'debuff': {
-                if (this.not) return CHDATA.event.maps[MAPNUM].debuffed ? this.conditionFailedNode : this.conditionCheckedNode;
-                return CHDATA.event.maps[MAPNUM].debuffed ? this.conditionCheckedNode : this.conditionFailedNode;
+                if (this.not) return chrGetIsDebuffed() ? this.conditionFailedNode : this.conditionCheckedNode;
+                return chrGetIsDebuffed() ? this.conditionCheckedNode : this.conditionFailedNode;
             }
 
             case 'routeSelect': 

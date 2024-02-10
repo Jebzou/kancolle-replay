@@ -413,12 +413,23 @@ function chrApplySpecial() {
     // --- For each abyssal
     for (let abyssal of  FLEETS2[0].ships) {
         // --- Change boss form if debuffed
-        if (CHDATA.event.maps[MAPNUM].debuffed) {
+        if (chrGetIsDebuffed()) {
             chrApplyDebuffedForm(abyssal);
         } else {
             chrApplyBaseForm(abyssal);
         }
     }
+}
+
+function chrGetIsDebuffed() {
+    let debuffed = false;
+
+    if (CHDATA.event.maps[MAPNUM].debuffed) return true;
+
+    if (MAPDATA[WORLD].maps[MAPNUM].debuffCheck) debuffed = MAPDATA[WORLD].maps[MAPNUM].debuffCheck(CHDATA.event.maps[MAPNUM].debuff);
+    if (MAPDATA[WORLD].maps[MAPNUM].debuffRules) debuffed = MAPDATA[WORLD].maps[MAPNUM].debuffRules.check();
+
+    return debuffed;
 }
 
 /**
@@ -482,10 +493,6 @@ function chrApplyDebuffedForm(abyssal) {
         VOICES[idBoss].damage = 'assets/voice/453188630.mp3';
     }
 
-    // --- European Water Princess
-    // --- Anzio Princess
-    // --- Anti-Air Cruiser Princess
-    // --- Batavia Princess
     SHIPDATA[idBoss].image = SHIPDATA[idBoss].imageBroken ? SHIPDATA[idBoss].imageBroken : SHIPDATA[idBoss].image;
                             
     // --- Anti-Air Cruiser Princess    
@@ -493,52 +500,12 @@ function chrApplyDebuffedForm(abyssal) {
         VOICES[idBoss].damage = 'assets/voice/466191231.mp3';
     }
     
-    // --- Gotou princess
-    for (let mid = 1942; mid <= 1944; mid++) {
-        VOICES[mid].attack = VOICES[mid].attackB;
-        VOICES[mid].damage = VOICES[mid].damageB;
-    }
-
-    // --- New Southern Battleship Princess
-    for (let mid = 1968; mid <= 1970; mid++) {
-        VOICES[mid].attack = VOICES[mid].attackB;
-        VOICES[mid].damage = VOICES[mid].damageB;
-    }
-
-    // --- South pacific CV princess
-    for (let mid = 1974; mid <= 1976; mid++) {
-        VOICES[mid].attack = VOICES[mid].attackB;
-        VOICES[mid].damage = VOICES[mid].damageB;
+    if (VOICES[idBoss] && VOICES[idBoss].attackB) {
+        VOICES[idBoss].attack = VOICES[idBoss].attackB;
     }
     
-    // --- Linga princess
-    for (let mid = 2003; mid <= 2005; mid++) {
-        VOICES[mid].attack = VOICES[mid].attackB;
-        VOICES[mid].damage = VOICES[mid].damageB;
-    }
-    
-    // --- New CL princess
-    for (let mid = 2009; mid <= 2011; mid++) {
-        VOICES[mid].attack = VOICES[mid].attackB;
-        VOICES[mid].damage = VOICES[mid].damageB;
-    }
-    
-    // --- Cavour princess
-    for (let mid = 2032; mid <= 2034; mid++) {
-        VOICES[mid].attack = VOICES[mid].attackB;
-        VOICES[mid].damage = VOICES[mid].damageB;
-    }
-
-    // --- Victorious abyssal
-    for (let mid = 2044; mid <= 2046; mid++) {
-        VOICES[mid].attack = VOICES[mid].attackB;
-        VOICES[mid].damage = VOICES[mid].damageB;
-    }
-
-    // --- CVH II
-    for (let mid = 2105; mid <= 2108; mid++) {
-        VOICES[mid].attack = VOICES[mid].attackB;
-        VOICES[mid].damage = VOICES[mid].damageB;
+    if (VOICES[idBoss] && VOICES[idBoss].damageB) {
+        VOICES[idBoss].damage = VOICES[idBoss].damageB;
     }
 }
 
@@ -555,10 +522,6 @@ function chrApplyBaseForm(abyssal) {
         VOICES[idBoss].damage = 'assets/voice/453188631.mp3';
     }
 
-    // --- European Water Princess
-    // --- Batavia Princess 
-    // --- Anti-Air Cruiser Princess
-    // --- Anzio Princess
     SHIPDATA[idBoss].image = SHIPDATA[idBoss].imageBase ? SHIPDATA[idBoss].imageBase : SHIPDATA[idBoss].image;
 
     // --- Anti-Air Cruiser Princess
@@ -566,52 +529,12 @@ function chrApplyBaseForm(abyssal) {
         VOICES[idBoss].damage = 'assets/voice/466191230.mp3';
     }
 
-    // --- Gotou princess
-    for (let mid = 1942; mid <= 1944; mid++) {
-        VOICES[mid].attack = VOICES[mid].attackN;
-        VOICES[mid].damage = VOICES[mid].damageN;
-    }
-
-    // --- New Southern Battleship Princess
-    for (let mid = 1968; mid <= 1970; mid++) {
-        VOICES[mid].attack = VOICES[mid].attackN;
-        VOICES[mid].damage = VOICES[mid].damageN;
-    }
-
-    // --- South pacific CV princess
-    for (let mid = 1974; mid <= 1976; mid++) {
-        VOICES[mid].attack = VOICES[mid].attackN;
-        VOICES[mid].damage = VOICES[mid].damageN;
+    if (VOICES[idBoss] && VOICES[idBoss].attackN) {
+        VOICES[idBoss].attack = VOICES[idBoss].attackN;
     }
     
-    // --- Linga princess
-    for (let mid = 2003; mid <= 2005; mid++) {
-        VOICES[mid].attack = VOICES[mid].attackN;
-        VOICES[mid].damage = VOICES[mid].damageN;
-    }
-    
-    // --- New CL princess
-    for (let mid = 2009; mid <= 2011; mid++) {
-        VOICES[mid].attack = VOICES[mid].attackN;
-        VOICES[mid].damage = VOICES[mid].damageN;
-    }
-    
-    // --- Cavour princess
-    for (let mid = 2032; mid <= 2034; mid++) {
-        VOICES[mid].attack = VOICES[mid].attackN;
-        VOICES[mid].damage = VOICES[mid].damageN;
-    }
-
-    // --- Victorious abyssal
-    for (let mid = 2044; mid <= 2046; mid++) {
-        VOICES[mid].attack = VOICES[mid].attackN;
-        VOICES[mid].damage = VOICES[mid].damageN;
-    }
-    
-    // --- CVH II
-    for (let mid = 2105; mid <= 2108; mid++) {
-        VOICES[mid].attack = VOICES[mid].attackN;
-        VOICES[mid].damage = VOICES[mid].damageN;
+    if (VOICES[idBoss] && VOICES[idBoss].damageN) {
+        VOICES[idBoss].damage = VOICES[idBoss].damageN;
     }
 }
 

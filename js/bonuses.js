@@ -838,14 +838,11 @@ ChBonuses.GetBonusShips = (parameters) => {
 ChBonuses.CheckIfCanBeApplied = (parameters) => {
     if (parameters.debuffOnly) {
         // --- Only apply if debuffed
-		let debuffed = false;
-		if (MAPDATA[WORLD].maps[MAPNUM].debuffCheck) debuffed = MAPDATA[WORLD].maps[MAPNUM].debuffCheck(CHDATA.event.maps[MAPNUM].debuff);
-		if (MAPDATA[WORLD].maps[MAPNUM].debuffRules) debuffed = MAPDATA[WORLD].maps[MAPNUM].debuffRules.check();
+		const debuffed = chrGetIsDebuffed();
         if (!debuffed) return false;
     }
 
     if (parameters.part) {
-        // --- Only apply if debuffed
         let part = CHDATA.event.maps[MAPNUM].part;
 
         if (!part) return false;

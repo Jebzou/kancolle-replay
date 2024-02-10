@@ -764,12 +764,21 @@ class ChrDisplayEventInfo {
 
         if (map.hiddenRoutes) {
             for (const part in map.hiddenRoutes) {
-                if (map.hiddenRoutes[part].unlockRules && map.hiddenRoutes[part].unlockRules.gimmicks.length) 
+                if (map.hiddenRoutes[part].unlockRules && map.hiddenRoutes[part].unlockRules.gimmicks.length)  {
+                    for (const rule of map.hiddenRoutes[part].unlockRules.gimmicks) {
+                        rule.updateKey(map.hiddenRoutes[part].unlockRules);
+                    }
+                    
                     $("#mapInfoMapInfo").append(this.DisplayDebuffInfos(map.hiddenRoutes[part].unlockRules, map, MAPDATA[this.GetCurrentWorld()]));
+                }
             }
         }
 
         if (map.debuffRules && map.debuffRules.gimmicks && map.debuffRules.gimmicks.length) {
+            for (const rule of map.debuffRules.gimmicks) {
+                rule.updateKey(map.debuffRules);
+            }
+
             $("#mapInfoMapInfo").append(this.DisplayDebuffInfos(map.debuffRules, map, MAPDATA[this.GetCurrentWorld()]));
         }
 
@@ -893,8 +902,7 @@ class ChrDisplayEventInfo {
         let ruleAndTdList = [];
 
         let checkStepsDone = () => {
-            for (const value of ruleAndTdList) {
-                
+            for (const value of ruleAndTdList) {                
                 if (value.rule.check()) {
                     value.element.addClass('debuff-step-done');
                 }

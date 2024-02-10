@@ -1216,7 +1216,8 @@ ChGimmick.prototype.getDescription = function (diff) {
             if (!this.timesRequiredPerDiff[diff]) return '-';
 
             if (this.rank) return this.rank + (this.timesRequiredPerDiff[diff] > 1 ? (' x' + this.timesRequiredPerDiff[diff]) : '')
-            return this.ranksRequiredPerDiff[diff] + (this.timesRequiredPerDiff[diff] > 1 ? (' x' + this.timesRequiredPerDiff[diff]) : '');
+            if (this.ranksRequiredPerDiff) return this.ranksRequiredPerDiff[diff] + (this.timesRequiredPerDiff[diff] > 1 ? (' x' + this.timesRequiredPerDiff[diff]) : '');
+            return (this.timesRequiredPerDiff[diff] > 1 ? (' x' + this.timesRequiredPerDiff[diff]) : '');
         }
     }
 }
