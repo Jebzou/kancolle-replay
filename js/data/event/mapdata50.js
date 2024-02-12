@@ -3098,7 +3098,7 @@ MAPDATA[50] =
 							ChMultipleRulesRule([
 								ChAllShipMusteBeOfTypeRule(["DD", 'CL', 'CLT'], 'X2'),
 								ChShipTypeRoutingRule(['CL'], '<=', 1, 'X2'),
-							], 'AND', 'X2'),
+							], 'AND', 'X2', 'G'),
 						]
 					},
 					'F': {
