@@ -337,7 +337,7 @@ function chRandomizeComp(compData, mapData, nodeLetter) {
 
                 if (rand < 33) {
                     // Strong ennemy is removed
-                    while (strongEnemiesIds.indexOf(parseInt(shipID)) != -1) {
+                    while (strongEnemiesIds.indexOf(parseInt(shipID)) >= 0) {
                         shipID = obj_keys[Math.floor(Math.random() *obj_keys.length)];
                     }
                 } else if (rand > 95) {
@@ -388,9 +388,20 @@ function chRandomizeComp(compData, mapData, nodeLetter) {
                 var obj_keys = Object.keys(ennemiesEscort);
                 var shipID = obj_keys[Math.floor(Math.random() *obj_keys.length)];
 
-                if (Object.keys(strongEnemies).indexOf(parseInt(shipID)) !== -1) {
-                    // --- REROLL ONCE
-                    shipID = obj_keys[Math.floor(Math.random() *obj_keys.length)];
+                if (strongEnemiesIds.indexOf(parseInt(shipID)) != -1) {
+                    var rand = Math.random() * 100;
+
+                    if (rand < 75) {
+                        // Strong ennemy is removed
+                        while (strongEnemiesIds.indexOf(parseInt(shipID)) >= 0) {
+                            shipID = obj_keys[Math.floor(Math.random() *obj_keys.length)];
+                        }
+                    } else if (rand > 95) {
+                        // Strong enemy is kept
+                    } else {
+                        // Strong enemy is rerolled once
+                        shipID = obj_keys[Math.floor(Math.random() *obj_keys.length)];
+                    }
                 }
 
                 compEscort.push(parseInt(shipID));
