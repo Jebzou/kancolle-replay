@@ -1226,6 +1226,8 @@ ChGimmick.prototype.getCustomCount = function (checkGimmickParameters) {
     if (this.mapNum && this.mapNum != MAPNUM) return 0;
     if (this.node && this.node != checkGimmickParameters.node) return 0;
 
+    if (this.shouldCountBeIncreased) return this.shouldCountBeIncreased(checkGimmickParameters);
+
     switch (this.type) {
         case 'NoHPLoss': {
             return +(checkGimmickParameters.totalHPLost <= 0);
@@ -1313,6 +1315,10 @@ ChGimmickList.updateAllCustom = function(args) {
             }
 
             rule.rule.isInitialized = true;
+
+            if (rule.mapnum) {
+                rule.mapNum = rule.mapnum;
+            }
         }
     }
 

@@ -315,6 +315,15 @@ var COMMON = {
 
 	addCustomShip(shipData) {
 
+		// abyssal equip id fix
+		for (const slotKey in shipData.EQUIPS) {
+			const slotId = shipData.EQUIPS[slotKey];
+
+			if (slotId && !EQDATA[slotId] && EQDATA[slotId + 1000]) {
+				shipData.EQUIPS[slotKey] = slotId + 1000;
+			}
+		}
+
 		const id = shipData.id;
 		SHIPDATA[id] = shipData;
 		COMMON.global.shipSelector.addShip(id)
