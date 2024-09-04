@@ -144,7 +144,7 @@ function QuestData(questManager) {
         let text = '';
         
         for (const objective of this.objectives.gimmicks) {
-            text += `TODO ${objective.getCount({})}/${objective.timesRequiredPerDiff[getDiff()]}`;
+            text += `${objective.getLongDescription(getDiff())} ${objective.getCount({})}/${objective.timesRequiredPerDiff[getDiff()]}`;
             text += "<br>";
         }
 
