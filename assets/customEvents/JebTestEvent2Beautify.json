@@ -250,13 +250,11 @@
               "type": "mapPart",
               "mapPartNumber": "2",
               "mapNum": "1",
-              "mapIdForChdata": "1",
               "additionalParameters": {
                 "partToUnlock": 1,
                 "routeUnlockRequired": null
               },
-              "gimmicks": [],
-              "gimmickData": []
+              "gimmicks": []
             }
           }
         },
@@ -1991,7 +1989,6 @@
               "type": "mapPart",
               "mapPartNumber": null,
               "mapNum": "2",
-              "mapIdForChdata": "2",
               "additionalParameters": {
                 "partToUnlock": 1,
                 "routeUnlockRequired": null
@@ -2010,7 +2007,10 @@
                     "4": 1
                   },
                   "type": "PartClear",
-                  "partToClear": "1"
+                  "partToClear": "1",
+                  "key": "MapWide",
+                  "timesMax": 1,
+                  "mapNum": "2"
                 },
                 {
                   "node": "I",
@@ -2030,7 +2030,10 @@
                     "3": "S",
                     "4": "A"
                   },
-                  "type": "battle"
+                  "type": "battle",
+                  "key": "I",
+                  "timesMax": 1,
+                  "mapNum": "2"
                 },
                 {
                   "node": "C",
@@ -2050,64 +2053,10 @@
                     "3": "A",
                     "4": ""
                   },
-                  "type": "battle"
-                }
-              ],
-              "gimmickData": [
-                {
-                  "node": "MapWide",
-                  "mapnum": "2",
-                  "mapIdForChdata": "2",
-                  "mapPartNumber": null,
-                  "id": "E2-MapWide-PartClear-U1",
-                  "timesRequiredPerDiff": {
-                    "1": 1,
-                    "2": 1,
-                    "3": 1,
-                    "4": 1
-                  },
-                  "type": "PartClear",
-                  "partToClear": "1"
-                },
-                {
-                  "node": "I",
-                  "mapnum": "2",
-                  "mapIdForChdata": "2",
-                  "mapPartNumber": null,
-                  "id": "E2-I-battle-U1",
-                  "timesRequiredPerDiff": {
-                    "1": 1,
-                    "2": 1,
-                    "3": 1,
-                    "4": 1
-                  },
-                  "ranksRequiredPerDiff": {
-                    "1": "A",
-                    "2": "S",
-                    "3": "S",
-                    "4": "A"
-                  },
-                  "type": "battle"
-                },
-                {
-                  "node": "C",
-                  "mapnum": "2",
-                  "mapIdForChdata": "2",
-                  "mapPartNumber": null,
-                  "id": "E2-C-battle-U1",
-                  "timesRequiredPerDiff": {
-                    "1": 0,
-                    "2": 1,
-                    "3": 1,
-                    "4": 0
-                  },
-                  "ranksRequiredPerDiff": {
-                    "1": "",
-                    "2": "A",
-                    "3": "A",
-                    "4": ""
-                  },
-                  "type": "battle"
+                  "type": "battle",
+                  "key": "C",
+                  "timesMax": 1,
+                  "mapNum": "2"
                 }
               ]
             }
@@ -2118,7 +2067,6 @@
               "type": "mapPart",
               "mapPartNumber": "2",
               "mapNum": "2",
-              "mapIdForChdata": "2",
               "additionalParameters": {
                 "partToUnlock": 2,
                 "routeUnlockRequired": "1"
@@ -2142,7 +2090,10 @@
                     "3": "S",
                     "4": "A"
                   },
-                  "type": "battle"
+                  "type": "battle",
+                  "key": "O",
+                  "timesMax": 1,
+                  "mapNum": "2"
                 },
                 {
                   "node": "P",
@@ -2162,49 +2113,10 @@
                     "3": "A",
                     "4": "A"
                   },
-                  "type": "battle"
-                }
-              ],
-              "gimmickData": [
-                {
-                  "node": "O",
-                  "mapnum": "2",
-                  "mapIdForChdata": "2",
-                  "mapPartNumber": "2",
-                  "id": "E2-O-battle-U2",
-                  "timesRequiredPerDiff": {
-                    "1": 1,
-                    "2": 1,
-                    "3": 1,
-                    "4": 1
-                  },
-                  "ranksRequiredPerDiff": {
-                    "1": "A",
-                    "2": "S",
-                    "3": "S",
-                    "4": "A"
-                  },
-                  "type": "battle"
-                },
-                {
-                  "node": "P",
-                  "mapnum": "2",
-                  "mapIdForChdata": "2",
-                  "mapPartNumber": "2",
-                  "id": "E2-P-battle-U2",
-                  "timesRequiredPerDiff": {
-                    "1": 1,
-                    "2": 1,
-                    "3": 1,
-                    "4": 1
-                  },
-                  "ranksRequiredPerDiff": {
-                    "1": "A",
-                    "2": "A",
-                    "3": "A",
-                    "4": "A"
-                  },
-                  "type": "battle"
+                  "type": "battle",
+                  "key": "P",
+                  "timesMax": 1,
+                  "mapNum": "2"
                 }
               ]
             }
@@ -5179,7 +5091,6 @@
           "type": "debuff",
           "mapPartNumber": "2",
           "mapNum": "2",
-          "mapIdForChdata": "2",
           "additionalParameters": {
             "lastDanceOnly": true,
             "routeUnlockRequired": null
@@ -5203,29 +5114,10 @@
                 "3": "S",
                 "4": "S"
               },
-              "type": "battle"
-            }
-          ],
-          "gimmickData": [
-            {
-              "node": "P",
-              "mapnum": "2",
-              "mapIdForChdata": "2",
-              "mapPartNumber": "2",
-              "id": "E2-P-battle-D",
-              "timesRequiredPerDiff": {
-                "1": 1,
-                "2": 1,
-                "3": 1,
-                "4": 1
-              },
-              "ranksRequiredPerDiff": {
-                "1": "S",
-                "2": "S",
-                "3": "S",
-                "4": "S"
-              },
-              "type": "battle"
+              "type": "battle",
+              "key": "P",
+              "timesMax": 1,
+              "mapNum": "2"
             }
           ]
         },
@@ -5423,7 +5315,6 @@
               "type": "mapPart",
               "mapPartNumber": null,
               "mapNum": "3",
-              "mapIdForChdata": "3",
               "additionalParameters": {
                 "partToUnlock": 1,
                 "routeUnlockRequired": null
@@ -5447,7 +5338,10 @@
                     "3": "S",
                     "4": "A"
                   },
-                  "type": "battle"
+                  "type": "battle",
+                  "key": "P",
+                  "timesMax": 1,
+                  "mapNum": "3"
                 },
                 {
                   "node": "G",
@@ -5467,7 +5361,10 @@
                     "3": "S",
                     "4": "A"
                   },
-                  "type": "battle"
+                  "type": "battle",
+                  "key": "G",
+                  "timesMax": 1,
+                  "mapNum": "3"
                 },
                 {
                   "node": "E",
@@ -5487,69 +5384,10 @@
                     "3": "AS",
                     "4": "AS"
                   },
-                  "type": "AirState"
-                }
-              ],
-              "gimmickData": [
-                {
-                  "node": "P",
-                  "mapnum": "3",
-                  "mapIdForChdata": "3",
-                  "mapPartNumber": null,
-                  "id": "E3-P-battle-U1",
-                  "timesRequiredPerDiff": {
-                    "1": 1,
-                    "2": 1,
-                    "3": 1,
-                    "4": 1
-                  },
-                  "ranksRequiredPerDiff": {
-                    "1": "A",
-                    "2": "S",
-                    "3": "S",
-                    "4": "A"
-                  },
-                  "type": "battle"
-                },
-                {
-                  "node": "G",
-                  "mapnum": "3",
-                  "mapIdForChdata": "3",
-                  "mapPartNumber": null,
-                  "id": "E3-G-battle-U1",
-                  "timesRequiredPerDiff": {
-                    "1": 1,
-                    "2": 1,
-                    "3": 1,
-                    "4": 1
-                  },
-                  "ranksRequiredPerDiff": {
-                    "1": "A",
-                    "2": "S",
-                    "3": "S",
-                    "4": "A"
-                  },
-                  "type": "battle"
-                },
-                {
-                  "node": "E",
-                  "mapnum": "3",
-                  "mapIdForChdata": "3",
-                  "mapPartNumber": null,
-                  "id": "E3-E-AirState-U1",
-                  "timesRequiredPerDiff": {
-                    "1": 0,
-                    "2": 1,
-                    "3": 1,
-                    "4": 0
-                  },
-                  "ranksRequiredPerDiff": {
-                    "1": "AS",
-                    "2": "AS",
-                    "3": "AS",
-                    "4": "AS"
-                  },
-                  "type": "AirState"
+                  "type": "AirState",
+                  "key": "E",
+                  "timesMax": 1,
+                  "mapNum": "3"
                 }
               ]
             }
@@ -5560,7 +5398,6 @@
               "type": "mapPart",
               "mapPartNumber": null,
               "mapNum": "3",
-              "mapIdForChdata": "3",
               "additionalParameters": {
                 "partToUnlock": 2,
                 "routeUnlockRequired": "1"
@@ -5584,7 +5421,10 @@
                     "3": "AS",
                     "4": "AS"
                   },
-                  "type": "AirState"
+                  "type": "AirState",
+                  "key": "AB",
+                  "timesMax": 2,
+                  "mapNum": "3"
                 },
                 {
                   "node": "O",
@@ -5604,49 +5444,10 @@
                     "3": "S",
                     "4": "A"
                   },
-                  "type": "battle"
-                }
-              ],
-              "gimmickData": [
-                {
-                  "node": "AB",
-                  "mapnum": "3",
-                  "mapIdForChdata": "3",
-                  "mapPartNumber": null,
-                  "id": "E3-AB-AirState-U2",
-                  "timesRequiredPerDiff": {
-                    "1": 1,
-                    "2": 2,
-                    "3": 2,
-                    "4": 1
-                  },
-                  "ranksRequiredPerDiff": {
-                    "1": "AS",
-                    "2": "AS",
-                    "3": "AS",
-                    "4": "AS"
-                  },
-                  "type": "AirState"
-                },
-                {
-                  "node": "O",
-                  "mapnum": "3",
-                  "mapIdForChdata": "3",
-                  "mapPartNumber": null,
-                  "id": "E3-O-battle-U2",
-                  "timesRequiredPerDiff": {
-                    "1": 1,
-                    "2": 1,
-                    "3": 2,
-                    "4": 1
-                  },
-                  "ranksRequiredPerDiff": {
-                    "1": "A",
-                    "2": "S",
-                    "3": "S",
-                    "4": "A"
-                  },
-                  "type": "battle"
+                  "type": "battle",
+                  "key": "O",
+                  "timesMax": 2,
+                  "mapNum": "3"
                 }
               ]
             }
@@ -5657,13 +5458,11 @@
               "type": "mapPart",
               "mapPartNumber": "2",
               "mapNum": "3",
-              "mapIdForChdata": "3",
               "additionalParameters": {
                 "partToUnlock": 3,
                 "routeUnlockRequired": null
               },
-              "gimmicks": [],
-              "gimmickData": []
+              "gimmicks": []
             }
           }
         },
@@ -9238,7 +9037,6 @@
           "type": "debuff",
           "mapPartNumber": "2",
           "mapNum": "3",
-          "mapIdForChdata": "3",
           "additionalParameters": {
             "lastDanceOnly": true,
             "routeUnlockRequired": null
@@ -9262,7 +9060,10 @@
                 "3": "S",
                 "4": "S"
               },
-              "type": "battle"
+              "type": "battle",
+              "key": "O",
+              "timesMax": 1,
+              "mapNum": "3"
             },
             {
               "node": "E",
@@ -9282,7 +9083,10 @@
                 "3": "AS",
                 "4": "AS"
               },
-              "type": "AirState"
+              "type": "AirState",
+              "key": "E",
+              "timesMax": 1,
+              "mapNum": "3"
             },
             {
               "node": "N",
@@ -9302,7 +9106,10 @@
                 "3": "AS",
                 "4": "AS"
               },
-              "type": "AirState"
+              "type": "AirState",
+              "key": "N",
+              "timesMax": 1,
+              "mapNum": "3"
             },
             {
               "node": "AB",
@@ -9322,89 +9129,10 @@
                 "3": "AS",
                 "4": "AS"
               },
-              "type": "AirState"
-            }
-          ],
-          "gimmickData": [
-            {
-              "node": "O",
-              "mapnum": "3",
-              "mapIdForChdata": "3",
-              "mapPartNumber": "2",
-              "id": "E3-O-battle-D",
-              "timesRequiredPerDiff": {
-                "1": 1,
-                "2": 1,
-                "3": 1,
-                "4": 1
-              },
-              "ranksRequiredPerDiff": {
-                "1": "S",
-                "2": "S",
-                "3": "S",
-                "4": "S"
-              },
-              "type": "battle"
-            },
-            {
-              "node": "E",
-              "mapnum": "3",
-              "mapIdForChdata": "3",
-              "mapPartNumber": "2",
-              "id": "E3-E-AirState-D",
-              "timesRequiredPerDiff": {
-                "1": 1,
-                "2": 1,
-                "3": 1,
-                "4": 1
-              },
-              "ranksRequiredPerDiff": {
-                "1": "AS",
-                "2": "AS",
-                "3": "AS",
-                "4": "AS"
-              },
-              "type": "AirState"
-            },
-            {
-              "node": "N",
-              "mapnum": "3",
-              "mapIdForChdata": "3",
-              "mapPartNumber": "2",
-              "id": "E3-N-AirState-D",
-              "timesRequiredPerDiff": {
-                "1": 1,
-                "2": 1,
-                "3": 1,
-                "4": 1
-              },
-              "ranksRequiredPerDiff": {
-                "1": "AS",
-                "2": "AS",
-                "3": "AS",
-                "4": "AS"
-              },
-              "type": "AirState"
-            },
-            {
-              "node": "AB",
-              "mapnum": "3",
-              "mapIdForChdata": "3",
-              "mapPartNumber": "2",
-              "id": "E3-AB-AirState-D",
-              "timesRequiredPerDiff": {
-                "1": 1,
-                "2": 1,
-                "3": 1,
-                "4": 1
-              },
-              "ranksRequiredPerDiff": {
-                "1": "AS",
-                "2": "AS",
-                "3": "AS",
-                "4": "AS"
-              },
-              "type": "AirState"
+              "type": "AirState",
+              "key": "AB",
+              "timesMax": 1,
+              "mapNum": "3"
             }
           ]
         },
@@ -9618,7 +9346,6 @@
               "type": "mapPart",
               "mapPartNumber": null,
               "mapNum": "4",
-              "mapIdForChdata": "4",
               "additionalParameters": {
                 "partToUnlock": 1,
                 "routeUnlockRequired": null
@@ -9642,7 +9369,10 @@
                     "3": "S",
                     "4": "S"
                   },
-                  "type": "battle"
+                  "type": "battle",
+                  "key": "H",
+                  "timesMax": 1,
+                  "mapNum": "4"
                 },
                 {
                   "node": "C",
@@ -9662,7 +9392,10 @@
                     "3": "S",
                     "4": "A"
                   },
-                  "type": "battle"
+                  "type": "battle",
+                  "key": "C",
+                  "timesMax": 1,
+                  "mapNum": "4"
                 },
                 {
                   "node": "K",
@@ -9682,69 +9415,10 @@
                     "3": "S",
                     "4": "A"
                   },
-                  "type": "battle"
-                }
-              ],
-              "gimmickData": [
-                {
-                  "node": "H",
-                  "mapnum": "4",
-                  "mapIdForChdata": "4",
-                  "mapPartNumber": null,
-                  "id": "E4-H-battle-U1",
-                  "timesRequiredPerDiff": {
-                    "1": 1,
-                    "2": 1,
-                    "3": 1,
-                    "4": 1
-                  },
-                  "ranksRequiredPerDiff": {
-                    "1": "S",
-                    "2": "S",
-                    "3": "S",
-                    "4": "S"
-                  },
-                  "type": "battle"
-                },
-                {
-                  "node": "C",
-                  "mapnum": "4",
-                  "mapIdForChdata": "4",
-                  "mapPartNumber": null,
-                  "id": "E4-C-battle-U1",
-                  "timesRequiredPerDiff": {
-                    "1": 1,
-                    "2": 1,
-                    "3": 1,
-                    "4": 1
-                  },
-                  "ranksRequiredPerDiff": {
-                    "1": "A",
-                    "2": "S",
-                    "3": "S",
-                    "4": "A"
-                  },
-                  "type": "battle"
-                },
-                {
-                  "node": "K",
-                  "mapnum": "4",
-                  "mapIdForChdata": "4",
-                  "mapPartNumber": null,
-                  "id": "E4-K-battle-U1",
-                  "timesRequiredPerDiff": {
-                    "1": 1,
-                    "2": 1,
-                    "3": 2,
-                    "4": 0
-                  },
-                  "ranksRequiredPerDiff": {
-                    "1": "A",
-                    "2": "S",
-                    "3": "S",
-                    "4": "A"
-                  },
-                  "type": "battle"
+                  "type": "battle",
+                  "key": "K",
+                  "timesMax": 2,
+                  "mapNum": "4"
                 }
               ]
             }
@@ -9755,13 +9429,11 @@
               "type": "mapPart",
               "mapPartNumber": "2",
               "mapNum": "4",
-              "mapIdForChdata": "4",
               "additionalParameters": {
                 "partToUnlock": 2,
                 "routeUnlockRequired": null
               },
-              "gimmicks": [],
-              "gimmickData": []
+              "gimmicks": []
             }
           },
           "3": {
@@ -9770,7 +9442,6 @@
               "type": "mapPart",
               "mapPartNumber": "2",
               "mapNum": "4",
-              "mapIdForChdata": "4",
               "additionalParameters": {
                 "partToUnlock": 3,
                 "routeUnlockRequired": "2"
@@ -9794,7 +9465,10 @@
                     "3": "AS",
                     "4": "AS"
                   },
-                  "type": "AirState"
+                  "type": "AirState",
+                  "key": "N",
+                  "timesMax": 1,
+                  "mapNum": "4"
                 },
                 {
                   "node": "Q",
@@ -9814,7 +9488,10 @@
                     "3": "S",
                     "4": "A"
                   },
-                  "type": "battle"
+                  "type": "battle",
+                  "key": "Q",
+                  "timesMax": 1,
+                  "mapNum": "4"
                 },
                 {
                   "node": "H",
@@ -9834,69 +9511,10 @@
                     "3": "S",
                     "4": "A"
                   },
-                  "type": "battle"
-                }
-              ],
-              "gimmickData": [
-                {
-                  "node": "N",
-                  "mapnum": "4",
-                  "mapIdForChdata": "4",
-                  "mapPartNumber": "2",
-                  "id": "E4-N-AirState-U3",
-                  "timesRequiredPerDiff": {
-                    "1": 0,
-                    "2": 1,
-                    "3": 1,
-                    "4": 0
-                  },
-                  "ranksRequiredPerDiff": {
-                    "1": "AS",
-                    "2": "AS",
-                    "3": "AS",
-                    "4": "AS"
-                  },
-                  "type": "AirState"
-                },
-                {
-                  "node": "Q",
-                  "mapnum": "4",
-                  "mapIdForChdata": "4",
-                  "mapPartNumber": "2",
-                  "id": "E4-Q-battle-U3",
-                  "timesRequiredPerDiff": {
-                    "1": 1,
-                    "2": 1,
-                    "3": 1,
-                    "4": 1
-                  },
-                  "ranksRequiredPerDiff": {
-                    "1": "A",
-                    "2": "S",
-                    "3": "S",
-                    "4": "A"
-                  },
-                  "type": "battle"
-                },
-                {
-                  "node": "H",
-                  "mapnum": "4",
-                  "mapIdForChdata": "4",
-                  "mapPartNumber": "2",
-                  "id": "E4-H-battle-U3",
-                  "timesRequiredPerDiff": {
-                    "1": 1,
-                    "2": 1,
-                    "3": 1,
-                    "4": 1
-                  },
-                  "ranksRequiredPerDiff": {
-                    "1": "A",
-                    "2": "S",
-                    "3": "S",
-                    "4": "A"
-                  },
-                  "type": "battle"
+                  "type": "battle",
+                  "key": "H",
+                  "timesMax": 1,
+                  "mapNum": "4"
                 }
               ]
             }
@@ -9907,13 +9525,11 @@
               "type": "mapPart",
               "mapPartNumber": "3",
               "mapNum": "4",
-              "mapIdForChdata": "4",
               "additionalParameters": {
                 "partToUnlock": 4,
                 "routeUnlockRequired": null
               },
-              "gimmicks": [],
-              "gimmickData": []
+              "gimmicks": []
             }
           }
         },
@@ -14430,7 +14046,6 @@
           "type": "debuff",
           "mapPartNumber": "3",
           "mapNum": "4",
-          "mapIdForChdata": "4",
           "additionalParameters": {
             "routeUnlockRequired": null,
             "lastDanceOnly": true
@@ -14454,7 +14069,10 @@
                 "3": "AS",
                 "4": "AS"
               },
-              "type": "AirState"
+              "type": "AirState",
+              "key": "AB",
+              "timesMax": 2,
+              "mapNum": "4"
             },
             {
               "node": "R",
@@ -14474,7 +14092,10 @@
                 "3": "S",
                 "4": "S"
               },
-              "type": "battle"
+              "type": "battle",
+              "key": "R",
+              "timesMax": 1,
+              "mapNum": "4"
             },
             {
               "node": "V",
@@ -14494,7 +14115,10 @@
                 "3": "A",
                 "4": "A"
               },
-              "type": "battle"
+              "type": "battle",
+              "key": "V",
+              "timesMax": 1,
+              "mapNum": "4"
             },
             {
               "node": "C",
@@ -14514,7 +14138,10 @@
                 "3": "S",
                 "4": "S"
               },
-              "type": "battle"
+              "type": "battle",
+              "key": "C",
+              "timesMax": 1,
+              "mapNum": "4"
             },
             {
               "node": "Y",
@@ -14534,109 +14161,10 @@
                 "3": "S",
                 "4": "A"
               },
-              "type": "battle"
-            }
-          ],
-          "gimmickData": [
-            {
-              "node": "AB",
-              "mapnum": "4",
-              "mapIdForChdata": "4",
-              "mapPartNumber": "3",
-              "id": "E4-AB-AirState-D",
-              "timesRequiredPerDiff": {
-                "1": 1,
-                "2": 2,
-                "3": 2,
-                "4": 1
-              },
-              "ranksRequiredPerDiff": {
-                "1": "AS",
-                "2": "AS",
-                "3": "AS",
-                "4": "AS"
-              },
-              "type": "AirState"
-            },
-            {
-              "node": "R",
-              "mapnum": "4",
-              "mapIdForChdata": "4",
-              "mapPartNumber": "3",
-              "id": "E4-R-battle-D",
-              "timesRequiredPerDiff": {
-                "1": 1,
-                "2": 1,
-                "3": 1,
-                "4": 1
-              },
-              "ranksRequiredPerDiff": {
-                "1": "S",
-                "2": "S",
-                "3": "S",
-                "4": "S"
-              },
-              "type": "battle"
-            },
-            {
-              "node": "V",
-              "mapnum": "4",
-              "mapIdForChdata": "4",
-              "mapPartNumber": "3",
-              "id": "E4-V-battle-D",
-              "timesRequiredPerDiff": {
-                "1": 1,
-                "2": 1,
-                "3": 1,
-                "4": 1
-              },
-              "ranksRequiredPerDiff": {
-                "1": "A",
-                "2": "A",
-                "3": "A",
-                "4": "A"
-              },
-              "type": "battle"
-            },
-            {
-              "node": "C",
-              "mapnum": "4",
-              "mapIdForChdata": "4",
-              "mapPartNumber": "3",
-              "id": "E4-C-battle-D",
-              "timesRequiredPerDiff": {
-                "1": 1,
-                "2": 1,
-                "3": 1,
-                "4": 1
-              },
-              "ranksRequiredPerDiff": {
-                "1": "S",
-                "2": "S",
-                "3": "S",
-                "4": "S"
-              },
-              "type": "battle"
-            },
-            {
-              "node": "Y",
-              "mapnum": "4",
-              "mapIdForChdata": "4",
-              "mapPartNumber": "3",
-              "id": "E4-Y-battle-D",
-              "timesRequiredPerDiff": {
-                "1": 1,
-                "2": 1,
-                "3": 1,
-                "4": 1
-              },
-              "ranksRequiredPerDiff": {
-                "1": "A",
-                "2": "S",
-                "3": "S",
-                "4": "A"
-              },
-              "type": "battle"
+              "type": "battle",
+              "key": "Y",
+              "timesMax": 1,
+              "mapNum": "4"
             }
           ]
         }
@@ -20278,10 +19806,10 @@
           "unknownstats": false,
           "isAntiPTShip": false,
           "EQUIPS": [
-            617,
-            583,
-            619,
-            566
+            1617,
+            1583,
+            1619,
+            1566
           ],
           "TACC": 0,
           "cannotCVCI": false,
@@ -20358,10 +19886,10 @@
           "unknownstats": false,
           "isAntiPTShip": false,
           "EQUIPS": [
-            617,
-            583,
-            619,
-            566
+            1617,
+            1583,
+            1619,
+            1566
           ],
           "TACC": 0,
           "cannotCVCI": false,
@@ -20438,10 +19966,10 @@
           "unknownstats": false,
           "isAntiPTShip": false,
           "EQUIPS": [
-            617,
-            583,
-            619,
-            566
+            1617,
+            1583,
+            1619,
+            1566
           ],
           "TACC": 0,
           "cannotCVCI": false,
@@ -20518,10 +20046,10 @@
           "unknownstats": false,
           "isAntiPTShip": false,
           "EQUIPS": [
-            589,
-            565,
-            580,
-            562
+            1589,
+            1565,
+            1580,
+            1562
           ],
           "TACC": 0,
           "cannotCVCI": false,
@@ -20600,10 +20128,10 @@
           "unknownstats": false,
           "isAntiPTShip": false,
           "EQUIPS": [
-            589,
-            565,
-            580,
-            562
+            1589,
+            1565,
+            1580,
+            1562
           ],
           "TACC": 0,
           "cannotCVCI": false,
@@ -20682,10 +20210,10 @@
           "unknownstats": false,
           "isAntiPTShip": false,
           "EQUIPS": [
-            589,
-            591,
-            590,
-            562
+            1589,
+            1591,
+            1590,
+            1562
           ],
           "TACC": 0,
           "cannotCVCI": false,
@@ -20764,10 +20292,10 @@
           "unknownstats": false,
           "isAntiPTShip": false,
           "EQUIPS": [
-            589,
-            591,
-            590,
-            562
+            1589,
+            1591,
+            1590,
+            1562
           ],
           "TACC": 0,
           "cannotCVCI": false,
@@ -20847,10 +20375,10 @@
           "unknownstats": false,
           "isAntiPTShip": false,
           "EQUIPS": [
-            589,
-            591,
-            590,
-            562
+            1589,
+            1591,
+            1590,
+            1562
           ],
           "TACC": 0,
           "cannotCVCI": false,
@@ -20930,10 +20458,10 @@
           "unknownstats": false,
           "isAntiPTShip": false,
           "EQUIPS": [
-            589,
-            591,
-            590,
-            562
+            1589,
+            1591,
+            1590,
+            1562
           ],
           "TACC": 0,
           "cannotCVCI": false,
@@ -21093,10 +20621,10 @@
           "unknownstats": false,
           "isAntiPTShip": false,
           "EQUIPS": [
-            552,
-            552,
-            561,
-            561
+            1552,
+            1552,
+            1561,
+            1561
           ],
           "TACC": 0,
           "cannotCVCI": false,
@@ -21176,10 +20704,10 @@
           "unknownstats": false,
           "isAntiPTShip": false,
           "EQUIPS": [
-            552,
-            552,
-            561,
-            561
+            1552,
+            1552,
+            1561,
+            1561
           ],
           "TACC": 0,
           "cannotCVCI": false,
@@ -21259,10 +20787,10 @@
           "unknownstats": false,
           "isAntiPTShip": false,
           "EQUIPS": [
-            552,
-            552,
-            561,
-            561
+            1552,
+            1552,
+            1561,
+            1561
           ],
           "TACC": 0,
           "cannotCVCI": false,
@@ -21342,10 +20870,10 @@
           "unknownstats": false,
           "isAntiPTShip": false,
           "EQUIPS": [
-            552,
-            552,
-            562,
-            562
+            1552,
+            1552,
+            1562,
+            1562
           ],
           "TACC": 0,
           "cannotCVCI": false,
@@ -21426,10 +20954,10 @@
           "unknownstats": false,
           "isAntiPTShip": false,
           "EQUIPS": [
-            552,
-            552,
-            562,
-            562
+            1552,
+            1552,
+            1562,
+            1562
           ],
           "TACC": 0,
           "cannotCVCI": false,
@@ -21510,10 +21038,10 @@
           "unknownstats": false,
           "isAntiPTShip": false,
           "EQUIPS": [
-            552,
-            552,
-            562,
-            562
+            1552,
+            1552,
+            1562,
+            1562
           ],
           "TACC": 0,
           "cannotCVCI": false,
@@ -21677,9 +21205,9 @@
           "unknownstats": false,
           "isAntiPTShip": false,
           "EQUIPS": [
-            553,
-            553,
-            559
+            1553,
+            1553,
+            1559
           ],
           "TACC": 0,
           "cannotCVCI": false,
@@ -21755,10 +21283,10 @@
           "unknownstats": false,
           "isAntiPTShip": false,
           "EQUIPS": [
-            553,
-            553,
-            559,
-            512
+            1553,
+            1553,
+            1559,
+            1512
           ],
           "TACC": 0,
           "cannotCVCI": false,

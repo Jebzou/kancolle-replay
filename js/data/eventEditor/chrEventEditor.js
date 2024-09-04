@@ -138,7 +138,6 @@ Vue.createApp({
           const nodeData = this.eventData.maps[mapNum].nodes[nodeKey];
           if (!nodeData.endRules) nodeData.endRules = [];
           if (!nodeData.rules) nodeData.rules = [];
-
         }
 
         try {
@@ -146,6 +145,21 @@ Vue.createApp({
         } catch (error) {
           console.error(error);
         }
+        
+        if (this.eventData.maps[mapNum].rewardPerDiff && this.eventData.maps[mapNum].rewardPerDiff) {
+
+          for (const diff of [1,2,3,4]) {
+            
+              for (const slot of this.eventData.maps[mapNum].rewardPerDiff[diff].items) {
+                const slotId = slot.id;
+      
+                if (slotId && !EQDATA[slotId] && EQDATA[slotId + 1000]) {
+                  slot.id = slotId + 1000;
+                }
+              }
+          }
+        }
+
       }
       
       // --- Load assets
