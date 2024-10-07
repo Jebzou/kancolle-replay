@@ -107,6 +107,10 @@ var TEXTDATA_CN = {
 		"text": "敌方舰队配置:<br><b><0><b>",
 		"values": {}
 	},
+	"SMOKESCREEN": {
+		"text": "烟幕: <b><0></b>",
+		"values": {},
+	},
 	"AIR_NONE": {
 		"text" : "未发生航空战",
 		"values": {}
@@ -197,6 +201,10 @@ var TEXTDATA_CN = {
 			}
 		}
 	},
+	"AIR_BASE_RESCUE": {
+		"text": "<b>Catalina救助:</b> <b><0></b>",
+		"values": {}
+	},
 	"SUPPORT_START": {
 		"text": "<span style='color:blue'><0> 支援舰队没有咕咕咕！并展开了 <b><1></b></span>",
 		"values": {
@@ -283,7 +291,22 @@ var TEXTDATA_CN = {
 				3: "(主副CI) ",
 				4: "(主电CI) ",
 				5: "(主副撤CI) ",
-				6: "(主主撤CI) "
+				6: "(主主撤CI) ",
+				7: "(航母CI) ",
+				100: "(Nelson Touch)",
+				101: "(長門CI)",
+				102: "(陸奥CI)",
+				103: "(Colorado CI)",
+				104: "(金剛CI)",
+				105: "(Richelieu CI)",
+				106: "(Queen Elizabeth CI)",
+				200: "(瑞雲CI)",
+				201: "(彗星CI)",
+				300: "(潜水艦隊攻撃)",
+				301: "(潜水艦隊攻撃)",
+				302: "(潜水艦隊攻撃)",
+				400: "(大和CI(3))",
+				401: "(大和CI(2))",
 			}
 		}
 	},
@@ -342,7 +365,30 @@ var TEXTDATA_CN = {
 				2: "炮雷CI", //mix cut-in
 				3: "雷击CI",
 				4: "主副CI",
-				5: "主炮CI"
+				5: "主炮CI",
+				6: "航母CI",
+				7: "鱼雷电探CI",
+				8: "鱼雷瞭望CI",
+				9: "水雷瞭望鱼鱼CI",
+				10: "水雷瞭望鱼桶CI",
+				11: "鱼雷电探CI",
+				12: "鱼雷瞭望CI",
+				13: "水雷瞭望鱼鱼CI",
+				14: "水雷瞭望鱼桶CI",
+				100: "Nelson Touch",
+				101: "長門CI",
+				102: "陸奥CI",
+				103: "Colorado CI",
+				104: "金剛CI",
+				105: "Richelieu CI",
+				106: "Queen Elizabeth CI",
+				200: "夜間瑞雲夜战CI",
+				300: "潜水舰队攻击",
+				301: "潜水舰队攻击",
+				302: "潜水舰队攻击",
+				400: "大和CI(3)",
+				401: "大和CI(2)",
+				1000: "特四式内火艇鱼雷",
 			}
 		}
 	},

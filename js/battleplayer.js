@@ -89,13 +89,14 @@ function fillTableLBAS(API, num, translate) {
 
 function loadFleetInfo(API, translate) {
 	if (!started) return;
+	var combined = API.fleetnum == 1 ? API.combined : 0;
 	if (!translate) {
 		makeTable('friendfleetspace', API.fleetnum, API['fleet' + API.fleetnum].length);
-		if (API.combined) makeTable('friendfleetspace', 2, API.fleet2.length);
+		if (combined) makeTable('friendfleetspace', 2, API.fleet2.length);
 		if (API.lbas && API.lbas.length) makeTable('lbasspace', 5, API.lbas.length, true);
 	}
 	fillTableF(API, API.fleetnum, false, translate);
-	if (API.combined) fillTableF(API, 2, true, translate);
+	if (combined) fillTableF(API, 2, true, translate);
 	if (API.lbas && API.lbas.length) fillTableLBAS(API, 5, translate);
 
 	for (var k = 0; k < API.battles.length; k++) {
@@ -117,7 +118,7 @@ function loadFleetInfo(API, translate) {
 				$('#lvl2' + k + i).text(b.api_ship_lv[i + 1]); $('#hp2' + k + i).text(b.api_maxhps[i + 7]);
 				$('#fp2' + k + i).text(b.api_eParam[i][0]); $('#tp2' + k + i).text(b.api_eParam[i][1]); $('#aa2' + k + i).text(b.api_eParam[i][2]); $('#ar2' + k + i).text(b.api_eParam[i][3]);
 			}
-			for (var j = 0; j < 4; j++) {
+			for (var j = 0; j < 6; j++) {
 				if (b.api_eSlot[i][j] <= 0) continue;
 				if (EQDATA[b.api_eSlot[i][j]]) $('#eq' + j + '2' + k + i).text(EQDATA[b.api_eSlot[i][j]][$('#radJP').prop('checked') ? 'nameJP' : 'name']);
 				else $('#eq' + j + '2' + k + i).text(b.api_eSlot[i][j]);
@@ -142,11 +143,46 @@ function loadFleetInfo(API, translate) {
 					$('#lvl2c' + k + i).text(b.api_ship_lv_combined[i + 1]); $('#hp2c' + k + i).text(b.api_maxhps_combined[i + 7]);
 					$('#fp2c' + k + i).text(b.api_eParam_combined[i][0]); $('#tp2c' + k + i).text(b.api_eParam_combined[i][1]); $('#aa2c' + k + i).text(b.api_eParam_combined[i][2]); $('#ar2c' + k + i).text(b.api_eParam_combined[i][3]);
 				}
-				for (var j = 0; j < 4; j++) {
+				for (var j = 0; j < 6; j++) {
 					if (b.api_eSlot_combined[i][j] <= 0) continue;
 					if (EQDATA[b.api_eSlot_combined[i][j]]) $('#eq' + j + '2c' + k + i).text(EQDATA[b.api_eSlot_combined[i][j]][$('#radJP').prop('checked') ? 'nameJP' : 'name']);
 					else $('#eq' + j + '2c' + k + i).text(b.api_eSlot_combined[i][j]);
 					$('#eq' + j + '2c' + k + i).attr('title', b.api_eSlot_combined[i][j]);
+				}
+			}
+		}
+		let friendFleets = [];
+		if (API.battles[k].data && API.battles[k].data.api_friendly_info) {
+			friendFleets.push({ id: '2fd'+k, info: API.battles[k].data.api_friendly_info });
+		}
+		if (API.battles[k].yasen && API.battles[k].yasen.api_friendly_info) {
+			friendFleets.push({ id: '2f'+k, info: API.battles[k].yasen.api_friendly_info });
+		}
+		for (let ff of friendFleets) {
+			var d = ff.info;
+			if (!translate) {
+				$('#enemyfleetspace > br:last-child').remove();
+				makeTable('enemyfleetspace', ff.id, d.api_ship_id.length);
+			}
+			for (var i=0; i<d.api_ship_id.length; i++) {
+				var mid = d.api_ship_id[i];
+				if (mid <= 0) continue;
+				if (SHIPDATA[mid]) {
+					if ($('#radJP').prop('checked')) $('#name' + ff.id + i).text(mid + '. ' + SHIPDATA[mid].nameJP);
+					else $('#name' + ff.id + i).text(mid + '. ' + SHIPDATA[mid].name);
+				} else $('#name' + ff.id + i).text(mid + '.');
+				if (!translate) {
+					if (SHIPDATA[mid]) $('#img'+ ff.id + i).attr('src', 'assets/icons/' + SHIPDATA[mid].image);
+					$('#lvl' + ff.id + i).text(d.api_ship_lv[i]); $('#hp' + ff.id + i).text(d.api_nowhps[i]+'/'+d.api_maxhps[i]);
+					$('#fp' + ff.id + i).text(d.api_Param[i][0]); $('#tp' + ff.id + i).text(d.api_Param[i][1]); $('#aa' + ff.id + i).text(d.api_Param[i][2]); $('#ar' + ff.id + i).text(d.api_Param[i][3]);
+				}
+				let items = d.api_Slot[i].map(id => id);
+				if (d.api_slot_ex[i] && d.api_slot_ex[i] > 0) items.push(d.api_slot_ex[i]);
+				for (var j = 0; j < 6; j++) {
+					if (items[j] <= 0) continue;
+					if (EQDATA[items[j]]) $('#eq' + j + ff.id + i).text(EQDATA[items[j]][$('#radJP').prop('checked') ? 'nameJP' : 'name']);
+					else $('#eq' + j + ff.id + i).text(items[j]);
+					$('#eq' + j + ff.id + i).attr('title', items[j]);
 				}
 			}
 		}
@@ -176,9 +212,43 @@ var uri = new URI(window.location.href);
 var qs = uri.search(true);
 if (qs.fromImg) {
 	loadImgURL(qs.fromImg);
+} else if (qs.fromLZString) {
+	/*
+		- LZString.compressToEncodedURIComponent(str) to encode strings
+		- LZString.decompressFromEncodedURIComponent(str) to decode from LZString-encoded strings
+		- deprecated: don't use ?fromLZString=, long qs -> 414 error, use #fromLZString= instead
+     */
+	try {
+		var decompressed = LZString.decompressFromEncodedURIComponent(qs.fromLZString);
+		document.getElementById('code').value = decompressed;
+		loadCode();
+	} catch (e) {
+		console.error('error while processing lz-string data', e)
+	}
 } else if (window.location.hash.length > 5) {
-	document.getElementById('code').value = decodeURIComponent(window.location.hash.substr(1));
-	loadCode();
+	let hash = window.location.hash.substr(1);
+	let doLoadCode = true;
+	if (hash.indexOf('fromLZString=') == 0) {
+		document.getElementById('code').value = LZString.decompressFromEncodedURIComponent(hash.substr('fromLZString='.length));
+	} else if (hash.indexOf('fromLZMA=') == 0) {
+		doLoadCode = false;
+		let ab = null;
+		try {
+			ab = base64ToArrayBuffer(hash.substr('fromLZMA='.length));
+		} catch(e) {
+			console.error(e);
+			document.getElementById('error').innerText = 'Error';
+		}
+		if (ab) {
+			LZMA.decompress(ab, (dataStr) => {
+				document.getElementById('code').value = dataStr;
+				loadCode();
+			});
+		}
+	} else {
+		document.getElementById('code').value = decodeURIComponent(hash);
+	}
+	if (doLoadCode) loadCode();
 	window.location.hash = '';
 }
 
@@ -189,3 +259,51 @@ $('#textimgurl').on('keypress', function (e) {
 $('#rad'+(localStorage.replay_lang || 'EN')).prop('checked',true);
 
 if (renderer instanceof PIXI.CanvasRenderer) $('#warningwebgl').show();
+
+document.body.onclick = function() {
+	if (Howler.ctx.state == 'suspended') {
+		Howler.ctx.resume();
+	}
+}
+Howler.ctx.onstatechange = function() {
+	if (Howler.ctx.state == 'running') {
+		hideOverlaySuspend();
+	}
+}
+
+function arrayBufferToBase64(buffer) {
+	let binary = '';
+	let bytes = new Uint8Array(buffer);
+	let len = bytes.byteLength;
+	for (let i = 0; i < len; i++) {
+		binary += String.fromCharCode(bytes[i]);
+	}
+	return window.btoa(binary);
+}
+function base64ToArrayBuffer(base64) {
+	let binary_string = window.atob(base64);
+	let len = binary_string.length;
+	let bytes = new Uint8Array(len);
+	for (let i = 0; i < len; i++) {
+		bytes[i] = binary_string.charCodeAt(i);
+	}
+	return bytes;
+}
+function onclickCreateSharedLink() {
+	if (!API || Object.keys(API).length <= 0) return;
+	LZMA.compress(JSON.stringify(API), 9, (ab) => {
+		let url = 'https://kc3kai.github.io/kancolle-replay/battleplayer.html#fromLZMA=' + arrayBufferToBase64(ab);
+		fetch('https://tinyurl.com/api-create.php?url=' + encodeURIComponent(url)).then(async(res) => {
+			let txt = await res.text();
+			console.log(txt);
+			if (!res.ok) {
+				throw new Error('tinyurl: ' + txt);
+				return;
+			}
+			navigator.clipboard.writeText(txt + '+');
+			document.getElementById('error').innerText = 'Copied to Clipboard';
+		}).catch(error => {
+			document.getElementById('error').innerText = 'Error';
+		});
+	});
+}

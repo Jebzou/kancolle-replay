@@ -130,6 +130,8 @@ loader.add('BG1','assets/82_res.images.ImgBackgroundDay.jpg')
 	.add('smokebig','assets/smokeBig.png')
 	.add('smokemiddle','assets/smokeMiddle.png')
 	.add('smokesmall','assets/smokeSmall.png')
+	.add('balloonF','assets/balloonF.png')
+	.add('balloonE','assets/balloonE.png')
 for (var i=389; i <= 417; i+=2) loader.add(i.toString(),'assets/'+i+'.png');
 for (var i=0; i<=9; i++) loader.add('C'+i,'assets/C'+i+'.png');
 for (var i=0; i<=9; i++) loader.add('N'+i,'assets/N'+i+'.png');
@@ -427,6 +429,7 @@ function createShip(data,side,i,damaged) {
 			if (eq.type == SEARCHLIGHTS || eq.type == SEARCHLIGHTL) ship.hassearchlight = true;
 			if (data[j]==42) ship.hasrepairteam = (ship.hasrepairteam)? ship.hasrepairteam+1 : 1;
 			if (data[j]==43) ship.hasrepairgoddess = (ship.hasrepairgoddess)? ship.hasrepairgoddess+1 : 1;
+			if (eq.isBalloon) ship.hasBalloon = true;
 		}
 	}
 	ship.hasonlytorp = hasonlytorp;
@@ -456,7 +459,7 @@ function processAPI(root) {
 		bg.tint = bg2.tint = 0xffffff;
 	}
 	console.log(root);
-	COMBINED = root.combined;
+	COMBINED = root.fleetnum == 1 ? root.combined : 0;
 	PVPMODE = (root.world <= 0);
 	OLDFORMAT = !!data.api_maxhps; //new format 2017-11-17
 	
@@ -501,7 +504,7 @@ function processAPI(root) {
 			if (Object.keys(root.battles[i].data).length==0 && Object.keys(root.battles[i].yasen).length==0) continue;
 			var letter, edges = EDGES['World '+root.world+'-'+root.mapnum];
 			if (edges && edges[root.battles[i].node]) letter = edges[root.battles[i].node][1];
-			else letter = (root.battles[i].node <= 26)? String.fromCharCode(64+root.battles[i].node) : '-';
+			else letter = root.battles[i].node;
 			bspace.append(() => {
 				return $('<input>')
 					.attr('type', 'button')
@@ -526,7 +529,7 @@ function processAPI(root) {
 		if (!SHIPDATA[root[fleet][i].mst_id]) continue;
 		loader2.add('ship'+i,chGetShipImagePath(root[fleet][i].mst_id));
 	}
-	if (root.combined) {
+	if (COMBINED) {
 		for (var i=0; i<root.fleet2.length; i++) {
 			if(!root.fleet2[i] || root.fleet2[i] == -1) continue;
 			fshipsC.push(root.fleet2[i].mst_id);
@@ -537,7 +540,7 @@ function processAPI(root) {
 	}
 	fleet1 = []; fleet2 = []; fleet1C = []; fleet2C = [];
 	HPtotal1 = 0; HPtotal2 = 0;
-	if (root.combined) {
+	if (COMBINED) {
 		for (var i=0; i<fshipsC.length; i++) {  //create ship objects (combined)
 			if (!fshipsC[i] || fshipsC[i]==-1) continue;
 			var maxhp, nowhp;
@@ -716,6 +719,19 @@ function processAPI(root) {
 				for (let key in map.overrideBGM[letterOrig]) m[key] = map.overrideBGM[letterOrig][key];
 				map = m;
 			}
+			var letter = root.battles[b].node, letterOrig = root.battles[b].node, edgeKey = 'World '+root.world+'-'+root.mapnum;
+			if (window['EDGES'] && EDGES[edgeKey]) {
+				letterOrig = (isPhase1)? EDGES.old[edgeKey][letter][1] : EDGES[edgeKey][letter][1];
+				letter = letterOrig.charCodeAt()-64;
+			}
+			if (map.overrideBGM && map.overrideBGM[letterOrig]) {
+				let m = {};
+				for (let key in map) m[key] = map[key];
+				for (let key in map.overrideBGM[letterOrig]) m[key] = map.overrideBGM[letterOrig][key];
+				map = m;
+			}
+			var bossnode = (isPhase1 && map.bossnodeOld)? map.bossnodeOld : map.bossnode;
+			var isboss = (Array.isArray(bossnode))? (bossnode.indexOf(letter) != -1 || bossnode.indexOf(letterOrig) != -1) : (bossnode==letter);
 			if (isboss) bgm = (NBonly)? map.bgmNB : map.bgmDB;
 			else bgm = (NBonly)? map.bgmNN : map.bgmDN;
 			var orel = false; if (root.world==2 && root.mapnum==3) { //orel cruise
@@ -910,7 +926,7 @@ function processAPI(root) {
 		//for reading torpedo phase
 		var processRaigeki = function(rai,f1,ecombined) {
 			var shots = [];
-			var num = Math.max(rai.api_frai.length, rai.api_erai.length);
+			var num = rai.api_frai_list_items ? Math.max(rai.api_frai_list_items.length, rai.api_erai_list_items.length) : Math.max(rai.api_frai.length, rai.api_erai.length);
 			for (var i=0; i<num; i++) {
 				if (OLDFORMAT) {
 					if (rai.api_frai[i+1] > 0) {
@@ -932,21 +948,46 @@ function processAPI(root) {
 						target.hpTrack -= Math.floor(rai.api_eydam[i+1]);
 					}
 				} else {
-					if (rai.api_frai[i] > -1) {
-						var ind = rai.api_frai[i];
-						var target = (ind >= 6 && f2.length < 7)? f2c[ind-6] : f2[ind];
-						var attacker = (i >= 6 && fleet1.length < 7)? fleet1C[i-6] : fleet1[i];
-						var crit = (rai.api_fcl[i] == 2);
-						shots.push([attacker,target,rai.api_fydam[i],crit]);
-						target.hpTrack -= Math.floor(rai.api_fydam[i]);
-					}
-					if (rai.api_erai[i] > -1) {
-						var ind = rai.api_erai[i];
-						var target = (ind >= 6 && fleet1.length < 7)? fleet1C[ind-6] : fleet1[ind];
-						var attacker = (i >= 6 && f2.length < 7)? f2c[i-6] : f2[i];
-						var crit = (rai.api_ecl[i] == 2);
-						shots.push([attacker,target,rai.api_eydam[i],crit]);
-						target.hpTrack -= Math.floor(rai.api_eydam[i]);
+					if (rai.api_frai_list_items) {
+						if (rai.api_frai_list_items[i]) {
+							for (let j=0; j<rai.api_frai_list_items[i].length; j++) {
+								let ind = rai.api_frai_list_items[i][j];
+								let target = (ind >= 6 && f2.length < 7)? f2c[ind-6] : f2[ind];
+								let attacker = (i >= 6 && fleet1.length < 7)? fleet1C[i-6] : fleet1[i];
+								let crit = rai.api_fcl_list_items[i][j] == 2;
+								let dmg = rai.api_fydam_list_items[i][j];
+								shots.push([attacker,target,dmg,crit]);
+								target.hpTrack -= Math.floor(dmg);
+							}
+						}
+						if (rai.api_erai_list_items[i]) {
+							for (let j=0; j<rai.api_erai_list_items[i].length; j++) {
+								let ind = rai.api_erai_list_items[i][j];
+								var target = (ind >= 6 && fleet1.length < 7)? fleet1C[ind-6] : fleet1[ind];
+								var attacker = (i >= 6 && f2.length < 7)? f2c[i-6] : f2[i];
+								let crit = rai.api_ecl_list_items[i][j] == 2;
+								let dmg = rai.api_eydam_list_items[i][j];
+								shots.push([attacker,target,dmg,crit]);
+								target.hpTrack -= Math.floor(dmg);
+							}
+						}
+					} else {
+						if (rai.api_frai[i] > -1) {
+							var ind = rai.api_frai[i];
+							var target = (ind >= 6 && f2.length < 7)? f2c[ind-6] : f2[ind];
+							var attacker = (i >= 6 && fleet1.length < 7)? fleet1C[i-6] : fleet1[i];
+							var crit = (rai.api_fcl[i] == 2);
+							shots.push([attacker,target,rai.api_fydam[i],crit]);
+							target.hpTrack -= Math.floor(rai.api_fydam[i]);
+						}
+						if (rai.api_erai[i] > -1) {
+							var ind = rai.api_erai[i];
+							var target = (ind >= 6 && fleet1.length < 7)? fleet1C[ind-6] : fleet1[ind];
+							var attacker = (i >= 6 && f2.length < 7)? f2c[i-6] : f2[i];
+							var crit = (rai.api_ecl[i] == 2);
+							shots.push([attacker,target,rai.api_eydam[i],crit]);
+							target.hpTrack -= Math.floor(rai.api_eydam[i]);
+						}
 					}
 				}
 			}
@@ -1068,6 +1109,8 @@ function processAPI(root) {
 						eventqueue.push([shootNelsonTouch,args,getState()]); break;
 					case 101:
 					case 102:
+					case 105:
+					case 106:
 					case 401:
 						var attackers = (hou.api_at_eflag && hou.api_at_eflag[j])? [f2[0],f2[0],f2[1]] : [f1[0],f1[0],f1[1]];
 						var protects = []; for (let k=0; k<hou.api_damage[j].length; k++) protects.push(d[k+2] != hou.api_damage[j][k]);
@@ -1183,6 +1226,8 @@ function processAPI(root) {
 						eventqueue.push([shootNelsonTouch,args,getState()]); break;
 					case 101:
 					case 102:
+					case 105:
+					case 106:
 					case 401:
 						var attackers = (hou.api_at_eflag && hou.api_at_eflag[j])? [f2[0],f2[0],f2[1]] : [f1[0],f1[0],f1[1]];
 						var protects = []; for (let k=0; k<hou.api_damage[j].length; k++) protects.push(d[k+2] != hou.api_damage[j][k]);
@@ -1214,6 +1259,9 @@ function processAPI(root) {
 						if (hou.api_sp_list[j] == 302) attackers = [f[0],f[1],f[3]];
 						var args = [attackers, targets, hou.api_damage[j], hou.api_cl_list[j], hou.api_damage[j].map(n => Math.floor(n) != n)];
 						eventqueue.push([shootSSAttack,args,getState()]); break;
+					case 1000:
+						var args = [d[0], d[1], hou.api_damage[j].reduce((a,b) => Math.floor(Math.max(0,a) + Math.max(0,b)),0), hou.api_cl_list[j].some(n => n == 2), hou.api_damage[j].some(n => n != Math.floor(n)), 1];
+						eventqueue.push([shootTorp,args,getState()]); break;
 				}
 				
 				handleRepair(fleet1);
@@ -1267,6 +1315,9 @@ function processAPI(root) {
 			}
 		}
 		
+		if (data.api_balloon_cell && !NBonly) {
+			eventqueue.push([phaseBalloonStart,[]]);
+		}
 		if (data.api_smoke_type) {
 			eventqueue.push([phaseSmokescreenStart,[data.api_smoke_type]]);
 		}
@@ -1420,7 +1471,7 @@ function processAPI(root) {
 					}
 				}
 			
-				eventqueue.push([friendStart,[fleetFriend,data.api_nowhps,bgm,data.api_voice_id,data.api_voice_p_no],null]);
+				eventqueue.push([friendStart,[fleetFriend,data.api_nowhps,bgm],null]);
 				var fleet1Temp = fleet1, f1Temp = f1;
 				f1 = fleet1 = fleetFriend;
 				eventqueue.push([NBstart,[yasen.api_friendly_battle.api_flare_pos,yasen.api_friendly_battle.api_touch_plane,bgm,null,true]]);
@@ -1453,6 +1504,10 @@ function processAPI(root) {
 	
 	if (!started) animate();
 	SM.stopBGM();
+	
+	if (Howler.ctx.state == 'suspended') {
+		showOverlaySuspend();
+	}
 }
 
 
@@ -1466,7 +1521,7 @@ var updates = [];
 
 var e = 0;
 var ecomplete = true;
-var PAUSE = false;
+var PAUSE = false, PAUSE_SUSPEND = false;
 var END = false;
 var SHOW = false;
 var statechangefunc = null;
@@ -1500,7 +1555,7 @@ function animate(currtime=TARGETFRAMETIME) {
 	}
 	prevtime = currtime;
 	
-	if (PAUSE) return;
+	if (PAUSE || PAUSE_SUSPEND) return;
 	if (STEPBYFRAME) PAUSE = true;
 	
 	if (statechangefunc) {
@@ -2390,7 +2445,10 @@ function shootSSAttack(ships,targets,damages,crits,protects) {
 	addTimeout(function(){ ecomplete = true; }, 4200);
 }
 
-function shootTorp(ship,target,damage,forcecrit,protect) {
+function shootTorp(ship,target,damage,forcecrit,protect,addTank) {
+	if (addTank) {
+		createLandingCraft(ship.graphic.x+230-ship.side*291,ship.graphic.y,Math.atan2(target.graphic.y-ship.graphic.y,target.graphic.x-ship.graphic.x-185+370*ship.side),14);
+	}
 	shipShake(ship,3,0,36);
 	SM.playVoice(ship.mid,'nbattack',ship.id);
 	var speed = (Math.abs(ship.graphic.x-target.graphic.x) < 600)? 4 : 6;
@@ -3440,6 +3498,63 @@ function moveSmokescreen(smoke,xTarget,yTarget,fadeSpeed) {
 	return false;
 }
 
+
+function phaseBalloonStart() {
+	for (let ship of fleet1) {
+		if (ship.hasBalloon && ship.status > 0) createBalloon(ship);
+	}
+	for (let ship of fleet1C) {
+		if (ship.hasBalloon && ship.status > 0) createBalloon(ship);
+	}
+	for (let ship of fleet2) {
+		if (ship.hasBalloon && ship.status > 0) createBalloon(ship);
+	}
+	for (let ship of fleet2C) {
+		if (ship.hasBalloon && ship.status > 0) createBalloon(ship);
+	}
+	
+	addTimeout(function(){ ecomplete = true; }, 1);
+}
+
+function createBalloon(ship) {
+	let balloon = ship.side ? getFromPool('balloonE','assets/balloonE.png') : getFromPool('balloonF','assets/balloonF.png');
+	balloon.position.set(ship.graphic.x + (ship.side ? 0 : 169), ship.graphic.y + 37);
+	balloon.pivot.set((ship.side ? 68 : 1), 75);
+	balloon.scale.set(0);
+	balloon.ship = ship;
+	balloon.time = Math.floor(Math.random()*100);
+	balloon.notpersistent = true;
+	delete ship._removeBalloon;
+	updates.push([moveBalloon,[balloon]]);
+	stage.addChildAt(balloon,stage.getChildIndex(shutterTop2));
+}
+
+function moveBalloon(balloon) {
+	if (balloon.ship.hp <= 0 || balloon.ship._removeBalloon) {
+		delete balloon.ship._removeBalloon;
+		recycle(balloon);
+		return true;
+	}
+	if (balloon.scale.x < .667) {
+		balloon.scale.set(Math.min(balloon.scale.x + .05, .667));
+	}
+	balloon.position.y = balloon.ship.graphic.y + 37 + Math.sin(2*Math.PI*balloon.time/100);
+	balloon.time++;
+	if (balloon.time >= 100) {
+		balloon.time = 0;
+	}
+	return false;
+}
+
+function deleteBalloons() {
+	for (let ship of fleet1) ship._removeBalloon = true;
+	for (let ship of fleet1C) ship._removeBalloon = true;
+	for (let ship of fleet2) ship._removeBalloon = true;
+	for (let ship of fleet2C) ship._removeBalloon = true;
+}
+
+
+
 function NBstart(flares,contact,bgm,combinedEType,isFriend) {
 	flares = flares || [-1,-1];
 	contact = contact || [-1,-1];
@@ -3579,7 +3694,7 @@ function shipMoveToV(ship,target,speed) {
 }
 
 
-function friendStart(fleetFriend,hps,bgm,voiceId,voiceNo) {
+function friendStart(fleetFriend,hps,bgm) {
 	if (bgm && bgm != SM.BGMnum) {
 		SM.stopBGM();
 		SM.playBGM(bgm);
@@ -3600,12 +3715,13 @@ function friendStart(fleetFriend,hps,bgm,voiceId,voiceNo) {
 		shipSetHP(fleetFriend[i],hps[i]);
 	}
 
+	let offset = fleet1C && fleet1C[5] && fleet1C[5].graphic.y != 302 ? 300 : 0;
 	for (var i=0; i<fleet1.length; i++) {
 		var j = 0;
 		addTimeout(function() {
 			updates.push([shipMoveTo,[fleet1[j],-220,10]]);
 			j++;
-		}, 100+i*100);
+		}, 100+i*100 + offset);
 	}
 
 	if (fleet1C) {
@@ -3615,7 +3731,7 @@ function friendStart(fleetFriend,hps,bgm,voiceId,voiceNo) {
 			addTimeout(function() {
 				updates.push([shipMoveToV,[fleet1C[k2],-100,-10]]);
 				k2++;
-			}, 200+i*100);
+			}, 200+i*100 + offset);
 		}
 		var kk2 = fleet1C.length-1;
 		for (var i=5; i>=3; i--) {
@@ -3623,7 +3739,7 @@ function friendStart(fleetFriend,hps,bgm,voiceId,voiceNo) {
 			addTimeout(function() {
 				updates.push([shipMoveToV,[fleet1C[kk2],600,10]]);
 				kk2--;
-			}, 200+(5-i)*100);
+			}, 200+(5-i)*100 + offset);
 		}
 	}
 	
@@ -3634,13 +3750,13 @@ function friendStart(fleetFriend,hps,bgm,voiceId,voiceNo) {
 			addTimeout(function(){
 				updates.push([shipMoveTo,[fleetFriend[j],fleetFriend[j].xorigin,10]]);
 				j++; SM.play('enter');
-			},100+100*i);
+			},100+100*i + offset);
 		}
-	},1000);
+	},1000 + offset);
 	
 	addTimeout(function() {
 		ecomplete = true;
-	}, 2000+delay);
+	}, 2000 + offset);
 }
 
 function friendExit(fleetFriend) {
@@ -3771,6 +3887,7 @@ function resetBattle() {
 	$('#plAS2').text('');
 	bossBarReset();
 	deleteSmokescreen();
+	deleteBalloons();
 }
 
 function shuttersNextBattle(battledata, newships) {
@@ -3802,7 +3919,8 @@ function shutters(nightToDay) {
 			stage.addChildAt(bg2,0);
 		}
 		updates.push([openShutters,[]]);
-		SM.play('shuttersopen');
+		SM.play('shutters');
+		deleteBalloons();
 	},1000);
 	
 	addTimeout(function(){ ecomplete = true; }, 2000);
@@ -3835,6 +3953,32 @@ function wait(time,stopBGM) {
 	addTimeout(function(){ ecomplete = true; }, time);
 	if (stopBGM) SM.fadeBGM();
 }
+
+
+var G_OVERLAY_SUSPEND = (() => {
+	let overlay = new PIXI.Container();
+	overlay.alpha = .75;
+	let g = new PIXI.Graphics();
+	g.beginFill(0);
+	g.drawRect(0,0,800,480);
+	overlay.addChild(g);
+	let txt = new PIXI.Text('Click anywhere to start',{ fill: 0xffffff });
+	txt.anchor.set(.5);
+	txt.position.set(400,240);
+	overlay.addChild(txt);
+	return overlay;
+})();
+function showOverlaySuspend() {
+	G_OVERLAY_SUSPEND.visible = true;
+	PAUSE_SUSPEND = true;
+	renderer.render(G_OVERLAY_SUSPEND);
+}
+function hideOverlaySuspend() {
+	G_OVERLAY_SUSPEND.visible = false;
+	PAUSE_SUSPEND = false;
+	renderer.render(G_OVERLAY_SUSPEND);
+}
+
 
 function skipToBattle(battle) {
 	if (battle > battlestarts.length) battle = battlestarts.length;
