@@ -1264,8 +1264,10 @@ ChGimmick.prototype.getCustomCount = function (checkGimmickParameters) {
 
         case 'battle': {
             let requiredRank = this.ranksRequiredPerDiff[getDiff()];
+
+            if (!requiredRank instanceof Number) requiredRank = ChGimmick.rankToNum(requiredRank);
     
-			return +(ChGimmick.rankToNum(checkGimmickParameters.rank) >= ChGimmick.rankToNum(requiredRank));
+			return +(ChGimmick.rankToNum(checkGimmickParameters.rank) >= requiredRank);
         }
     }
 }
@@ -1308,6 +1310,11 @@ ChGimmickList.updateAllCustom = function(args) {
 
     for (const rule of rules) {
         if (!rule.rule.isInitialized) {
+
+            if (rule.rule.timesRequiredPerDiff) {
+                rule.rule.ranksRequiredPerDiff = rule.rule.timesRequiredPerDiff;
+            }
+
             rule.rule.updateKey(rule.list);
 
             rule.rule.getCount = (argsCount) => {

@@ -2033,7 +2033,7 @@ function prepBattle(letter) {
 			currentBoss = letterboss == letter;
 		}
 
-		if (!currentBoss) {
+		if (!currentBoss || MAPDATA[WORLD].maps[MAPNUM].finalhp[diff] === 0) {
 			enemies.push(createDefaultShip(sid,overrideStats));
 			return;
 		}

@@ -225,9 +225,9 @@ class ChrDisplayEventInfo {
 
             let line = $("<tr>");
 
-            line.append(`<td class="node-battle">${nodeKey}</td>`)
+            line.append(`<td class="node-battle">${nodeKey}</td>`);
 
-                line.append(this.MakeRoutingEl(rules));
+            line.append(this.MakeRoutingEl(rules));
 
             routingEl.append(line);
         }
