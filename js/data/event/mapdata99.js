@@ -641,10 +641,25 @@ const bossIds = [
     2152, 2153, 2154, 2155, 2156, 2157,     // --- Abyssal Heavy Cruiser Water Princess
     2158, 2159, 2160, 2161, 2162, 2163,     // --- Abyssal Stranded Landing Princess
     2164, 2165, 2166, 2167, 2168, 2169, 2170, 2171, // --- Supply Depot Princess D
+    2172, 2173, 2174, 2175, 2176, 2177,     // Abyssal Kushiro Cloud Princess
+    2182, 2183, 2184, 2185, 2186, 2187,     // Standard Type Battleship Princess
+    2188, 2189, 2190, 2191,                 // Fortified Pillbox Princess
+    2198, 2199, 2200, 2201, 2202, 2203,     // European Little Sister Princess
+    2204, 2205, 2206, 2207, 2208, 2209,     // American Destroyer Princess
+    2210, 2211, 2212, 2213, 2214, 2215,     // Atoll Aircraft Carrier Anchorage Princess
+    2216, 2217, 2218, 2219, 2220, 2221,     // American Destroyer Princess (Mass Production Model)
+    2222, 2223, 2224, 2225, 2226, 2227,     // New Mass-Produced Aircraft Carrier Princess
+    2228, 2229, 2230, 2231, 2232, 2233,     // Abyssal I-go Water Princess
+    2234, 2235, 2236,                       // Airfield Summer Princess
+    2237, 2238, 2239, 2240, 2241, 2242,     // French Light Cruiser Princess
+    2243, 2244, 2245, 2246,                 // Harbour Princess Holiday Mode
+    2247, 2248, 2249,                       // Pacific Airfield Princess
+    2250, 2251, 2252, 2253, 2254, 2255,     // Supply Depot Princess E Vacation Mode
+    2256, 2257, 2258, 2259, 2260, 2261,     // Abyssal Coral Sea Water Demon
 
     // --- Airfield Princess
     2047, 2048,                             // --- Base
-    2094, 2095, 2096,                 // --- Base
+    2094, 2095, 2096,                       // --- Base
     2091, 2092, 2093,                       // --- Patrol Aircraft Deployment
     2077, 2078, 2079,                       // --- Super Heavy Bombing
 

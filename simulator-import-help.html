@@ -1,0 +1,183 @@
+<html>
+<head>
+</head>
+<body>
+<pre>
+Link to simulator with JSON data in URL fragment to run simulator automatically from external data:
+https://kc3kai.github.io/kancolle-replay/simulator.html#{JSON here}
+
+Properties marked (default)/(optional) may be omitted, otherwise required.
+If ship/equip "masterId" not in simulator's database, "stats" is required.
+
+
+{
+	numSims: &lt;int&gt; (default 1000),
+	fleetF: {
+		ships: [{
+			masterId: &lt;int&gt;,
+			LVL: &lt;int&gt; (default 99 for player, 1 for abyssal, 50 for abyssal sub),
+			stats: { (optional)
+				HP: &lt;int&gt; (default based on LVL),
+				FP: &lt;int&gt; (default max),
+				TP: &lt;int&gt; (default max),
+				AA: &lt;int&gt; (default max),
+				AR: &lt;int&gt; (default max),
+				LUK: &lt;int&gt; (default base),
+				EV: &lt;int&gt; (default based on LVL),
+				ASW: &lt;int&gt; (default based on LVL),
+				LOS: &lt;int&gt; (default based on LVL),
+				RNG: &lt;int&gt; (default base),
+				SPD: &lt;int&gt; (default base),
+				SLOTS: [&lt;int&gt;] (default base),
+				TACC: &lt;int&gt; torpedo accuracy (default base),
+				type: &lt;int&gt; or &lt;string&gt; ship class, use API number or hull code e.g. "DD" (default actual class)
+			},
+			HPInit: &lt;int&gt; (default = HP),
+			fuelInit: &lt;float&gt; 0-1 percent (default 1),
+			ammoInit: &lt;float&gt; 0-1 percent (default 1),
+			morale: &lt;int&gt; (default 49),
+			equips: (if omitted, default equips if abyssal, otherwise none) [{
+				masterId: &lt;int&gt;,
+				improve: &lt;int&gt; 0-10 (default 0),
+				proficiency: &lt;int&gt; 0-7 (default 0),
+				stats: { (optional, used only if not in simulator's database)
+					type: &lt;int&gt; API number,
+					FP/TP/AA/AR/EV/ASW/LOS/ACC/DIVEBOMB/RNG: &lt;int&gt;
+				}
+			}],
+			includesEquipStats: &lt;bool&gt; if 1, specified ship stats are treated as already including equipment stats (default 0),
+			bonuses: mapwide historical bonus (optional) {
+				bonusDmg: &lt;float&gt;,
+				bonusAcc: &lt;float&gt;,
+				bonusEva: &lt;float&gt;
+			},
+			bonusesByNode: override values of "bonuses" on specified nodes (optional) {
+				&lt;node index&gt;: &lt;same format as bonuses&gt;, excluded keys default to "bonuses" if any
+			},
+			bonusesDebuff: historical bonus applied to last node flagship only (optional) {
+				bonusDmg: &lt;float&gt;
+			},
+			neverFCF: &lt;bool&gt; if 1, never use FCF to retreat this ship (default 0)
+			retreatOnChuuha: &lt;bool&gt; if 1, end sortie if this ship becomes medium damaged or more (default 0)
+		}],
+		combineType: &lt;int&gt; 1=CTF, 2=STF, 3=TCF (optional),
+		shipsC: [&lt;same as ships&gt;] (optional),
+		formation: &lt;int&gt;
+	},
+	fleetSupportN: {&lt;same format as fleetF&gt;} applies to all but last node,
+	fleetSupportB: {&lt;same format as fleetF&gt;} applies to last node only,
+	lbas: [{
+		slots: [<int>] (default [18,18,18,18]),
+		equips: &lt;same format as fleetF.ships[x].equips&gt;, plus: {
+			bonuses: mapwide historical bonus (optional) {
+				bonusDmg: &lt;float&gt;
+				bonusAcc: &lt;float&gt;
+			}
+		}
+	}] (max 3),
+	fleetFriendComps: (optional) [{
+		weight: &lt;int&gt; selection ratio of comp (e.g. weights 2,3 -> 40%,60%)
+		fleet: &lt;same format as fleetF&gt;,
+	}],
+	nodes: [{
+		fleetE: &lt;same format as fleetF&gt; (either fleetE or fleetEComps required),
+		fleetEComps: [{
+			weight: &lt;int&gt; selection ratio of comp (e.g. weights 2,3 -> 40%,60%)
+			fleet: &lt;same format as fleetF&gt;,
+		}],
+		doNB: &lt;bool&gt; (default 0),
+		doNBCond: &lt;string&gt; (optional) "A"/"B": don't do NB if rank after day is already this or higher, "flagsunk": don't do NB if enemy flagship already sunk. "doNB" must be true,
+		NBOnly: &lt;bool&gt; (default 0),
+		airOnly: &lt;bool&gt; (default 0),
+		airRaid: &lt;bool&gt; (default 0),
+		noAmmo: &lt;bool&gt; (default 0),
+		formationOverride: &lt;int&gt; overrides value in fleetF (optional),
+		formationUseLAIfNoSpAttack: &lt;bool&gt; use Line Ahead if single or CF4 if combined, if special attack becomes impossible before this battle, overrides all (optional),
+		lbas: [&lt;int&gt;] waves to send, e.g. [1,1,2,2] (optional),
+		addCostFuel: &lt;float&gt; 0-1 percent, additional fuel per ship subtracted before battle (optional),
+		addCostAmmo: &lt;float&gt; 0-1 percent, additional ammo per ship subtracted before battle (optional),
+		addCostMax: &lt;int&gt; hard cap to fuel/ammo subtracted by addCostFuel/addCostAmmo (optional),
+		useNormalSupport: &lt;bool&gt; works for last node only (default 0),
+		useBalloon: &lt;bool&gt; enable Barrage Balloon bonus on this node,
+		useAtoll: &lt;bool&gt; enable atoll node mechanics on this node,
+		useSmoke: &lt;bool&gt; attempt to trigger smokescreen on this node,
+	}],
+	continueOnTaiha: &lt;bool&gt; (default 0),
+	allowAnyFormation: &lt;bool&gt; don't replace impossible formations due to ship count (default 0),
+	bucketHPPercent: &lt;int&gt; if HP percent &lt;= bucketHPPercent, report as bucket used (default 0),
+	bucketTime: &lt;int&gt; if repair time in seconds &gt; bucketTime, report as bucket used (default "infinity"),
+	bucketTimeIgnore: &lt;int&gt; if repair time in seconds &lt; bucketTimeIgnore, ignore bucketHPPercent and bucketTime and do not report as bucket used (default 0),
+	didSpecial: &lt;bool&gt; if fleet has already performed special attack, disables special attack for simulator (default 0),
+	settingsFCF: optional {
+		los: &lt;float&gt; required ELoS after FCF use (optional),
+		losC: &lt;int&gt; ELoS coefficient (default 1),
+		losNode: &lt;int&gt; applies check on this node index (1-indexed) and all nodes before it (default "all nodes"),
+		radarCount: &lt;int&gt; required number of ships with surface radar (LOS >= 5) after FCF use
+		radarNode: &lt;int&gt; applies check on this node index (1-indexed) and all nodes before it (default "all nodes"),
+		rules: required ship type counts after FCF use (optional) [{
+			types: [&lt;int&gt; or &lt;string&gt;] ship classes to check, use API number or hull code e.g. "DD", or use "XX" for "any",
+			count: &lt;int&gt; required number after FCF use,
+			node: &lt;int&gt; applies check on this node index (1-indexed) and all nodes before it (default "all nodes"),
+		}],
+		dameconNode: &lt;int&gt; ignore repair team/goddess on ships when determining retreat, applies on this node index (1-indexed) and all nodes before it (default "no nodes"),
+	},
+	mechanics: optional, all are &lt;bool&gt; (default 1) {
+		artillerySpotting: 
+		AACI: 
+		fitGun: 
+		OASW:
+		morale:
+		CVCI:
+		DDCI:
+	},
+	consts: {
+		dayShellSoftCap: &lt;int&gt; (default 180),
+		aswSoftCap: &lt;int&gt; (default 150),
+		accEcMF: &lt;int&gt; base accuracy of enemy combined player main fleet shelling (default 90),
+		accEcME: &lt;int&gt; base accuracy of enemy combined enemy main fleet shelling (default 90),
+		accEcEF: &lt;int&gt; base accuracy of enemy combined player escort fleet shelling (default 90),
+		accEcEE: &lt;int&gt; base accuracy of enemy combined enemy escort fleet shelling (default 90),
+		accSupportShellN: &lt;int&gt; (default 64),
+		accSupportShellB: &lt;int&gt; (default 64),
+		cvciAccModFBA: &lt;float&gt; (default 1.2),
+		cvciAccModBBA: &lt;float&gt; (default 1.2),
+		cvciAccModBA: &lt;float&gt; (default 1.2),
+		cvciChanceFBA: &lt;float&gt; (default 1.25),
+		cvciChanceBBA: &lt;float&gt; (default 1.4),
+		cvciChanceBA: &lt;float&gt; (default 1.55)
+	} (optional),
+}
+
+
+Basic example:
+
+<span id="spanExample">{
+	"numSims": 10000,
+	"fleetF": {
+		"ships": [
+			{ "masterId": 200, "equips": [{ "masterId": 4 }, { "masterId": 4 }, { "masterId": 41 }] }
+		],
+		"formation": 1
+	},
+	"nodes": [{
+		"fleetE": {
+			"ships": [
+				{ "masterId": 1503 },
+				{ "masterId": 1502 },
+				{ "masterId": 1501 },
+				{ "masterId": 1501 }
+			],
+			"formation": 2
+		},
+		"doNB": 1
+	}]
+}</span>
+</pre>
+<a id="linkExample" target="_blank">Try Example</a>
+
+<script>
+	document.getElementById('linkExample').href = 'simulator.html#' + document.getElementById('spanExample').innerText;
+</script>
+
+</body>
+</html>
