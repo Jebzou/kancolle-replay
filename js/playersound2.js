@@ -8733,6 +8733,30 @@ var VOICES = {
 		attack: "assets/voice/576219720.mp3",
 		damage: "assets/voice/576219730.mp3",
 	},
+	2059: {
+		start: "assets/voice/74205910.mp3",
+		attack: "assets/voice/74205920.mp3",
+		damage: "assets/voice/74205930.mp3",
+		sunk: "assets/voice/74205940.mp3",
+	},
+	2060: {
+		start: "assets/voice/74205910.mp3",
+		attack: "assets/voice/74205920.mp3",
+		damage: "assets/voice/74205930.mp3",
+		sunk: "assets/voice/74205940.mp3",
+	},
+	2061: {
+		start: "assets/voice/74206110.mp3",
+		attack: "assets/voice/74205920.mp3",
+		damage: "assets/voice/74205930.mp3",
+		sunk: "assets/voice/74206140.mp3",
+	},
+	2062: {
+		start: "assets/voice/74206110.mp3",
+		attack: "assets/voice/74205920.mp3",
+		damage: "assets/voice/74205930.mp3",
+		sunk: "assets/voice/74206140.mp3",
+	},
 }
 
 for (let id in SHIPDATA) {

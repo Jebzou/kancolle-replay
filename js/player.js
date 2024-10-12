@@ -1458,7 +1458,7 @@ function processAPI(root) {
 					}
 				}
 			
-				eventqueue.push([friendStart,[fleetFriend,data.api_nowhps,bgm],null]);
+				eventqueue.push([friendStart,[fleetFriend,data.api_nowhps,bgm,data.api_voice_id,data.api_voice_p_no],null]);
 				var fleet1Temp = fleet1, f1Temp = f1;
 				f1 = fleet1 = fleetFriend;
 				eventqueue.push([NBstart,[yasen.api_friendly_battle.api_flare_pos,yasen.api_friendly_battle.api_touch_plane,bgm,null,true]]);
@@ -3681,7 +3681,7 @@ function shipMoveToV(ship,target,speed) {
 }
 
 
-function friendStart(fleetFriend,hps,bgm) {
+function friendStart(fleetFriend,hps,bgm,voiceId,voiceNo) {
 	if (bgm && bgm != SM.BGMnum) {
 		SM.stopBGM();
 		SM.playBGM(bgm);
