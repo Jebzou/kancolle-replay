@@ -1304,7 +1304,8 @@ ChGimmick.prototype.updateKey = function(gimmickList) {
     this.key = key;
 }
 
-ChGimmickList.updateAllCustom = function(args) {
+ChGimmickList.fixRules = function() 
+{
     // Update stuff to work with the randomizer
     const rules = ChGimmickList.getAllRules();
 
@@ -1326,8 +1327,17 @@ ChGimmickList.updateAllCustom = function(args) {
             if (rule.mapnum) {
                 rule.mapNum = rule.mapnum;
             }
+
+            if (rule.rule.mapnum) {
+                rule.rule.mapNum = rule.rule.mapnum;
+            }
         }
     }
+}
+
+ChGimmickList.updateAllCustom = function(args) {
+
+    ChGimmickList.fixRules();
 
     if (args.node != 'MapWide') {
         ChGimmickList.updateAll(args);
