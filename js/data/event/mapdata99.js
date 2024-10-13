@@ -434,6 +434,8 @@ function chrApplySpecial() {
 
 function chrGetIsDebuffed() {
     let debuffed = false;
+    
+    ChGimmickList.fixRules();
 
     if (CHDATA.event.maps[MAPNUM].debuffed) return true;
 
