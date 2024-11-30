@@ -1312,8 +1312,8 @@ ChGimmickList.fixRules = function()
     for (const rule of rules) {
         if (!rule.rule.isInitialized) {
 
-            if (rule.rule.timesRequiredPerDiff) {
-                rule.rule.timesRequiredPerDiff = rule.rule.timesRequiredPerDiff;
+            if (rule.rule.rank) {
+                rule.rule.ranksRequiredPerDiff = [rule.rule.rank, rule.rule.rank, rule.rule.rank, rule.rule.rank];
             }
 
             rule.rule.updateKey(rule.list);
