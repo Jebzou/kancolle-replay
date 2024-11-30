@@ -1313,7 +1313,7 @@ ChGimmickList.fixRules = function()
         if (!rule.rule.isInitialized) {
 
             if (rule.rule.timesRequiredPerDiff) {
-                rule.rule.ranksRequiredPerDiff = rule.rule.timesRequiredPerDiff;
+                rule.rule.timesRequiredPerDiff = rule.rule.timesRequiredPerDiff;
             }
 
             rule.rule.updateKey(rule.list);
