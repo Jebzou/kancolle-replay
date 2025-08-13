@@ -1124,7 +1124,35 @@ function chGetShipForRandomFile(defaultId, randomStat) {
 }
 
 function chGetRandomShipId() {
-	return shipKeys[shipKeys.length * Math.random() << 0];
+
+	let shipList = shipKeys;
+
+	if (Math.random() < 0.5) {
+		// 50% of giving ship not owned yet
+		shipList = [];
+
+		const ownedShips = [];
+
+		for (const shipKey of Object.keys(CHDATA.ships)) {
+			const id = CHDATA.ships[shipKey].masterId.toString();
+
+			if (ownedShips.indexOf(id) === -1) {
+				ownedShips.push(id);
+			}
+		}
+
+		for (const key of shipKeys) {
+			if (ownedShips.indexOf(key) === -1) {
+				shipList.push(key);
+			}
+		}
+
+		if (shipList.length == 0) {
+			shipList = shipKeys;
+		}
+	}
+
+	return shipList[shipList.length * Math.random() << 0];
 }
 
 function chProcessCreateRandomFile(nbShips, nbEquipments, name, level, randomUpgrades, abyssalsShips, abyssalsEquipments, randomStat) {

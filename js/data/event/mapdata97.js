@@ -1259,13 +1259,15 @@ ChGimmick.prototype.getCustomCount = function (checkGimmickParameters) {
         case 'AirState': {
             let requiredRank = this.ranksRequiredPerDiff[getDiff()];
             
+            if (!(requiredRank instanceof Number)) requiredRank = ChGimmick.rankToNum(requiredRank);
+
             return +(checkGimmickParameters.airState >= ChGimmick.airStateToNum(requiredRank));
         }
 
         case 'battle': {
             let requiredRank = this.ranksRequiredPerDiff[getDiff()];
 
-            if (!requiredRank instanceof Number) requiredRank = ChGimmick.rankToNum(requiredRank);
+            if (!(requiredRank instanceof Number)) requiredRank = ChGimmick.rankToNum(requiredRank);
     
 			return +(ChGimmick.rankToNum(checkGimmickParameters.rank) >= requiredRank);
         }
@@ -1311,9 +1313,14 @@ ChGimmickList.fixRules = function()
 
     for (const rule of rules) {
         if (!rule.rule.isInitialized) {
+            rule.list.checkIfDebuffed = rule.list.check;    
 
             if (rule.rule.rank) {
                 rule.rule.ranksRequiredPerDiff = [rule.rule.rank, rule.rule.rank, rule.rule.rank, rule.rule.rank];
+            }
+
+            if (rule.rule.airState) {
+                rule.rule.ranksRequiredPerDiff = [rule.rule.airState, rule.rule.airState, rule.rule.airState, rule.rule.airState];
             }
 
             rule.rule.updateKey(rule.list);
