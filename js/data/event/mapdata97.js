@@ -1259,13 +1259,15 @@ ChGimmick.prototype.getCustomCount = function (checkGimmickParameters) {
         case 'AirState': {
             let requiredRank = this.ranksRequiredPerDiff[getDiff()];
             
+            if (!(requiredRank instanceof Number)) requiredRank = ChGimmick.rankToNum(requiredRank);
+
             return +(checkGimmickParameters.airState >= ChGimmick.airStateToNum(requiredRank));
         }
 
         case 'battle': {
             let requiredRank = this.ranksRequiredPerDiff[getDiff()];
 
-            if (!requiredRank instanceof Number) requiredRank = ChGimmick.rankToNum(requiredRank);
+            if (!(requiredRank instanceof Number)) requiredRank = ChGimmick.rankToNum(requiredRank);
     
 			return +(ChGimmick.rankToNum(checkGimmickParameters.rank) >= requiredRank);
         }
@@ -1304,15 +1306,21 @@ ChGimmick.prototype.updateKey = function(gimmickList) {
     this.key = key;
 }
 
-ChGimmickList.updateAllCustom = function(args) {
+ChGimmickList.fixRules = function() 
+{
     // Update stuff to work with the randomizer
     const rules = ChGimmickList.getAllRules();
 
     for (const rule of rules) {
         if (!rule.rule.isInitialized) {
+            rule.list.checkIfDebuffed = rule.list.check;    
 
-            if (rule.rule.timesRequiredPerDiff) {
-                rule.rule.ranksRequiredPerDiff = rule.rule.timesRequiredPerDiff;
+            if (rule.rule.rank) {
+                rule.rule.ranksRequiredPerDiff = [rule.rule.rank, rule.rule.rank, rule.rule.rank, rule.rule.rank];
+            }
+
+            if (rule.rule.airState) {
+                rule.rule.ranksRequiredPerDiff = [rule.rule.airState, rule.rule.airState, rule.rule.airState, rule.rule.airState];
             }
 
             rule.rule.updateKey(rule.list);
@@ -1326,8 +1334,17 @@ ChGimmickList.updateAllCustom = function(args) {
             if (rule.mapnum) {
                 rule.mapNum = rule.mapnum;
             }
+
+            if (rule.rule.mapnum) {
+                rule.rule.mapNum = rule.rule.mapnum;
+            }
         }
     }
+}
+
+ChGimmickList.updateAllCustom = function(args) {
+
+    ChGimmickList.fixRules();
 
     if (args.node != 'MapWide') {
         ChGimmickList.updateAll(args);

@@ -6,7 +6,7 @@ var RANDO_MODE = 1;
 
 // --- 1 => Rush mode
 // --- 2 => TP is slow
-var RUSH_MODE = 0;
+var RUSH_MODE = 1;
 
 function InitUI() {
 	if (!CHDATA.event) return;
@@ -2033,7 +2033,7 @@ function prepBattle(letter) {
 			currentBoss = letterboss == letter;
 		}
 
-		if (!currentBoss || MAPDATA[WORLD].maps[MAPNUM].finalhp[diff] === 0) {
+		if (!currentBoss || (MAPDATA[WORLD].maps[MAPNUM].finalhp && MAPDATA[WORLD].maps[MAPNUM].finalhp[diff] === 0)) {
 			enemies.push(createDefaultShip(sid,overrideStats));
 			return;
 		}

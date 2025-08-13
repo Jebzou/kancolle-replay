@@ -48,8 +48,9 @@ var BATTLE = (function() {
 		appendPhase("TITLE_FORMATION");
 		body.append(getTextRow("ENEMY_COMPOSITION", [opponent.toString()]));
 		body.append(getTextRow("FORMATION_SELECT", [dbattle.api_formation[0]]));
-		body.append(getTextRow("ENEMY_FORMATION", [combinedE, dbattle.api_formation[1]]));
-		body.append(getTextRow("ENGAGEMENT", [dbattle.api_formation[2]]));
+		body.append(getTextRow("ENEMY_FORMATION", [combinedE, dbattle.api_formation[1]], "end"));
+		body.append(getTextRow("ENGAGEMENT", [dbattle.api_formation[2]], "center"));
+		if (dbattle.api_smoke_type) body.append(getTextRow("SMOKESCREEN", [dbattle.api_smoke_type]));
 		tab.append(body);
 
 	};
@@ -105,6 +106,9 @@ var BATTLE = (function() {
 		for (let i=0; i<dbattle.api_air_base_attack.length; i++) {
 			kouku(dbattle.api_air_base_attack[i], body, null, false, false, true);
 			body.append(getTextRow("", []));
+		}
+		if (dbattle.api_air_base_rescue_type) {
+			body.append(getTextRow("AIR_BASE_RESCUE",[dbattle.api_air_base_rescue_type]));
 		}
 		
 		tab.append(body);
@@ -283,11 +287,19 @@ var BATTLE = (function() {
 			    defender,
 			    dam;
 
-			attacker = (hou.api_at_list[j] > 6) ? f2[hou.api_at_list[j] - 7] : f1[hou.api_at_list[j] - 1];
-			defender = (hou.api_df_list[j][0] > 6) ? f2[hou.api_df_list[j][0] - 7] : f1[hou.api_df_list[j][0] - 1];
-			dam = 0;
-			for (var k=0; k<hou.api_damage[j].length; k++) {
-				if (hou.api_damage[j][k] > 0) dam += hou.api_damage[j][k];
+			if (version == 1) {
+				attacker = (hou.api_at_list[j] > 6) ? f2[hou.api_at_list[j] - 7] : f1[hou.api_at_list[j] - 1];
+				attacker['is_enemy'] = hou.api_at_list[j] > 6;
+			} else {
+				if (hou.api_at_eflag[j]) {
+					attacker = (hou.api_at_list[j] >= 6 && opponent.mainFleet.length <= 6) ? opponent.escortFleet[hou.api_at_list[j] - 6] : opponent.mainFleet[hou.api_at_list[j]];
+					attacker['is_enemy'] = true;
+				} else {
+					attacker = (hou.api_at_list[j] >= 6 && playerFleet.mainFleet.length <= 6) ? playerFleet.escortFleet[hou.api_at_list[j] - 6] : playerFleet.mainFleet[hou.api_at_list[j]];
+					if (hou.api_sp_list[j] >= 100 && playerFleet.escortFleet && hou.api_at_list[j] < 6) {
+						attacker = playerFleet.escortFleet[0];
+					}
+				}
 			}
 			body.append(getTextRow("NIGHT_TARGET", [attacker.name, defender.name, hou.api_sp_list[j]]));
 
@@ -363,7 +375,7 @@ var BATTLE = (function() {
 		table.append(getTextRow("", []));
 
 		if (stage2 && stage2.api_air_fire) {
-			var AAShip = (stage2.api_air_fire.api_idx > 5) ? player.escortFleet[stage2.api_air_fire.api_idx - 6] : player.mainFleet[stage2.api_air_fire.api_idx];
+			var AAShip = (stage2.api_air_fire.api_idx > 5 && player.mainFleet.length <= 6) ? player.escortFleet[stage2.api_air_fire.api_idx - 6] : player.mainFleet[stage2.api_air_fire.api_idx];
 			table.append(getTextRow("AIR_AACI", [AAShip.name, stage2.api_air_fire.api_kind]));
 		}
 
@@ -388,9 +400,9 @@ var BATTLE = (function() {
 						eTargets.push({
 							ship : player.mainFleet[i],
 							damage : (dam > 0) ? dam : 0,
-							protect : (dam != kouku.api_stage3.api_fdam[i + 1]),
-							crit : kouku.api_stage3.api_fcl_flag[i + 1],
-							rai : kouku.api_stage3.api_frai_flag[i + 1]
+							protect : (dam != kouku.api_stage3.api_fdam[ind]),
+							crit : kouku.api_stage3.api_fcl_flag[ind],
+							rai : +kouku.api_stage3.api_frai_flag[ind]
 						});
 				}
 
@@ -402,9 +414,9 @@ var BATTLE = (function() {
 						fTargets.push({
 							ship : opponent.mainFleet[i],
 							damage : (dam > 0) ? dam : 0,
-							protect : (dam != stage3.api_edam[i + 1]),
-							crit : stage3.api_ecl_flag[i + 1],
-							rai : stage3.api_erai_flag[i + 1]
+							protect : (dam != stage3.api_edam[ind]),
+							crit : stage3.api_ecl_flag[ind],
+							rai : +stage3.api_erai_flag[ind]
 						});
 				}
 
@@ -417,9 +429,9 @@ var BATTLE = (function() {
 							eTargets.push({
 								ship : player.escortFleet[i],
 								damage : (dam > 0) ? dam : 0,
-								protect : (dam != stage3_combined.api_fdam[i + 1]),
-								crit : stage3_combined.api_fcl_flag[i + 1],
-								rai : stage3_combined.api_frai_flag[i + 1]
+								protect : (dam != stage3_combined.api_fdam[ind]),
+								crit : stage3_combined.api_fcl_flag[ind],
+								rai : +stage3_combined.api_frai_flag[ind]
 							});
 					}
 					if (stage3_combined.api_edam && opponent.escortFleet) {
@@ -430,9 +442,9 @@ var BATTLE = (function() {
 							fTargets.push({
 								ship : opponent.escortFleet[i],
 								damage : (dam > 0) ? dam : 0,
-								protect : (dam != stage3.api_edam[i + 1]),
-								crit : stage3_combined.api_ecl_flag[i + 1],
-								rai : stage3_combined.api_erai_flag[i + 1]
+								protect : (dam != stage3.api_edam[ind]),
+								crit : stage3_combined.api_ecl_flag[ind],
+								rai : +stage3_combined.api_erai_flag[ind]
 							});
 					}
 				}
@@ -463,32 +475,95 @@ var BATTLE = (function() {
 		    eAttack = [],
 		    eTargets = [];
 
-		var num = (combinedE) ? 12 : 6;
+		var num = rai.api_frai_list_items ? Math.max(rai.api_frai_list_items.length, rai.api_erai_list_items.length) : Math.max(rai.api_frai.length, rai.api_erai.length);
 		for (var i = 0; i < num; i++) {
-			if (rai.api_frai[i + 1] > 0) {
-				fTorpedos.push((i >= 6) ? fleet[i - 6] : fleet[i]);
-				fAttack.push({
-					atk : rai.api_fydam[i + 1],
-					crit : ((rai.api_fcl[i + 1] == 2)? 2 : 1)
-				});
+			if (version == 1) {
+				if (rai.api_frai[i + 1] > 0) {
+					fTorpedos.push((i >= 6) ? fleet[i - 6] : fleet[i]);
+					fAttack.push({
+						atk : rai.api_fydam[i + 1],
+						crit : ((rai.api_fcl[i + 1] == 2)? 2 : 1)
+					});
 
-				if ((combinedE && rai.api_frai[i + 1] >= 7)) {
-					fTargets.push(opponent.escortFleet[rai.api_frai[i + 1] - 7]);
-				} else {
-					fTargets.push(opponent.mainFleet[rai.api_frai[i + 1] - 1]);
+					if ((combinedE && rai.api_frai[i + 1] >= 7)) {
+						fTargets.push(opponent.escortFleet[rai.api_frai[i + 1] - 7]);
+					} else {
+						fTargets.push(opponent.mainFleet[rai.api_frai[i + 1] - 1]);
+					}
 				}
-			}
-			if (rai.api_erai[i + 1] > 0) {
-				eTorpedos.push((combinedE) ? opponent.escortFleet[i - 6] : opponent.mainFleet[i]);
-				eAttack.push({
-					atk : rai.api_eydam[i + 1],
-					crit : ((rai.api_ecl[i + 1] == 2)? 2 : 1)
-				});
+				if (rai.api_erai[i + 1] > 0) {
+					eTorpedos.push((combinedE) ? opponent.escortFleet[i - 6] : opponent.mainFleet[i]);
+					eAttack.push({
+						atk : rai.api_eydam[i + 1],
+						crit : ((rai.api_ecl[i + 1] == 2)? 2 : 1)
+					});
 
-				if ((opponent.escortFleet && rai.api_erai[i + 1] >= 7)) {
-					eTargets.push(fleet[rai.api_erai[i + 1] - 7]);
+					if ((opponent.escortFleet && rai.api_erai[i + 1] >= 7)) {
+						eTargets.push(fleet[rai.api_erai[i + 1] - 7]);
+					} else {
+						eTargets.push(player.mainFleet[rai.api_erai[i + 1] - 1]);
+					}
+
+				}
+			} else {
+				if (rai.api_frai_list_items) {
+					if (rai.api_frai_list_items[i]) {
+						for (let j=0; j<rai.api_frai_list_items[i].length; j++) {
+							fTorpedos.push((i >= 6 && player.mainFleet.length <= 6) ? player.escortFleet[i - 6] : player.mainFleet[i]);
+							fAttack.push({
+								atk : rai.api_fydam_list_items[i][j],
+								crit : ((rai.api_fcl_list_items[i][j] == 2)? 2 : 1)
+							});
+
+							if (rai.api_frai_list_items[i][j] >= 6 && opponent.mainFleet.length <= 6) {
+								fTargets.push(opponent.escortFleet[rai.api_frai_list_items[i][j] - 6]);
+							} else {
+								fTargets.push(opponent.mainFleet[rai.api_frai_list_items[i][j]]);
+							}
+						}
+					}
+					if (rai.api_erai_list_items[i]) {
+						for (let j=0; j<rai.api_erai_list_items[i].length; j++) {
+							eTorpedos.push((i >= 6 && opponent.mainFleet.length <= 6) ? opponent.escortFleet[i - 6] : opponent.mainFleet[i]);
+							eAttack.push({
+								atk : rai.api_eydam_list_items[i][j],
+								crit : ((rai.api_ecl_list_items[i][j] == 2)? 2 : 1)
+							});
+
+							if (rai.api_erai_list_items[i][j] >= 6 && player.mainFleet.length <= 6) {
+								eTargets.push(player.escortFleet[rai.api_erai_list_items[i][j] - 6]);
+							} else {
+								eTargets.push(player.mainFleet[rai.api_erai_list_items[i][j]]);
+							}
+						}
+					}
 				} else {
-					eTargets.push(player.mainFleet[rai.api_erai[i + 1] - 1]);
+					if (rai.api_frai[i] > -1) {
+						fTorpedos.push((i >= 6 && player.mainFleet.length <= 6) ? player.escortFleet[i - 6] : player.mainFleet[i]);
+						fAttack.push({
+							atk : rai.api_fydam[i],
+							crit : ((rai.api_fcl[i] == 2)? 2 : 1)
+						});
+
+						if (rai.api_frai[i] >= 6 && opponent.mainFleet.length <= 6) {
+							fTargets.push(opponent.escortFleet[rai.api_frai[i] - 6]);
+						} else {
+							fTargets.push(opponent.mainFleet[rai.api_frai[i]]);
+						}
+					}
+					if (rai.api_erai[i] > -1) {
+						eTorpedos.push((i >= 6 && opponent.mainFleet.length <= 6) ? opponent.escortFleet[i - 6] : opponent.mainFleet[i]);
+						eAttack.push({
+							atk : rai.api_eydam[i],
+							crit : ((rai.api_ecl[i] == 2)? 2 : 1)
+						});
+
+						if (rai.api_erai[i] >= 6 && player.mainFleet.length <= 6) {
+							eTargets.push(player.escortFleet[rai.api_erai[i] - 6]);
+						} else {
+							eTargets.push(player.mainFleet[rai.api_erai[i]]);
+						}
+					}
 				}
 
 			}
@@ -619,6 +694,16 @@ var BATTLE = (function() {
 			jetAttack();
 		if (dbattle.api_air_base_attack)
 			lbas();
+		if (dbattle.api_friendly_kouku) {
+			let friendFleet = new FLEET();
+			friendFleet.addFleet(dbattle.api_friendly_info.api_ship_id, dbattle.api_friendly_info.api_nowhps, dbattle.api_friendly_info.api_maxhps);
+			let temp = player;
+			player = friendFleet;
+			airAttack(dbattle.api_friendly_kouku);
+			player = temp;
+		}
+		if (nightFirst && dbattle.api_support_flag && dbattle.api_support_flag > 0)
+			support(dbattle.api_support_flag, dbattle.api_support_info);
 		if (dbattle.api_stage_flag)
 			airAttack();
 		if (dbattle.api_support_flag && dbattle.api_support_flag > 0)
@@ -629,7 +714,9 @@ var BATTLE = (function() {
 			opTorp();
 		if (dbattle.api_hourai_flag)
 			hourai();
-		if ((dbattle.api_midnight_flag && nightBattle.length && nightBattle.length != 0) || (!dbattle.length && nightBattle.api_deck_id))
+		if (dbattle.api_name == 'ld_shooting' || dbattle.api_name == 'fc_ld_shooting')
+			ldShooting();
+		if (Object.keys(nightBattle).length)
 			yasen();
 	};
 

@@ -57,7 +57,6 @@ class ChrDisplayEventInfo {
         }
 
         const initAfterLoad = () => {
-
             // --- Map buttons
             for (let mapNum = 0; mapNum < ChrDisplayEventInfo.MAP_COUNT; mapNum++) {
                 let button = $(`<div class="mapButton">E-${mapNum + 1}</div>`);
@@ -66,7 +65,7 @@ class ChrDisplayEventInfo {
                     this.currentMap = mapNum + 1;
                     MAPNUM = this.currentMap;
                     WORLD = this.GetCurrentWorld();
-
+                    
                     if (CHDATA.event.maps[this.currentMap].routes) {
                         this.unlockPart = Math.max(...CHDATA.event.maps[this.currentMap].routes)
                     }
@@ -81,7 +80,9 @@ class ChrDisplayEventInfo {
                         this.lbPart = 1;
                     }
 
-                    this.LoadMapAndButtons();                
+                    this.LoadMapAndButtons();  
+                    
+                    ChGimmickList.fixRules();              
 
                     // --- Display map infos
                     this.DisplayMapInfos();

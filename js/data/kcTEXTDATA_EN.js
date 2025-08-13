@@ -107,6 +107,10 @@ var TEXTDATA_EN = {
 		"text": "The enemy fleet consists of:<br><b><0><b>",
 		"values": {}
 	},
+	"SMOKESCREEN": {
+		"text": "<b>Smoke screen</b> activated: type <b><0></b>",
+		"values": {},
+	},
 	"AIR_NONE": {
 		"text" : "No Air Battle",
 		"values": {}
@@ -197,6 +201,10 @@ var TEXTDATA_EN = {
 			}
 		}
 	},
+	"AIR_BASE_RESCUE": {
+		"text": "<b>Catalina rescue:</b> level <b><0></b>",
+		"values": {}
+	},
 	"SUPPORT_START": {
 		"text": "The <0> support fleet has arrived with <b><1></b>.",
 		"values": {
@@ -280,11 +288,25 @@ var TEXTDATA_EN = {
 				0: "",
 				1: "laser ",
 				2: "double ", 
-				3: "cut-in ",
+				3: "sec cut-in ",
 				4: "radar cut-in ",
-				5: "AP cut-in ",
-				6: "gun cut-in ",
-				7: "carrier cut-in "
+				5: "sec AP cut-in ",
+				6: "AP cut-in ",
+				7: "carrier cut-in ",
+				100: "Nelson Touch ",
+				101: "Nagato Special ",
+				102: "Mutsu Special ",
+				103: "Colorado Special ",
+				104: "Kongou Special ",
+				105: "Richelieu Special ",
+				106: "Queen Elizabeth Special ",
+				200: "Zuiun cut-in ",
+				201: "Suisei cut-in ",
+				300: "Submarine Fleet Special ",
+				301: "Submarine Fleet Special ",
+				302: "Submarine Fleet Special ",
+				400: "Yamato Special (3 ship) ",
+				401: "Yamato Special (2 ship) ",
 			}
 		}
 	},
@@ -344,7 +366,29 @@ var TEXTDATA_EN = {
 				3: "torpedo cut-in",
 				4: "gun cut-in (secondary)",
 				5: "gun cut-in (main)",
-				6: "carrier cut-in"
+				6: "carrier cut-in",
+				7: "gun-torpedo-radar cut-in",
+				8: "torpedo-radar-lookout cut-in",
+				9: "torpedo-lookout-torpedo cut-in",
+				10: "torpedo-lookout-drum cut-in",
+				11: "gun-torpedo-radar cut-in",
+				12: "torpedo-radar-lookout cut-in",
+				13: "torpedo-lookout-torpedo cut-in",
+				14: "torpedo-lookout-drum cut-in",
+				100: "Nelson Touch",
+				101: "Nagato Special",
+				102: "Mutsu Special",
+				103: "Colorado Special",
+				104: "Kongou Special",
+				105: "Richelieu Special",
+				106: "Queen Elizabeth Special",
+				200: "Night Zuiun cut-in",
+				300: "Submarine Fleet Special",
+				301: "Submarine Fleet Special",
+				302: "Submarine Fleet Special",
+				400: "Yamato Special (3 ship)",
+				401: "Yamato Special (2 ship)",
+				1000: "Special Type 4 Torpedo",
 			}
 		}
 	},
